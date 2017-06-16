@@ -1,17 +1,25 @@
 <ion-header>
   <ion-navbar>
     <ion-title>
-      Contact
+      BOBA ME!
     </ion-title>
   </ion-navbar>
 </ion-header>
 
 <ion-content>
+  <div #map id="map"></div>
+
   <ion-list>
-    <ion-list-header>Follow us on Twitter</ion-list-header>
     <ion-item>
-      <ion-icon name="ionic" item-left></ion-icon>
-      @ionicframework
+      <button ion-button block (click)='findBoba()'>Find Boba</button>
+    </ion-item>
+    <ion-item *ngFor="let bobaLocation of bobaLocations">
+      <div text-left style="display: inline-block">
+        {{bobaLocation.name}}
+      </div>
+      <div text-right style="display: inline-block">
+        {{bobaLocation.distance}} meters
+      </div>
     </ion-item>
   </ion-list>
 </ion-content>
