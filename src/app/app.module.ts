@@ -5,9 +5,10 @@ import { MyApp } from './app.component';
 import { HttpModule } from '@angular/http';
 
 import { AboutPage } from '../pages/about/about';
-import { ContactPage } from '../pages/contact/contact';
-import { HomePage } from '../pages/home/home';
+import { MapViewPage } from '../pages/mapView/mapView';
+import { ListViewPage } from '../pages/listView/listView';
 import { TabsPage } from '../pages/tabs/tabs';
+import { BobaService } from '../services/boba.service';
 
 import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
@@ -20,8 +21,8 @@ import { GoogleMaps } from '@ionic-native/google-maps';
   declarations: [
     MyApp,
     AboutPage,
-    ContactPage,
-    HomePage,
+    MapViewPage,
+    ListViewPage,
     TabsPage
   ],
   imports: [
@@ -36,8 +37,8 @@ import { GoogleMaps } from '@ionic-native/google-maps';
   entryComponents: [
     MyApp,
     AboutPage,
-    ContactPage,
-    HomePage,
+    MapViewPage,
+    ListViewPage,
     TabsPage
   ],
   providers: [
@@ -45,6 +46,7 @@ import { GoogleMaps } from '@ionic-native/google-maps';
     SplashScreen,
     Geolocation,
     GoogleMaps,
+    BobaService,
     {provide: ErrorHandler, useClass: IonicErrorHandler}
   ]
 })

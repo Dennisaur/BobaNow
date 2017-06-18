@@ -1,0 +1,28 @@
+<ion-header>
+  <ion-navbar>
+    <ion-item>
+      <ion-label>Open now</ion-label>
+      <ion-toggle [(ngModel)]="openNow" color="primary" (ngModelChange)="findBoba()"></ion-toggle>
+    </ion-item>
+  </ion-navbar>
+</ion-header>
+
+<ion-content>
+  <ion-row text-wrap *ngFor="let bobaLocation of bobaLocations; let i = index">
+    <ion-col align-self-start col-auto>{{i + 1}}.</ion-col>
+    <ion-col>
+      <span>
+        <b>{{bobaLocation.name}}</b>
+      </span>
+      ({{bobaLocation.distance / 1609.3445 | number:'1.2-2'}} mi)
+    </ion-col><!-- {{bobaLocation.listIndex}} -->
+    <!--span ><img [src]="bobaLocation.image_url" class="listViewImage"/></span-->
+
+    <ion-col col-auto text-right>
+      <img [src]="getRatingImage(bobaLocation.rating)" class="ratingImage"/>
+      <div>
+        {{bobaLocation.review_count}} reviews
+      </div>
+    </ion-col>
+  </ion-row>
+</ion-content>
