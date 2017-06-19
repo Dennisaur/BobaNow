@@ -3,6 +3,7 @@ import { BrowserModule } from '@angular/platform-browser';
 import { IonicApp, IonicModule, IonicErrorHandler } from 'ionic-angular';
 import { MyApp } from './app.component';
 import { HttpModule } from '@angular/http';
+import { IonicStorageModule } from '@ionic/storage';
 
 import { AboutPage } from '../pages/about/about';
 import { MapViewPage } from '../pages/mapView/mapView';
@@ -31,7 +32,8 @@ import { GoogleMaps } from '@ionic-native/google-maps';
     IonicModule.forRoot(MyApp),
     AgmCoreModule.forRoot({
       apiKey: 'AIzaSyDcCzzTSBvYIgH8AdNYgkSlaVO5Jnlb0rk'
-    })
+    }),
+    IonicStorageModule.forRoot()
   ],
   bootstrap: [IonicApp],
   entryComponents: [
@@ -47,6 +49,7 @@ import { GoogleMaps } from '@ionic-native/google-maps';
     Geolocation,
     GoogleMaps,
     BobaService,
+    Storage,
     {provide: ErrorHandler, useClass: IonicErrorHandler}
   ]
 })

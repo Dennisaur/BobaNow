@@ -1,15 +1,12 @@
 <ion-header>
   <ion-navbar>
-    <ion-title>
-      BOBA ME!
-    </ion-title>
+    <ion-item>
+      <ion-label>Open now</ion-label>
+      <ion-toggle [(ngModel)]="openNow" color="primary" (ngModelChange)="findLocations({{lat}},{{lng}})"></ion-toggle>
+    </ion-item>
   </ion-navbar>
 </ion-header>
 
 <ion-content scroll="false">
-  <ion-item>
-    <ion-label>Open now</ion-label>
-    <ion-toggle [(ngModel)]="openNow" color="primary" (ngModelChange)="findBoba()"></ion-toggle>
-  </ion-item>
   <div #map id="map"></div>
 </ion-content>

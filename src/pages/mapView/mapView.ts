@@ -16,6 +16,8 @@ import 'rxjs/add/operator/map';
 
 import { BobaService } from '../../services/boba.service';
 
+declare var google;
+
 @Component({
   selector: 'page-mapView',
   templateUrl: 'mapView.html'
@@ -30,8 +32,12 @@ export class MapViewPage {
   clientSecret: string = "Kui2Eqxk9OOl7pGXH2yOKLkY32oAWWZRSYENc8hFA9jZbMTnTypcWUM46kzLTAcf"
   accessToken: string = "4CsWcVaxR1MdfR55e6vVjH0XRJNUkDsBHOc7HM073bhnnAbBr2f4-4QliYaYR4QabhRBhRiDfgYiLYYeN9m0scWLcvRAPZqfnC8c8RMe-qUGhmteiNkpx8anPFlDWXYx";
 
+  mapReady: boolean;
+  atCurrentLocation: boolean;
+  markersAdded: boolean;
+
   currentLocationMarker: Marker;
-  bobaLocations: any;
+  bobaLocations: any = [];
   markers: any = [];
   openNow: boolean = true;
 
@@ -39,22 +45,9 @@ export class MapViewPage {
               public http: Http,
               public platform: Platform,
               private geolocation: Geolocation,
-              private googleMaps: GoogleMaps) {
-/*
-    let headers = new Headers({'Content-Type': "application/x-www-form-urlencoded"});
-    let options = new RequestOptions({headers: headers});
-    let body = new FormData();
-    body.append('grant_type', 'client_credentials');
-    body.append('client_id', this.clientId);
-    body.append('client_secret', this.clientSecret);
+              private googleMaps: GoogleMaps,
+              private bobaService: BobaService) {
 
-    http.post("https://api.yelp.com/oauth2/token", body, options)
-      .subscribe(
-        data => {
-          console.log("post" + data.json());
-        }
-      );
-    */
   }
 
   // Load map only after view is initialized
@@ -62,6 +55,7 @@ export class MapViewPage {
     this.platform.ready()
       .then(
         () => {
+          this.locateUser(true);
           this.loadMap();
         }
       );
@@ -77,13 +71,41 @@ export class MapViewPage {
     this.map.one(GoogleMapsEvent.MAP_READY).then(
       () => {
         console.log('Map is ready!');
+        this.mapReady = true;
 
         // Now you can add elements to the map like the marker
         this.map.setMyLocationEnabled(true);  // This adds blue location accuracy circle
-        this.locateUser(true);
+        this.map.setPadding(30);
+
+        // Add markers to map if they haven't been added already
+        if (!this.markersAdded) {
+          this.addMarkersToMap();
+        }
       }
     );
   }
+
+
+  // Moves camera to fit current positions and search locations
+  updateCamera() {
+    console.log("Moving camera");
+
+    let bounds = [];
+    bounds.push({"lat": this.lat, "lng": this.lng});
+
+    for (let location of this.bobaLocations) {
+      let bound = {"lat": location.coordinates.latitude, "lng": location.coordinates.longitude};
+      bounds.push(bound);
+    }
+
+    this.map.animateCamera({
+      'target': bounds,
+      'duration': 2000
+      });
+
+    this.atCurrentLocation = true;
+  }
+
 
   // Get current location and center map to current position
   locateUser(redoSearch: boolean = false) {
@@ -95,21 +117,17 @@ export class MapViewPage {
           this.lng = location.coords.longitude;
 
           if (redoSearch) {
-            this.findBoba();
+            this.findLocations(this.lat, this.lng);
           }
 
-          let currentPosition: LatLng = new LatLng(this.lat, this.lng);
-
-          this.map.moveCamera({
-            'target': currentPosition,
-            'zoom': 17,
+          // Move camera to current location if map is ready
+          let currentPosition = new LatLng(this.lat, this.lng);
+          if (this.mapReady) {
+            this.map.moveCamera({
+              'target': currentPosition,
+              'zoom': 17
             });
-
-          this.map.animateCamera({
-            'target': currentPosition,
-            'zoom': 12,
-            'duration': 2000
-            });
+          }
 
         }
       )
@@ -118,46 +136,19 @@ export class MapViewPage {
       );
   }
 
-  // Use Yelp API to locate nearby locations
-  findBoba() {
-    let headers = new Headers();
-    headers.append('Authorization', "Bearer " + this.accessToken);
-    let options = new RequestOptions({headers: headers});
-
-    // Generate get request URL
-    let getRequestUrl = "https://api.yelp.com/v3/businesses/search?";
-    let term = "term=" + "boba";
-    let latitude = "latitude=" + this.lat;
-    let longitude = "longitude=" + this.lng;
-    let radius = "radius=" + "5000"; // Meters
-    let limit = "limit=" + "10";
-    let openNowString = "open_now=" + this.openNow;
-    let sortBy = "sort_by=" + "distance";
-
-    getRequestUrl = getRequestUrl + term + "&"
-      + latitude + "&"
-      + longitude + "&"
-      + radius + "&"
-      + limit + "&"
-      + openNowString + "&"
-      + sortBy;
-
-    this.http.get(getRequestUrl, options).map(res => res.json())
-      .subscribe(
-        data => {
-          this.bobaLocations = data.businesses;
-          this.addMarkersToMap(this.bobaLocations);
-        }
-      );
-  }
-
   // Clear current markers and add new markers to map
   // using list of businesses returned from Yelp API
-  addMarkersToMap(locations) {
+  addMarkersToMap() {
+    if (!this.mapReady) {
+      return;
+    }
+
+    console.log("Adding markers to map");
+
     this.clearMarkers();
 
     let count = 1;
-    for (let location of locations) {
+    for (let location of this.bobaLocations) {
       let position = new LatLng(location.coordinates.latitude, location.coordinates.longitude);
       let name = location.name;
 
@@ -166,7 +157,7 @@ export class MapViewPage {
       let markerOptions: {} = {
         'position': position,
         'title': name,
-        'icon': icon2
+        'icon': icon2,
       };
 
       this.map.addMarker(markerOptions)
@@ -177,6 +168,8 @@ export class MapViewPage {
       location.listIndex = count;
       count += 1;
     }
+
+    this.markersAdded = true;
   }
 
   // Removes all current markers from the map
@@ -184,5 +177,35 @@ export class MapViewPage {
     for (let marker of this.markers) {
       marker.remove();
     }
+  }
+
+  findLocations(lat: number, lng: number) {
+    console.log("Finding locations near (" + lat + ", " + lng + ")");
+
+    let bobaParams = {
+      'term': "boba",
+      'latitude': lat,
+      'longitude': lng,
+      'radius': 5000,
+      'limit': 10,
+      'openNow': this.openNow,
+      'sortBy': "distance"
+    };
+
+    // Call service to find locations
+    this.bobaService.findLocations(bobaParams)
+      .subscribe(
+        data => {
+          console.log("Found locations in map view page");
+
+          this.bobaLocations = data.businesses;
+
+          // Add markers to map if map is loaded
+          if (this.mapReady) {
+            this.addMarkersToMap();
+            this.updateCamera();
+          }
+        }
+      );
   }
 }

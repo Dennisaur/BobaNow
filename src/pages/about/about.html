@@ -1,11 +1,12 @@
 <ion-header>
   <ion-navbar>
-    <ion-title>
-      About
-    </ion-title>
+    <ion-item>
+      <ion-label>Open now</ion-label>
+      <ion-toggle [(ngModel)]="openNow" color="primary" (ngModelChange)="findLocations()"></ion-toggle>
+    </ion-item>
   </ion-navbar>
 </ion-header>
 
-<ion-content padding>
-
+<ion-content scroll="false">
+  <div #map id="map"></div>
 </ion-content>

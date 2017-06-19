@@ -15,9 +15,28 @@ export class BobaService {
     this.clientId = "OXIJVK12GNTdHlmKJR7xbg";
     this.clientSecret = "Kui2Eqxk9OOl7pGXH2yOKLkY32oAWWZRSYENc8hFA9jZbMTnTypcWUM46kzLTAcf"
     this.accessToken = "4CsWcVaxR1MdfR55e6vVjH0XRJNUkDsBHOc7HM073bhnnAbBr2f4-4QliYaYR4QabhRBhRiDfgYiLYYeN9m0scWLcvRAPZqfnC8c8RMe-qUGhmteiNkpx8anPFlDWXYx";
+
+
+    /*
+    let headers = new Headers({'Content-Type': "application/x-www-form-urlencoded"});
+    let options = new RequestOptions({headers: headers});
+    let body = new FormData();
+    body.append('grant_type', 'client_credentials');
+    body.append('client_id', this.clientId);
+    body.append('client_secret', this.clientSecret);
+
+    http.post("https://api.yelp.com/oauth2/token", body, options)
+    .subscribe(
+    data => {
+    console.log("post" + data.json());
+    }
+    );
+    */
   }
 
   getLocations() {
+    console.log("service");
+    console.log(this.locations);
     return this.locations;
   }
 
@@ -45,12 +64,17 @@ export class BobaService {
       + openNowString + "&"
       + sortBy;
 
-    this.http.get(getRequestUrl, options).map(res => res.json())
-      .subscribe(
-        data => {
-          this.locations = data.businesses;
-        }
-      );
+    let observableGetRequest = this.http.get(getRequestUrl, options).map(res => res.json());
+
+    observableGetRequest.subscribe(
+      data => {
+        console.log("Found locations in service");
+
+        this.locations = data.businesses;
+      }
+    );
+
+    return observableGetRequest;
   }
 
   getTestResults() {

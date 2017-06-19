@@ -60,10 +60,10 @@
             "cordova-plugin-splashscreen": {},
             "cordova-plugin-statusbar": {},
             "ionic-plugin-keyboard": {},
+            "cordova-plugin-whitelist": {},
             "cordova-plugin-googlemaps": {
-                "API_KEY_FOR_ANDROID": "AIzaSyBR1tXu__HCXSfrLBKATcvyD6E7ClKijUY"
-            },
-            "cordova-plugin-whitelist": {}
+                "API_KEY_FOR_ANDROID": "AIzaSyArdyECCHkDoR-Ozr48gjwdewXzkKPd8YY"
+            }
         },
         "platforms": [
             "android"
