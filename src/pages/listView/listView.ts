@@ -22,6 +22,7 @@ export class ListViewPage {
 
   bobaLocations: any = [];
   openNow: boolean = true;
+  dayOfWeek: number;
 
   constructor(public navCtrl: NavController,
               public http: Http,
@@ -29,35 +30,16 @@ export class ListViewPage {
               private geolocation: Geolocation,
               private bobaService: BobaService) {
 
+    let date = new Date();
+    this.dayOfWeek = date.getDay();
   }
 
   // After view is initialized
   ngAfterViewInit() {
     this.bobaLocations = this.bobaService.getLocations();
-
-    this.platform.ready()
-      .then(
-        () => {
-          //this.locateUser();
-        }
-      );
   }
 
-  // Get current location and center map to current position
-  locateUser(redoSearch: boolean = false) {
-    this.geolocation.getCurrentPosition()
-      .then(
-        (location) => {
-          this.location = location;
-          this.lat = location.coords.latitude;
-          this.lng = location.coords.longitude;
-        }
-      )
-      .catch(
-        (error) => console.log("An error occurred getting current location")
-      );
-  }
-
+  // Returns ratings image URL
   getRatingImage(rating) {
     let ratingString = rating;
     if (rating % 1 != 0) {

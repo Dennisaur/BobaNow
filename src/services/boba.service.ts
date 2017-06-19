@@ -8,6 +8,8 @@ export class BobaService {
   private clientId: string;
   private clientSecret: string;
   private accessToken: string;
+  private requestOptions: RequestOptions;
+  private dayOfWeek: number;
 
   constructor (public http: Http,
                private storage: Storage) {
@@ -15,7 +17,6 @@ export class BobaService {
     this.clientId = "OXIJVK12GNTdHlmKJR7xbg";
     this.clientSecret = "Kui2Eqxk9OOl7pGXH2yOKLkY32oAWWZRSYENc8hFA9jZbMTnTypcWUM46kzLTAcf"
     this.accessToken = "4CsWcVaxR1MdfR55e6vVjH0XRJNUkDsBHOc7HM073bhnnAbBr2f4-4QliYaYR4QabhRBhRiDfgYiLYYeN9m0scWLcvRAPZqfnC8c8RMe-qUGhmteiNkpx8anPFlDWXYx";
-
 
     /*
     let headers = new Headers({'Content-Type': "application/x-www-form-urlencoded"});
@@ -32,26 +33,28 @@ export class BobaService {
     }
     );
     */
+
+    let headers = new Headers();
+    headers.append('Authorization', "Bearer " + this.accessToken);
+    this.requestOptions = new RequestOptions({headers: headers});
+
+    let date = new Date();
+    this.dayOfWeek = date.getDay();
   }
 
+  // Returns current search locations
   getLocations() {
-    console.log("service");
-    console.log(this.locations);
     return this.locations;
   }
 
   // Use Yelp API to locate nearby locations
   findLocations(yelpParams: any) {
-    let headers = new Headers();
-    headers.append('Authorization', "Bearer " + this.accessToken);
-    let options = new RequestOptions({headers: headers});
-
     // Generate get request URL
     let getRequestUrl = "https://api.yelp.com/v3/businesses/search?";
     let term = "term=" + yelpParams.term;
     let latitude = "latitude=" + yelpParams.latitude;
     let longitude = "longitude=" + yelpParams.longitude;
-    let radius = "radius=" + yelpParams.radius; // Meters
+    let radius = "radius=" + yelpParams.radius; // In meters
     let limit = "limit=" + yelpParams.limit;
     let openNowString = "open_now=" + yelpParams.openNow;
     let sortBy = "sort_by=" + yelpParams.sortBy;
@@ -64,26 +67,38 @@ export class BobaService {
       + openNowString + "&"
       + sortBy;
 
-    let observableGetRequest = this.http.get(getRequestUrl, options).map(res => res.json());
+    let observableGetRequest = this.http.get(getRequestUrl, this.requestOptions).map(res => res.json());
 
+    // Store results when response from get request received
     observableGetRequest.subscribe(
       data => {
-        console.log("Found locations in service");
-
         this.locations = data.businesses;
+        // Get hours for each location (not provided from search API)
+        for (let location of this.locations) {
+          this.getHours(location);
+        }
       }
     );
 
     return observableGetRequest;
   }
 
-  getTestResults() {
-    this.http.get('./testResults.json').map(res => res.json())
-      .subscribe(
+  // Separate get request to received specific hours for a given business location
+  getHours(location: any) {
+    let observableGetRequest = this.http.get("https://api.yelp.com/v3/businesses/" + location.id, this.requestOptions).map(res => res.json());
+
+    observableGetRequest.subscribe(
         data => {
-          this.locations = data.businesses;
+          // Add open and close times as date object to location
+          location.hours = data.hours[0].open;
+          let startTime = location.hours[this.dayOfWeek].start;
+          let endTime = location.hours[this.dayOfWeek].end;
+          location.openTime = new Date(0, 0, 0, Math.floor(startTime / 100), startTime % 100);
+          location.closeTime = new Date(0, 0, 0, Math.floor(endTime / 100), endTime % 100);
         }
       );
+
+    return observableGetRequest;
   }
 
 }
