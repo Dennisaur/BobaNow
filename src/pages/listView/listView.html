@@ -18,17 +18,19 @@
         </span>
       </div>
       <div>
+        <img [src]="bobaLocation.ratingImage" class="ratingImage"/>
+        {{bobaLocation.review_count}} reviews
+      </div>
+      <div>
         Hours: {{bobaLocation.openTime | date: 'shortTime'}} - {{bobaLocation.closeTime | date: 'shortTime'}}
       </div>
     </ion-col>
 
     <ion-col col-auto text-right>
-      <div>
-        <img [src]="getRatingImage(bobaLocation.rating)" class="ratingImage"/>
-      </div>
-      <div>
-        {{bobaLocation.review_count}} reviews
-      </div>
+      <button ion-button outline (click)="launch(bobaLocation.launchMapsUrl)" class='directionsButton'>
+        <img src='img/DirectionsIconBlue.png' class='directionsIcon' />
+        Go
+      </button>
     </ion-col>
   </ion-row>
 </ion-content>

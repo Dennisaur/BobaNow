@@ -56,7 +56,7 @@ export class BobaService {
     let longitude = "longitude=" + yelpParams.longitude;
     let radius = "radius=" + yelpParams.radius; // In meters
     let limit = "limit=" + yelpParams.limit;
-    let openNowString = "open_now=" + yelpParams.openNow;
+    let openNow = "open_now=" + yelpParams.openNow;
     let sortBy = "sort_by=" + yelpParams.sortBy;
 
     getRequestUrl = getRequestUrl + term + "&"
@@ -64,7 +64,7 @@ export class BobaService {
       + longitude + "&"
       + radius + "&"
       + limit + "&"
-      + openNowString + "&"
+      + openNow + "&"
       + sortBy;
 
     let observableGetRequest = this.http.get(getRequestUrl, this.requestOptions).map(res => res.json());
@@ -73,9 +73,9 @@ export class BobaService {
     observableGetRequest.subscribe(
       data => {
         this.locations = data.businesses;
-        // Get hours for each location (not provided from search API)
         for (let location of this.locations) {
-          this.getHours(location);
+          // Get hours for each location (not provided from search API)
+          this.getMoreInfo(location);
         }
       }
     );
@@ -84,8 +84,12 @@ export class BobaService {
   }
 
   // Separate get request to received specific hours for a given business location
-  getHours(location: any) {
+  getMoreInfo(location: any) {
     let observableGetRequest = this.http.get("https://api.yelp.com/v3/businesses/" + location.id, this.requestOptions).map(res => res.json());
+
+    // Add some new properties to locations for easier access
+    location.ratingImage = this.getRatingImage(location.rating);
+    location.launchMapsUrl = this.getLaunchMapsUrl(location);
 
     observableGetRequest.subscribe(
         data => {
@@ -101,4 +105,17 @@ export class BobaService {
     return observableGetRequest;
   }
 
+  // Returns ratings image URL
+  getRatingImage(rating) {
+    let ratingString = rating;
+    if (rating % 1 != 0) {
+      ratingString = Math.floor(rating) + "_half";
+    }
+    return "img/yelp_stars/android/drawable-mdpi/small/stars_small_" + ratingString + ".png";
+  }
+
+  // Returns link to nativate to location from current position
+  getLaunchMapsUrl(location) {
+    return "https://www.google.com/maps/dir/?api=1&destination=" + location.coordinates.latitude + "," + location.coordinates.longitude;
+  }
 }

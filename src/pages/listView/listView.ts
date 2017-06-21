@@ -4,8 +4,11 @@ import { Http, Headers, RequestOptions } from '@angular/http';
 import { Geolocation } from '@ionic-native/geolocation';
 import { Observable } from 'rxjs/RX';
 import 'rxjs/add/operator/map';
+//import { InAppBrowser } from '@ionic-native/in-app-browser';
 
 import { BobaService } from '../../services/boba.service';
+
+declare var cordova;
 
 @Component({
   selector: 'page-listView',
@@ -46,5 +49,15 @@ export class ListViewPage {
       ratingString = Math.floor(rating) + "_half";
     }
     return "img/yelp_stars/android/drawable-mdpi/small/stars_small_" + ratingString + ".png";
+  }
+
+  // Function to use InAppBrowser to navigate to given URL
+  launch(url) {
+    this.platform.ready()
+    .then(
+      () => {
+        let browser = cordova.InAppBrowser.open(url, "_system", "location=yes");
+      }
+    );
   }
 }
