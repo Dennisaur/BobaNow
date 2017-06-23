@@ -1,0 +1,864 @@
+{
+    "businesses": [
+        {
+            "id": "happy-lemon-cupertino",
+            "name": "Happy Lemon",
+            "image_url": "https://s3-media3.fl.yelpcdn.com/bphoto/SBAOFdR-3APrLx6oUre03w/o.jpg",
+            "is_closed": false,
+            "url": "https://www.yelp.com/biz/happy-lemon-cupertino?adjust_creative=OXIJVK12GNTdHlmKJR7xbg&utm_campaign=yelp_api_v3&utm_medium=api_v3_business_search&utm_source=OXIJVK12GNTdHlmKJR7xbg",
+            "review_count": 502,
+            "categories": [
+                {
+                    "alias": "bubbletea",
+                    "title": "Bubble Tea"
+                },
+                {
+                    "alias": "juicebars",
+                    "title": "Juice Bars & Smoothies"
+                }
+            ],
+            "rating": 4.5,
+            "coordinates": {
+                "latitude": 37.3222614684234,
+                "longitude": -122.031248153432
+            },
+            "transactions": [],
+            "price": "$",
+            "location": {
+                "address1": "20488 Stevens Creek Blvd",
+                "address2": "Ste 2040",
+                "address3": "",
+                "city": "Cupertino",
+                "zip_code": "95014",
+                "country": "US",
+                "state": "CA",
+                "display_address": [
+                    "20488 Stevens Creek Blvd",
+                    "Ste 2040",
+                    "Cupertino, CA 95014"
+                ]
+            },
+            "phone": "+14082160232",
+            "display_phone": "(408) 216-0232",
+            "distance": 826.6082010119999
+        },
+        {
+            "id": "monster-boba-cupertino-3",
+            "name": "Monster Boba",
+            "image_url": "https://s3-media1.fl.yelpcdn.com/bphoto/i9iF2GhZ34y-CUIfUh_tLQ/o.jpg",
+            "is_closed": false,
+            "url": "https://www.yelp.com/biz/monster-boba-cupertino-3?adjust_creative=OXIJVK12GNTdHlmKJR7xbg&utm_campaign=yelp_api_v3&utm_medium=api_v3_business_search&utm_source=OXIJVK12GNTdHlmKJR7xbg",
+            "review_count": 303,
+            "categories": [
+                {
+                    "alias": "desserts",
+                    "title": "Desserts"
+                },
+                {
+                    "alias": "bubbletea",
+                    "title": "Bubble Tea"
+                },
+                {
+                    "alias": "coffee",
+                    "title": "Coffee & Tea"
+                }
+            ],
+            "rating": 3.5,
+            "coordinates": {
+                "latitude": 37.3112882127292,
+                "longitude": -122.023623995483
+            },
+            "transactions": [],
+            "price": "$",
+            "location": {
+                "address1": "10787 S Blaney Ave",
+                "address2": "",
+                "address3": null,
+                "city": "Cupertino",
+                "zip_code": "95014",
+                "country": "US",
+                "state": "CA",
+                "display_address": [
+                    "10787 S Blaney Ave",
+                    "Cupertino, CA 95014"
+                ]
+            },
+            "phone": "+16693427112",
+            "display_phone": "(669) 342-7112",
+            "distance": 1923.975947908
+        },
+        {
+            "id": "tea-era-cupertino",
+            "name": "Tea Era",
+            "image_url": "https://s3-media4.fl.yelpcdn.com/bphoto/vc8nrgBN7lQgvoiEvIM6QQ/o.jpg",
+            "is_closed": false,
+            "url": "https://www.yelp.com/biz/tea-era-cupertino?adjust_creative=OXIJVK12GNTdHlmKJR7xbg&utm_campaign=yelp_api_v3&utm_medium=api_v3_business_search&utm_source=OXIJVK12GNTdHlmKJR7xbg",
+            "review_count": 449,
+            "categories": [
+                {
+                    "alias": "coffee",
+                    "title": "Coffee & Tea"
+                },
+                {
+                    "alias": "bubbletea",
+                    "title": "Bubble Tea"
+                },
+                {
+                    "alias": "taiwanese",
+                    "title": "Taiwanese"
+                }
+            ],
+            "rating": 4,
+            "coordinates": {
+                "latitude": 37.3371504153713,
+                "longitude": -122.04035249287
+            },
+            "transactions": [],
+            "price": "$",
+            "location": {
+                "address1": "20916 Homestead Rd",
+                "address2": "Ste F",
+                "address3": "",
+                "city": "Cupertino",
+                "zip_code": "95014",
+                "country": "US",
+                "state": "CA",
+                "display_address": [
+                    "20916 Homestead Rd",
+                    "Ste F",
+                    "Cupertino, CA 95014"
+                ]
+            },
+            "phone": "+14089969898",
+            "display_phone": "(408) 996-9898",
+            "distance": 1672.6593213659999
+        },
+        {
+            "id": "gong-cha-sunnyvale",
+            "name": "Gong Cha",
+            "image_url": "https://s3-media3.fl.yelpcdn.com/bphoto/X9Y_tITVobhFzpD_CgOHBg/o.jpg",
+            "is_closed": false,
+            "url": "https://www.yelp.com/biz/gong-cha-sunnyvale?adjust_creative=OXIJVK12GNTdHlmKJR7xbg&utm_campaign=yelp_api_v3&utm_medium=api_v3_business_search&utm_source=OXIJVK12GNTdHlmKJR7xbg",
+            "review_count": 21,
+            "categories": [
+                {
+                    "alias": "bubbletea",
+                    "title": "Bubble Tea"
+                }
+            ],
+            "rating": 4.5,
+            "coordinates": {
+                "latitude": 37.3391409520362,
+                "longitude": -122.041579202171
+            },
+            "transactions": [],
+            "price": "$",
+            "location": {
+                "address1": "1641 Hollenbeck Ave",
+                "address2": "",
+                "address3": "",
+                "city": "Sunnyvale",
+                "zip_code": "94087",
+                "country": "US",
+                "state": "CA",
+                "display_address": [
+                    "1641 Hollenbeck Ave",
+                    "Sunnyvale, CA 94087"
+                ]
+            },
+            "phone": "+14086852991",
+            "display_phone": "(408) 685-2991",
+            "distance": 1895.9372217579999
+        },
+        {
+            "id": "hechaa-cupertino-4",
+            "name": "Hechaa",
+            "image_url": "https://s3-media2.fl.yelpcdn.com/bphoto/3FxSXjYlJ15Vj2p03U6dHw/o.jpg",
+            "is_closed": false,
+            "url": "https://www.yelp.com/biz/hechaa-cupertino-4?adjust_creative=OXIJVK12GNTdHlmKJR7xbg&utm_campaign=yelp_api_v3&utm_medium=api_v3_business_search&utm_source=OXIJVK12GNTdHlmKJR7xbg",
+            "review_count": 88,
+            "categories": [
+                {
+                    "alias": "desserts",
+                    "title": "Desserts"
+                },
+                {
+                    "alias": "cafes",
+                    "title": "Cafes"
+                },
+                {
+                    "alias": "tea",
+                    "title": "Tea Rooms"
+                }
+            ],
+            "rating": 3.5,
+            "coordinates": {
+                "latitude": 37.31361,
+                "longitude": -122.03263
+            },
+            "transactions": [],
+            "price": "$",
+            "location": {
+                "address1": "10619 S De Anza Blvd",
+                "address2": "",
+                "address3": null,
+                "city": "Cupertino",
+                "zip_code": "95014",
+                "country": "US",
+                "state": "CA",
+                "display_address": [
+                    "10619 S De Anza Blvd",
+                    "Cupertino, CA 95014"
+                ]
+            },
+            "phone": "+14083201481",
+            "display_phone": "(408) 320-1481",
+            "distance": 1176.0405902904
+        },
+        {
+            "id": "teatop-san-jose-2",
+            "name": "TeaTop",
+            "image_url": "https://s3-media3.fl.yelpcdn.com/bphoto/9ujvK-H9OP_sQjOp1v1TBA/o.jpg",
+            "is_closed": false,
+            "url": "https://www.yelp.com/biz/teatop-san-jose-2?adjust_creative=OXIJVK12GNTdHlmKJR7xbg&utm_campaign=yelp_api_v3&utm_medium=api_v3_business_search&utm_source=OXIJVK12GNTdHlmKJR7xbg",
+            "review_count": 323,
+            "categories": [
+                {
+                    "alias": "coffee",
+                    "title": "Coffee & Tea"
+                }
+            ],
+            "rating": 4,
+            "coordinates": {
+                "latitude": 37.3104172199965,
+                "longitude": -122.012169286609
+            },
+            "transactions": [],
+            "price": "$",
+            "location": {
+                "address1": "6158 Bollinger Rd",
+                "address2": null,
+                "address3": "",
+                "city": "San Jose",
+                "zip_code": "95129",
+                "country": "US",
+                "state": "CA",
+                "display_address": [
+                    "6158 Bollinger Rd",
+                    "San Jose, CA 95129"
+                ]
+            },
+            "phone": "+14089967899",
+            "display_phone": "(408) 996-7899",
+            "distance": 2847.1410083719998
+        },
+        {
+            "id": "bubble-tea-time-saratoga",
+            "name": "Bubble Tea Time",
+            "image_url": "https://s3-media1.fl.yelpcdn.com/bphoto/06GzkvwEVqeOuxhVhJvCJQ/o.jpg",
+            "is_closed": false,
+            "url": "https://www.yelp.com/biz/bubble-tea-time-saratoga?adjust_creative=OXIJVK12GNTdHlmKJR7xbg&utm_campaign=yelp_api_v3&utm_medium=api_v3_business_search&utm_source=OXIJVK12GNTdHlmKJR7xbg",
+            "review_count": 31,
+            "categories": [
+                {
+                    "alias": "bubbletea",
+                    "title": "Bubble Tea"
+                },
+                {
+                    "alias": "shavedice",
+                    "title": "Shaved Ice"
+                }
+            ],
+            "rating": 4.5,
+            "coordinates": {
+                "latitude": 37.29165,
+                "longitude": -121.99636
+            },
+            "transactions": [],
+            "price": "$",
+            "location": {
+                "address1": "18564 Prospect Rd",
+                "address2": null,
+                "address3": "",
+                "city": "Saratoga",
+                "zip_code": "95070",
+                "country": "US",
+                "state": "CA",
+                "display_address": [
+                    "18564 Prospect Rd",
+                    "Saratoga, CA 95070"
+                ]
+            },
+            "phone": "+14087778601",
+            "display_phone": "(408) 777-8601",
+            "distance": 5184.67227476
+        },
+        {
+            "id": "happy-lemon-sunnyvale-2",
+            "name": "Happy Lemon",
+            "image_url": "https://s3-media4.fl.yelpcdn.com/bphoto/-S1aww7Fl8z4aRG7ffAZbg/o.jpg",
+            "is_closed": false,
+            "url": "https://www.yelp.com/biz/happy-lemon-sunnyvale-2?adjust_creative=OXIJVK12GNTdHlmKJR7xbg&utm_campaign=yelp_api_v3&utm_medium=api_v3_business_search&utm_source=OXIJVK12GNTdHlmKJR7xbg",
+            "review_count": 54,
+            "categories": [
+                {
+                    "alias": "bubbletea",
+                    "title": "Bubble Tea"
+                }
+            ],
+            "rating": 4.5,
+            "coordinates": {
+                "latitude": 37.36189,
+                "longitude": -122.02454
+            },
+            "transactions": [],
+            "price": "$",
+            "location": {
+                "address1": "605 E El Camino Real",
+                "address2": "",
+                "address3": null,
+                "city": "Sunnyvale",
+                "zip_code": "94087",
+                "country": "US",
+                "state": "CA",
+                "display_address": [
+                    "605 E El Camino Real",
+                    "Sunnyvale, CA 94087"
+                ]
+            },
+            "phone": "+16696003168",
+            "display_phone": "(669) 600-3168",
+            "distance": 4653.0966511159995
+        },
+        {
+            "id": "sharetea-sunnyvale-3",
+            "name": "Sharetea",
+            "image_url": "https://s3-media2.fl.yelpcdn.com/bphoto/JdMu1aggG50AcKika1z_Uw/o.jpg",
+            "is_closed": false,
+            "url": "https://www.yelp.com/biz/sharetea-sunnyvale-3?adjust_creative=OXIJVK12GNTdHlmKJR7xbg&utm_campaign=yelp_api_v3&utm_medium=api_v3_business_search&utm_source=OXIJVK12GNTdHlmKJR7xbg",
+            "review_count": 84,
+            "categories": [
+                {
+                    "alias": "bubbletea",
+                    "title": "Bubble Tea"
+                },
+                {
+                    "alias": "coffee",
+                    "title": "Coffee & Tea"
+                },
+                {
+                    "alias": "juicebars",
+                    "title": "Juice Bars & Smoothies"
+                }
+            ],
+            "rating": 4,
+            "coordinates": {
+                "latitude": 37.3623572836214,
+                "longitude": -122.027256087023
+            },
+            "transactions": [
+                "pickup"
+            ],
+            "price": "$",
+            "location": {
+                "address1": "568 El Camino Real",
+                "address2": "Ste A",
+                "address3": null,
+                "city": "Sunnyvale",
+                "zip_code": "94087",
+                "country": "US",
+                "state": "CA",
+                "display_address": [
+                    "568 El Camino Real",
+                    "Ste A",
+                    "Sunnyvale, CA 94087"
+                ]
+            },
+            "phone": "+16692465050",
+            "display_phone": "(669) 246-5050",
+            "distance": 4628.145121888
+        },
+        {
+            "id": "fantasia-coffee-and-tea-cupertino",
+            "name": "Fantasia Coffee & Tea",
+            "image_url": "https://s3-media2.fl.yelpcdn.com/bphoto/gqpmetRrh-BGG4uMLBFHNw/o.jpg",
+            "is_closed": false,
+            "url": "https://www.yelp.com/biz/fantasia-coffee-and-tea-cupertino?adjust_creative=OXIJVK12GNTdHlmKJR7xbg&utm_campaign=yelp_api_v3&utm_medium=api_v3_business_search&utm_source=OXIJVK12GNTdHlmKJR7xbg",
+            "review_count": 986,
+            "categories": [
+                {
+                    "alias": "coffee",
+                    "title": "Coffee & Tea"
+                },
+                {
+                    "alias": "desserts",
+                    "title": "Desserts"
+                },
+                {
+                    "alias": "bubbletea",
+                    "title": "Bubble Tea"
+                }
+            ],
+            "rating": 4,
+            "coordinates": {
+                "latitude": 37.3361159244324,
+                "longitude": -122.015890307529
+            },
+            "transactions": [],
+            "price": "$",
+            "location": {
+                "address1": "10933 N Wolfe Rd",
+                "address2": "",
+                "address3": "",
+                "city": "Cupertino",
+                "zip_code": "95014",
+                "country": "US",
+                "state": "CA",
+                "display_address": [
+                    "10933 N Wolfe Rd",
+                    "Cupertino, CA 95014"
+                ]
+            },
+            "phone": "+14088651689",
+            "display_phone": "(408) 865-1689",
+            "distance": 2682.7435477579997
+        },
+        {
+            "id": "super-cue-cafe-cupertino",
+            "name": "Super Cue Cafe",
+            "image_url": "https://s3-media4.fl.yelpcdn.com/bphoto/_8_0ULTIxHTKvAXIklsY0A/o.jpg",
+            "is_closed": false,
+            "url": "https://www.yelp.com/biz/super-cue-cafe-cupertino?adjust_creative=OXIJVK12GNTdHlmKJR7xbg&utm_campaign=yelp_api_v3&utm_medium=api_v3_business_search&utm_source=OXIJVK12GNTdHlmKJR7xbg",
+            "review_count": 253,
+            "categories": [
+                {
+                    "alias": "juicebars",
+                    "title": "Juice Bars & Smoothies"
+                },
+                {
+                    "alias": "bubbletea",
+                    "title": "Bubble Tea"
+                },
+                {
+                    "alias": "coffee",
+                    "title": "Coffee & Tea"
+                }
+            ],
+            "rating": 3.5,
+            "coordinates": {
+                "latitude": 37.3223942970538,
+                "longitude": -122.016749576721
+            },
+            "transactions": [],
+            "price": "$",
+            "location": {
+                "address1": "19620 Stevens Creek Blvd",
+                "address2": "Ste 180",
+                "address3": "",
+                "city": "Cupertino",
+                "zip_code": "95014",
+                "country": "US",
+                "state": "CA",
+                "display_address": [
+                    "19620 Stevens Creek Blvd",
+                    "Ste 180",
+                    "Cupertino, CA 95014"
+                ]
+            },
+            "phone": "+14088168938",
+            "display_phone": "(408) 816-8938",
+            "distance": 2109.1628626419997
+        },
+        {
+            "id": "verde-tea-house-cupertino-2",
+            "name": "Verde Tea House",
+            "image_url": "https://s3-media3.fl.yelpcdn.com/bphoto/rTYBK2-orlU2kL1r5aaiog/o.jpg",
+            "is_closed": false,
+            "url": "https://www.yelp.com/biz/verde-tea-house-cupertino-2?adjust_creative=OXIJVK12GNTdHlmKJR7xbg&utm_campaign=yelp_api_v3&utm_medium=api_v3_business_search&utm_source=OXIJVK12GNTdHlmKJR7xbg",
+            "review_count": 24,
+            "categories": [
+                {
+                    "alias": "bubbletea",
+                    "title": "Bubble Tea"
+                },
+                {
+                    "alias": "coffee",
+                    "title": "Coffee & Tea"
+                }
+            ],
+            "rating": 3,
+            "coordinates": {
+                "latitude": 37.3162384033203,
+                "longitude": -122.032508850098
+            },
+            "transactions": [],
+            "price": "$",
+            "location": {
+                "address1": "10477 S De Anza Blvd",
+                "address2": "",
+                "address3": null,
+                "city": "Cupertino",
+                "zip_code": "95014",
+                "country": "US",
+                "state": "CA",
+                "display_address": [
+                    "10477 S De Anza Blvd",
+                    "Cupertino, CA 95014"
+                ]
+            },
+            "phone": "",
+            "display_phone": "",
+            "distance": 968.291919668
+        },
+        {
+            "id": "what8ver-express-cupertino-2",
+            "name": "What8ver Express",
+            "image_url": "https://s3-media1.fl.yelpcdn.com/bphoto/gY2H3MbgyKAM9F3dWuT2Xg/o.jpg",
+            "is_closed": false,
+            "url": "https://www.yelp.com/biz/what8ver-express-cupertino-2?adjust_creative=OXIJVK12GNTdHlmKJR7xbg&utm_campaign=yelp_api_v3&utm_medium=api_v3_business_search&utm_source=OXIJVK12GNTdHlmKJR7xbg",
+            "review_count": 281,
+            "categories": [
+                {
+                    "alias": "coffee",
+                    "title": "Coffee & Tea"
+                },
+                {
+                    "alias": "shavedice",
+                    "title": "Shaved Ice"
+                },
+                {
+                    "alias": "taiwanese",
+                    "title": "Taiwanese"
+                }
+            ],
+            "rating": 3.5,
+            "coordinates": {
+                "latitude": 37.324498742943,
+                "longitude": -122.03407823789
+            },
+            "transactions": [],
+            "price": "$",
+            "location": {
+                "address1": "10118 Bandley Dr",
+                "address2": "Ste G",
+                "address3": "",
+                "city": "Cupertino",
+                "zip_code": "95014",
+                "country": "US",
+                "state": "CA",
+                "display_address": [
+                    "10118 Bandley Dr",
+                    "Ste G",
+                    "Cupertino, CA 95014"
+                ]
+            },
+            "phone": "+14088730918",
+            "display_phone": "(408) 873-0918",
+            "distance": 634.380262844
+        },
+        {
+            "id": "teaspoon-san-jose-2",
+            "name": "Teaspoon",
+            "image_url": "https://s3-media3.fl.yelpcdn.com/bphoto/_T9LjMr_eksKApNvM8ybMw/o.jpg",
+            "is_closed": false,
+            "url": "https://www.yelp.com/biz/teaspoon-san-jose-2?adjust_creative=OXIJVK12GNTdHlmKJR7xbg&utm_campaign=yelp_api_v3&utm_medium=api_v3_business_search&utm_source=OXIJVK12GNTdHlmKJR7xbg",
+            "review_count": 437,
+            "categories": [
+                {
+                    "alias": "bubbletea",
+                    "title": "Bubble Tea"
+                },
+                {
+                    "alias": "desserts",
+                    "title": "Desserts"
+                },
+                {
+                    "alias": "coffee",
+                    "title": "Coffee & Tea"
+                }
+            ],
+            "rating": 4,
+            "coordinates": {
+                "latitude": 37.3157651,
+                "longitude": -121.9782757
+            },
+            "transactions": [
+                "pickup"
+            ],
+            "price": "$",
+            "location": {
+                "address1": "4328 Moorpark Ave",
+                "address2": "",
+                "address3": "",
+                "city": "San Jose",
+                "zip_code": "95129",
+                "country": "US",
+                "state": "CA",
+                "display_address": [
+                    "4328 Moorpark Ave",
+                    "San Jose, CA 95129"
+                ]
+            },
+            "phone": "+14082169794",
+            "display_phone": "(408) 216-9794",
+            "distance": 5574.436398151999
+        },
+        {
+            "id": "meet-fresh-cupertino",
+            "name": "Meet Fresh",
+            "image_url": "https://s3-media3.fl.yelpcdn.com/bphoto/bh5rnGqb47zhfefQ-LTwnA/o.jpg",
+            "is_closed": false,
+            "url": "https://www.yelp.com/biz/meet-fresh-cupertino?adjust_creative=OXIJVK12GNTdHlmKJR7xbg&utm_campaign=yelp_api_v3&utm_medium=api_v3_business_search&utm_source=OXIJVK12GNTdHlmKJR7xbg",
+            "review_count": 444,
+            "categories": [
+                {
+                    "alias": "desserts",
+                    "title": "Desserts"
+                },
+                {
+                    "alias": "shavedice",
+                    "title": "Shaved Ice"
+                },
+                {
+                    "alias": "bubbletea",
+                    "title": "Bubble Tea"
+                }
+            ],
+            "rating": 3,
+            "coordinates": {
+                "latitude": 37.3243651,
+                "longitude": -122.0105533
+            },
+            "transactions": [],
+            "price": "$",
+            "location": {
+                "address1": "19449 Stevens Creek Blvd",
+                "address2": "Ste 120",
+                "address3": null,
+                "city": "Cupertino",
+                "zip_code": "95014",
+                "country": "US",
+                "state": "CA",
+                "display_address": [
+                    "19449 Stevens Creek Blvd",
+                    "Ste 120",
+                    "Cupertino, CA 95014"
+                ]
+            },
+            "phone": "+14088630277",
+            "display_phone": "(408) 863-0277",
+            "distance": 2610.495286204
+        },
+        {
+            "id": "tpumps-cupertino",
+            "name": "Tpumps",
+            "image_url": "https://s3-media4.fl.yelpcdn.com/bphoto/CkmIog094IaBxztthLQdyQ/o.jpg",
+            "is_closed": false,
+            "url": "https://www.yelp.com/biz/tpumps-cupertino?adjust_creative=OXIJVK12GNTdHlmKJR7xbg&utm_campaign=yelp_api_v3&utm_medium=api_v3_business_search&utm_source=OXIJVK12GNTdHlmKJR7xbg",
+            "review_count": 757,
+            "categories": [
+                {
+                    "alias": "tea",
+                    "title": "Tea Rooms"
+                },
+                {
+                    "alias": "asianfusion",
+                    "title": "Asian Fusion"
+                }
+            ],
+            "rating": 3.5,
+            "coordinates": {
+                "latitude": 37.3232384288673,
+                "longitude": -122.022949657147
+            },
+            "transactions": [],
+            "price": "$",
+            "location": {
+                "address1": "19959 Stevens Creek Blvd",
+                "address2": "",
+                "address3": "",
+                "city": "Cupertino",
+                "zip_code": "95014",
+                "country": "US",
+                "state": "CA",
+                "display_address": [
+                    "19959 Stevens Creek Blvd",
+                    "Cupertino, CA 95014"
+                ]
+            },
+            "phone": "+15103988499",
+            "display_phone": "(510) 398-8499",
+            "distance": 1565.4753461579999
+        },
+        {
+            "id": "icicles-cupertino",
+            "name": "Icicles",
+            "image_url": "https://s3-media2.fl.yelpcdn.com/bphoto/2ETE3I1JxzJIwugsW3p-SQ/o.jpg",
+            "is_closed": false,
+            "url": "https://www.yelp.com/biz/icicles-cupertino?adjust_creative=OXIJVK12GNTdHlmKJR7xbg&utm_campaign=yelp_api_v3&utm_medium=api_v3_business_search&utm_source=OXIJVK12GNTdHlmKJR7xbg",
+            "review_count": 117,
+            "categories": [
+                {
+                    "alias": "icecream",
+                    "title": "Ice Cream & Frozen Yogurt"
+                },
+                {
+                    "alias": "desserts",
+                    "title": "Desserts"
+                }
+            ],
+            "rating": 4.5,
+            "coordinates": {
+                "latitude": 37.3225177360044,
+                "longitude": -122.017925500033
+            },
+            "transactions": [],
+            "price": "$",
+            "location": {
+                "address1": "19622 Stevens Creek Blvd",
+                "address2": "",
+                "address3": null,
+                "city": "Cupertino",
+                "zip_code": "95014",
+                "country": "US",
+                "state": "CA",
+                "display_address": [
+                    "19622 Stevens Creek Blvd",
+                    "Cupertino, CA 95014"
+                ]
+            },
+            "phone": "+16692925125",
+            "display_phone": "(669) 292-5125",
+            "distance": 2004.8658824599997
+        },
+        {
+            "id": "the-moo-bar-santa-clara",
+            "name": "The Moo Bar",
+            "image_url": "https://s3-media2.fl.yelpcdn.com/bphoto/UhXo5GSbHHrCqk7zQywRIg/o.jpg",
+            "is_closed": false,
+            "url": "https://www.yelp.com/biz/the-moo-bar-santa-clara?adjust_creative=OXIJVK12GNTdHlmKJR7xbg&utm_campaign=yelp_api_v3&utm_medium=api_v3_business_search&utm_source=OXIJVK12GNTdHlmKJR7xbg",
+            "review_count": 314,
+            "categories": [
+                {
+                    "alias": "icecream",
+                    "title": "Ice Cream & Frozen Yogurt"
+                },
+                {
+                    "alias": "bubbletea",
+                    "title": "Bubble Tea"
+                }
+            ],
+            "rating": 3.5,
+            "coordinates": {
+                "latitude": 37.3459400429099,
+                "longitude": -121.979151964188
+            },
+            "transactions": [],
+            "price": "$",
+            "location": {
+                "address1": "1080 Kiely Blvd",
+                "address2": "",
+                "address3": "",
+                "city": "Santa Clara",
+                "zip_code": "95051",
+                "country": "US",
+                "state": "CA",
+                "display_address": [
+                    "1080 Kiely Blvd",
+                    "Santa Clara, CA 95051"
+                ]
+            },
+            "phone": "+14085640928",
+            "display_phone": "(408) 564-0928",
+            "distance": 6044.477297556
+        },
+        {
+            "id": "inteanet-cupertino-5",
+            "name": "Inteanet",
+            "image_url": "https://s3-media2.fl.yelpcdn.com/bphoto/PeZIulAWTR7WUb8EyCdw3g/o.jpg",
+            "is_closed": false,
+            "url": "https://www.yelp.com/biz/inteanet-cupertino-5?adjust_creative=OXIJVK12GNTdHlmKJR7xbg&utm_campaign=yelp_api_v3&utm_medium=api_v3_business_search&utm_source=OXIJVK12GNTdHlmKJR7xbg",
+            "review_count": 81,
+            "categories": [
+                {
+                    "alias": "coffee",
+                    "title": "Coffee & Tea"
+                }
+            ],
+            "rating": 3,
+            "coordinates": {
+                "latitude": 37.32328,
+                "longitude": -122.01283
+            },
+            "transactions": [],
+            "price": "$",
+            "location": {
+                "address1": "19505 Stevens Creek Blvd",
+                "address2": "Ste 102",
+                "address3": null,
+                "city": "Cupertino",
+                "zip_code": "95014",
+                "country": "US",
+                "state": "CA",
+                "display_address": [
+                    "19505 Stevens Creek Blvd",
+                    "Ste 102",
+                    "Cupertino, CA 95014"
+                ]
+            },
+            "phone": "+14088992368",
+            "display_phone": "(408) 899-2368",
+            "distance": 2453.060313232
+        },
+        {
+            "id": "tea-era-mountain-view-2",
+            "name": "Tea Era",
+            "image_url": "https://s3-media4.fl.yelpcdn.com/bphoto/f8a81xA73pqdPCzQ2r1xkg/o.jpg",
+            "is_closed": false,
+            "url": "https://www.yelp.com/biz/tea-era-mountain-view-2?adjust_creative=OXIJVK12GNTdHlmKJR7xbg&utm_campaign=yelp_api_v3&utm_medium=api_v3_business_search&utm_source=OXIJVK12GNTdHlmKJR7xbg",
+            "review_count": 1374,
+            "categories": [
+                {
+                    "alias": "coffee",
+                    "title": "Coffee & Tea"
+                },
+                {
+                    "alias": "bubbletea",
+                    "title": "Bubble Tea"
+                }
+            ],
+            "rating": 4,
+            "coordinates": {
+                "latitude": 37.3929561,
+                "longitude": -122.0792811
+            },
+            "transactions": [
+                "pickup"
+            ],
+            "price": "$",
+            "location": {
+                "address1": "271 Castro St",
+                "address2": "",
+                "address3": "",
+                "city": "Mountain View",
+                "zip_code": "94041",
+                "country": "US",
+                "state": "CA",
+                "display_address": [
+                    "271 Castro St",
+                    "Mountain View, CA 94041"
+                ]
+            },
+            "phone": "+16509692899",
+            "display_phone": "(650) 969-2899",
+            "distance": 8587.907040742
+        }
+    ],
+    "total": 186,
+    "region": {
+        "center": {
+            "latitude": 37.33705586580457,
+            "longitude": -122.0349579993164
+        }
+    }
+}

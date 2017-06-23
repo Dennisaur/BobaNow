@@ -1,0 +1,11 @@
+{
+  "name": "BobaNow!",
+  "app_id": "AIzaSyArdyECCHkDoR-Ozr48gjwdewXzkKPd8YY",
+  "type": "ionic-angular",
+  "proxies": [
+    {
+      "path": "/api",
+      "proxyUrl": "https://api.yelp.com/v3/businesses"
+    }
+  ]
+}
