@@ -139,6 +139,7 @@ export class MapViewPage {
   // Add marker for current location
   addCurrentLocationMarker() {
     let position = new google.maps.LatLng(this.yelpService.getLat(), this.yelpService.getLng());
+
     let marker = new google.maps.Marker({
       'position': position,
       'map': this.map,
@@ -230,5 +231,5 @@ export class MapViewPage {
 
     return "<div class='infoWindowContent' onclick=\"location.href='" + location.url + "'\">" + htmlContent + launchMaps + "</div>";
   }
-
+  
 }

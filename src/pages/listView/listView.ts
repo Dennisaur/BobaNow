@@ -84,6 +84,7 @@ export class ListViewPage {
     if (evt) {
       evt.stopPropagation();
     }
+
     this.platform.ready()
     .then(
       () => {
