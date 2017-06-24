@@ -154,10 +154,17 @@ export class YelpService {
         data => {
           // Add open and close times as date object to location
           location.hours = data.hours[0].open;
-          let startTime = location.hours[this.dayOfWeek].start;
-          let endTime = location.hours[this.dayOfWeek].end;
-          location.openTime = new Date(0, 0, 0, Math.floor(startTime / 100), startTime % 100);
-          location.closeTime = new Date(0, 0, 0, Math.floor(endTime / 100), endTime % 100);
+          let todayHours = location.hours[this.dayOfWeek];
+          if (typeof todayHours != 'undefined') {
+            let startTime = todayHours.start;
+            let endTime = todayHours.end;
+            location.openTime = new Date(0, 0, 0, Math.floor(startTime / 100), startTime % 100);
+            location.closeTime = new Date(0, 0, 0, Math.floor(endTime / 100), endTime % 100);
+            location.hasHours = true;
+          }
+          else {
+            location.hasHours = false;
+          }
         }
       );
 

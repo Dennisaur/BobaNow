@@ -7,7 +7,7 @@ import 'rxjs/add/operator/map';
 import { YelpService } from '../../services/yelp.service';
 
 declare var cordova;
-var testingInBrowser = false;
+var testingInBrowser = true;
 
 @Component({
   selector: 'page-listView',

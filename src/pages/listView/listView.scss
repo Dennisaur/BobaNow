@@ -36,11 +36,20 @@ page-listView {
     width: 30px;
     height: 30px;
   }
-  
+  .distance {
+    margin-bottom: 2px;
+  }
+  .directionsButton {
+    width: 35px;
+    height: 35px;
+    background-color: black;
+    padding: 4px !important;
+    box-shadow: 0 0 5px black,
+                0 0 10px black;
+  }
   .directionsIcon {
-    width: 36px;
-    height: 36px;
-    margin-left: 4px;
+    width: 100%;
+    height: 100%;
   }
 
   .scroll-content ion-col:last-child{

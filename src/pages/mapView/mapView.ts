@@ -45,6 +45,8 @@ export class MapViewPage {
               private yelpService: YelpService) {
 
     this.bobaLocations = yelpService.getLocations();
+    console.log("constructor");
+    console.log(this.bobaLocations);
   }
 
   // Load map only after view is initialized
@@ -74,6 +76,8 @@ export class MapViewPage {
       .subscribe(
         data => {
           this.bobaLocations = this.yelpService.getLocations();
+          console.log("getLocations");
+          console.log(this.bobaLocations);
           this.addMarkersToMap();
         }
       )
@@ -98,7 +102,7 @@ export class MapViewPage {
     });
 
     // Create info window for marker information
-    this.infoWindow = new google.maps.InfoWindow({maxWidth: 220});
+    this.infoWindow = new google.maps.InfoWindow({maxWidth: 230});
     google.maps.event.addListener(this.infoWindow, 'domready', function() {
       let element = document.getElementsByClassName('gm-style-iw')[0];
       element.parentElement.className += ' custom-iw';
@@ -163,6 +167,9 @@ export class MapViewPage {
     }
 
     this.clearMarkers();
+
+    console.log("addMarkersToMap");
+    console.log(this.bobaLocations);
 
     // Iterate through and create a marker for each location
     let count = 1;
@@ -231,5 +238,5 @@ export class MapViewPage {
 
     return "<div class='infoWindowContent' onclick=\"location.href='" + location.url + "'\">" + htmlContent + launchMaps + "</div>";
   }
-  
+
 }

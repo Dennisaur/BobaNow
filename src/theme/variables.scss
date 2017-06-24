@@ -26,7 +26,7 @@ $colors: (
   secondary:  #E3C483,
   danger:     #f53d3d,
   light:      #f4f4f4,
-  ice:        #DBEBFF,
+  ice:        #DCFAFF,
   milkTeaXLt: #F1E3CE,
   milkTeaLt:  #E5D3BA,
   milkTea:    #D8C1A2,
@@ -91,16 +91,34 @@ ion-header ion-select {
   // border-style: solid none solid solid !important;
   // border-width: 4px !important;
   // border-color: color($colors, milkTea, base) !important;
-  box-shadow: 0 0 5px color($colors, milkTeaDk, base) inset,
-              0 0 5px color($colors, milkTeaDk, base) inset,
-              0 0 15px color($colors, milkTeaDk, base) inset,
-              0 0 15px color($colors, milkTeaDk, base) inset,
-              0 0 15px color($colors, milkTeaDk, base) inset,
-              0 0 25px color($colors, milkTeaDk, base) inset;
+  // box-shadow: 0 0 5px color($colors, milkTeaDk, base) inset,
+  //             0 0 5px color($colors, milkTeaDk, base) inset,
+  //             0 0 15px color($colors, milkTeaDk, base) inset,
+  //             0 0 15px color($colors, milkTeaDk, base) inset,
+  //             0 0 15px color($colors, milkTeaDk, base) inset,
+  //             0 0 25px color($colors, milkTeaDk, base) inset;
   border-radius: 100% !important;
   background-color: black !important;
-  margin: 5px !important;
-  height: 100%;
+  margin: 18px !important;
+  height: 80%;
+}
+
+.tab-button-icon[ng-reflect-name=U], .tab-button-icon[aria-label=U] {
+  background-repeat: no-repeat;
+  background-image: url('../img/U.png');
+  background-size: contain;
+  height: 60%;
+  width: 70%;
+  margin-top: 15px !important;
+}
+.tab-button:nth-child(2) {
+   box-shadow: none;
+   background-color: transparent !important;
+//   .tab-button-text {
+//     font-size: 24px !important;
+//   }
+//   $tabs-md-tab-text-color: black !important;
+//   $tabs-md-tab-text-color-active: black !important;
 }
 
 // .tab-button[aria-selected="true"] {

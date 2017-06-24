@@ -4,4 +4,31 @@ page-about {
     height: auto;
     vertical-align: middle;
   }
+
+  ion-header {
+    height: 60px;
+    vertical-align: middle;
+    text-align: center;
+    font-size: 20px;
+    padding-top: 10px;
+  }
+
+  .scroll-content {
+    background-color: color($colors, milkTea, base);
+  }
+  .aboutText {
+    margin: 70px;
+    vertical-align: center;
+  }
+  .poweredByText {
+    display: inline-block;
+    vertical-align: middle;
+    padding-top: 5px;
+  }
+  .poweredByYelp {
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    vertical-align: center;
+  }
 }

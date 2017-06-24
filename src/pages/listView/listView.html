@@ -51,7 +51,7 @@
         <div>
           {{bobaLocation.location.address1}}, {{bobaLocation.location.city}}
         </div>
-        <div>
+        <div [hidden]="!bobaLocation.hasHours">
           Hours: {{bobaLocation.openTime | date: 'shortTime'}} - {{bobaLocation.closeTime | date: 'shortTime'}}
         </div>
         <div>
@@ -64,11 +64,13 @@
       <ion-col col-1 hidden>
         <ion-icon class="timeIcon" name="time"></ion-icon>
       </ion-col>
-      <ion-col col-auto (click)="launch(bobaLocation.launchMapsUrl, $event)">
+      <ion-col col-auto>
         <div class="distance">
           {{bobaLocation.distance / 1609.3445 | number:'1.2-2'}} mi
         </div>
-        <img src='img/DirectionsIconGray.png' class='directionsIcon' />
+        <button ion-button round icon-only (click)="launch(bobaLocation.launchMapsUrl, $event)" class="directionsButton">
+          <img src='img/DirectionsIconLightGray.png' class='directionsIcon' />
+        </button>
       </ion-col>
     </ion-row>
   </ion-grid>
