@@ -9,8 +9,8 @@ import { ListViewPage } from '../listView/listView';
 })
 export class TabsPage {
 
-  tab1Root = MapViewPage;
-  tab2Root = ListViewPage;
+  tab1Root = ListViewPage;
+  tab2Root = MapViewPage;
   tab3Root = AboutPage;
 
   constructor() {

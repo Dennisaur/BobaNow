@@ -2,7 +2,7 @@
   <ion-grid>
     <ion-row>
       <ion-col col-4>
-        <div class="colDiv neonDiv" [class.neonDivOn]="openNow" (click)="toggleOpenNow(); refreshLocations();">
+        <div class="elementOutline neonDiv" [class.neonDivOn]="openNow" (click)="toggleOpenNow(); refreshLocations();">
           <button ion-button clear class="neonButton" [class.neonButtonOn]="openNow">
             Open Now
           </button>
@@ -13,8 +13,8 @@
         </div>
       </ion-col>
       <ion-col col-4>
-        <div class="colDiv">
-          <ion-select class="distance" [(ngModel)]="distance" interface=popover selectedText="Distance" (ngModelChange)="refreshLocations()">
+        <div class="elementOutline">
+          <ion-select class="distanceSelect" [(ngModel)]="distance" interface=popover selectedText="Distance" (ngModelChange)="refreshLocations()">
             <ion-option value=1>1 mile</ion-option>
             <ion-option value=5>5 miles</ion-option>
             <ion-option value=10>10 miles</ion-option>
@@ -23,7 +23,7 @@
         </div>
       </ion-col>
       <ion-col col-4>
-        <div class="colDiv">
+        <div class="elementOutline">
           <ion-select class="sortBy" [(ngModel)]="sortBy" interface=popover selectedText="Sort By" (ngModelChange)="refreshLocations()">
             <ion-option value='best_match'>Best Match</ion-option>
             <ion-option value='rating'>Rating</ion-option>

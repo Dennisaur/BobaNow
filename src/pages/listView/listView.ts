@@ -1,8 +1,6 @@
 import { Component } from '@angular/core';
 import { NavController, Platform, LoadingController } from 'ionic-angular';
-import { Http, Headers, RequestOptions } from '@angular/http';
-import { Geolocation } from '@ionic-native/geolocation';
-import { Observable } from 'rxjs/RX';
+import { Http } from '@angular/http';
 import 'rxjs/add/operator/map';
 //import { InAppBrowser } from '@ionic-native/in-app-browser';
 
@@ -88,7 +86,7 @@ export class ListViewPage {
     this.platform.ready()
     .then(
       () => {
-        let browser = cordova.InAppBrowser.open(url, "_system", "location=yes");
+        cordova.InAppBrowser.open(url, "_system", "location=yes");
       }
     );
   }
@@ -96,7 +94,14 @@ export class ListViewPage {
   getTestResults() {
     this.http.get("./testResults.json").map(res => res.json())
       .subscribe(
-        (data) => this.bobaLocations = data.businesses
+        (data) => {
+          this.bobaLocations = data.businesses;
+          for (let location of this.bobaLocations) {
+            // Add some new properties to locations for easier access
+            location.ratingImage = this.yelpService.getRatingImage(location.rating);
+            location.launchMapsUrl = this.yelpService.getLaunchMapsUrl(location);
+          }
+        }
       );
   }
 }

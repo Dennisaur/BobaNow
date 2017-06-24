@@ -11,17 +11,7 @@ $font-path: "../assets/fonts";
 // the Sass variables found in Ionic's source scss files.
 // To view all the possible Ionic variables, see:
 // http://ionicframework.com/docs/v2/theming/overriding-ionic-variables/
-ion-header ion-select {
-  max-width: 100%;
-  height: 100%;
-  //padding: 12px 12px 8px 12px !important;
-}
 
-.colDiv {
-  box-shadow: 0 0 5px #222,
-              0 0 5px #222 inset;
-  height: 100%;
-}
 
 // Named Color Variables
 // --------------------------------------------------
@@ -32,12 +22,94 @@ ion-header ion-select {
 // The "primary" color is the only required color in the map.
 
 $colors: (
-  primary:    #488aff,
-  secondary:  #32db64,
+  primary:    black, //#488aff,
+  secondary:  #E3C483,
   danger:     #f53d3d,
   light:      #f4f4f4,
-  dark:       #222
+  ice:        #DBEBFF,
+  milkTeaXLt: #F1E3CE,
+  milkTeaLt:  #E5D3BA,
+  milkTea:    #D8C1A2,
+  milkTeaDk:  #B89466,
+  milkTeaXDk: #916831,
+  dark:       #5E3806,
 );
+
+ion-header {
+  background-color: color($colors, milkTeaXLt, base);
+  border-bottom: 4px solid color($colors, dark, base);
+}
+// Second border
+ion-header:before {
+  content: "";
+  position: absolute;
+  z-index: -1;
+  top: 0px;
+  left: 0px;
+  right: 0px;
+  bottom: 0px;
+  border-bottom: 4px solid color($colors, milkTeaDk, base);
+}
+
+ion-header .elementOutline {
+  background-color: color($colors, ice, base);
+  border-color: color($colors, milkTeaXDk, base);
+}
+
+ion-header ion-select {
+  max-width: 100%;
+  height: 100%;
+  //padding: 12px 12px 8px 12px !important;
+}
+
+.elementOutline {
+  border: 4px solid color($colors, dark, base);
+  border-radius: 10px;
+  height: 100%;
+}
+
+.tabbar {
+  background: color($colors, milkTeaDk, base) !important;
+  border-top: 4px solid color($colors, dark, base);
+  height: 75px;
+  padding-top: 4px;
+}
+// Second border
+.tabbar:before {
+    content: "";
+    position: absolute;
+    z-index: -1;
+    top: 0px;
+    left: 0px;
+    right: 0px;
+    bottom: 0px;
+    border-bottom: 4px solid color($colors, milkTeaXDk, base);
+}
+
+.tab-button {
+  // border-color: color($colors, milkTea, base) !important;
+  // border-style: solid none solid solid !important;
+  // border-width: 4px !important;
+  // border-color: color($colors, milkTea, base) !important;
+  box-shadow: 0 0 5px color($colors, milkTeaDk, base) inset,
+              0 0 5px color($colors, milkTeaDk, base) inset,
+              0 0 15px color($colors, milkTeaDk, base) inset,
+              0 0 15px color($colors, milkTeaDk, base) inset,
+              0 0 15px color($colors, milkTeaDk, base) inset,
+              0 0 25px color($colors, milkTeaDk, base) inset;
+  border-radius: 100% !important;
+  background-color: black !important;
+  margin: 5px !important;
+  height: 100%;
+}
+
+// .tab-button[aria-selected="true"] {
+//   border-style: solid !important;
+// }
+//
+// .tab-button[aria-selected="true"] ~ .tab-button {
+//   border-style: solid solid solid none !important;
+// }
 
 // App iOS Variables
 // --------------------------------------------------
@@ -49,9 +121,10 @@ $colors: (
 // App Material Design Variables
 // --------------------------------------------------
 // Material Design only Sass variables can go here
-
-
-
+$tabs-md-tab-icon-color: color($colors, ice, base);
+$tabs-md-tab-text-color: color($colors, ice, base);
+$tabs-md-tab-icon-color-active: color($colors, ice, base);
+$tabs-md-tab-text-color-active: color($colors, ice, base);
 
 // App Windows Variables
 // --------------------------------------------------

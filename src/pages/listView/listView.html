@@ -2,7 +2,7 @@
   <ion-grid>
     <ion-row>
       <ion-col col-4>
-        <div class="colDiv neonDiv" [class.neonDivOn]="openNow" (click)="toggleOpenNow(); refreshLocations();">
+        <div class="elementOutline neonDiv" [class.neonDivOn]="openNow" (click)="toggleOpenNow(); refreshLocations();">
           <button ion-button clear class="neonButton" [class.neonButtonOn]="openNow">
             Open Now
           </button>
@@ -13,8 +13,8 @@
         </div>
       </ion-col>
       <ion-col col-4>
-        <div class="colDiv">
-          <ion-select class="distance" [(ngModel)]="distance" interface=popover selectedText="Distance" (ngModelChange)="refreshLocations()">
+        <div class="elementOutline">
+          <ion-select class="distanceSelect" [(ngModel)]="distance" interface=popover selectedText="Distance" (ngModelChange)="refreshLocations()">
             <ion-option value=1>1 mile</ion-option>
             <ion-option value=5>5 miles</ion-option>
             <ion-option value=10>10 miles</ion-option>
@@ -23,7 +23,7 @@
         </div>
       </ion-col>
       <ion-col col-4>
-        <div class="colDiv">
+        <div class="elementOutline">
           <ion-select class="sortBy" [(ngModel)]="sortBy" interface=popover selectedText="Sort By" (ngModelChange)="refreshLocations()">
             <ion-option value='best_match'>Best Match</ion-option>
             <ion-option value='rating'>Rating</ion-option>
@@ -40,29 +40,35 @@
 
   </div>
   <ion-grid>
-    <ion-row text-wrap *ngFor="let bobaLocation of bobaLocations; let i = index" (click)="launch(bobaLocation.url)">
+    <ion-row text-wrap *ngFor="let bobaLocation of bobaLocations; let i = index"
+             (click)="launch(bobaLocation.url)"
+             class="elementOutline">
       <ion-col align-self-start col-auto>{{i + 1}}.</ion-col>
-      <ion-col>
-        <div>
-          <span>
-            <b>{{bobaLocation.name}}</b>
-             ({{bobaLocation.distance / 1609.3445 | number:'1.2-2'}} mi)
-          </span>
+      <ion-col class="locationInfo">
+        <div class="locationName">
+          {{bobaLocation.name}}
         </div>
         <div>
-          <img [src]="bobaLocation.ratingImage" class="ratingImage"/>
-          {{bobaLocation.review_count}} reviews
+          {{bobaLocation.location.address1}}, {{bobaLocation.location.city}}
         </div>
         <div>
           Hours: {{bobaLocation.openTime | date: 'shortTime'}} - {{bobaLocation.closeTime | date: 'shortTime'}}
         </div>
+        <div>
+          <img [src]="bobaLocation.ratingImage" class="ratingImage"/>
+          <div class="reviewCount">
+            {{bobaLocation.review_count}} reviews
+          </div>
+        </div>
       </ion-col>
-
-      <ion-col col-auto text-right>
-        <button ion-button outline (click)="launch(bobaLocation.launchMapsUrl, $event)" class='directionsButton'>
-          <img src='img/DirectionsIconBlue.png' class='directionsIcon' />
-           GO
-        </button>
+      <ion-col col-1 hidden>
+        <ion-icon class="timeIcon" name="time"></ion-icon>
+      </ion-col>
+      <ion-col col-auto (click)="launch(bobaLocation.launchMapsUrl, $event)">
+        <div class="distance">
+          {{bobaLocation.distance / 1609.3445 | number:'1.2-2'}} mi
+        </div>
+        <img src='img/DirectionsIconGray.png' class='directionsIcon' />
       </ion-col>
     </ion-row>
   </ion-grid>
