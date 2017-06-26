@@ -124,7 +124,6 @@ export class MapViewPage {
     // Add markers to map
     this.addCurrentLocationMarker();
     this.addMarkersToMap();
-    this.updateCamera();
 
     // Add event listener to close infoWindow when map is clicked
     google.maps.event.addListener(this.map, 'click', function(infoWindow) {
@@ -179,9 +178,6 @@ export class MapViewPage {
 
     this.clearMarkers();
 
-    console.log("addMarkersToMap");
-    console.log(this.bobaLocations);
-
     // Iterate through and create a marker for each location
     let count = 1;
     for (let location of this.bobaLocations) {
@@ -194,12 +190,6 @@ export class MapViewPage {
         'map': this.map
       });
 
-      // Call service to get todays hours for this location
-      // this.yelpService.getMoreInfo(location)
-      //   .subscribe(
-      //     data => {
-
-      // Update info window content for this location when this marker is selected
       google.maps.event.addListener(marker, 'click', function(self, marker, location) {
         return function() {
           let content = self.createInfoWindowContent(location);
@@ -207,14 +197,13 @@ export class MapViewPage {
           self.infoWindow.open(self.map, marker);
         }
       }(this, marker, location));
-        //   }
-        // );
 
       this.markers.push(marker);
       count += 1;
     }
 
     this.markersAdded = true;
+    this.updateCamera();
   }
 
   // Removes all location markers from the map
