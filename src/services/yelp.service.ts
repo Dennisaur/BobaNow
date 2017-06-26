@@ -14,7 +14,12 @@ export class YelpService {
   private accessToken: string;
   private requestOptions: RequestOptions;
   private dayOfWeek: number;
+
   private defaultSearchParams: any;
+  private openNow: boolean;
+  private distance: number;
+  private sortBy: string;
+  private isDirty: boolean = true;
 
   private getRequests: number;
 
@@ -66,6 +71,18 @@ export class YelpService {
     return this.dayOfWeek;
   }
 
+  getOpenNow() {
+    return this.openNow;
+  }
+
+  getDistance() {
+    return this.distance;
+  }
+
+  getSortBy() {
+    return this.sortBy;
+  }
+
   // Get current location and center map to current position
   locateUser() {
     let getPosition = this.geolocation.getCurrentPosition();
@@ -93,6 +110,11 @@ export class YelpService {
     return this.lng;
   }
 
+  // Returns whether a new search needs to be applied
+  getIsDirty() {
+    return this.isDirty;
+  }
+
   // Returns current search locations
   getLocations() {
     return this.locations;
@@ -100,6 +122,10 @@ export class YelpService {
 
   updateSearchParams(newParams) {
     this.defaultSearchParams = Object.assign(this.defaultSearchParams, newParams);
+    this.openNow = newParams.openNow;
+    this.sortBy = newParams.sortBy;
+    this.distance = newParams.distance;
+    this.isDirty = true;
   }
 
   // Use Yelp API to locate nearby locations
@@ -138,6 +164,7 @@ export class YelpService {
           // Get hours for each location (not provided from search API)
           this.getMoreInfo(location);
         }
+        this.isDirty = false;
       }
     );
 

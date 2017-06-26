@@ -6,7 +6,7 @@ import 'rxjs/add/operator/map';
 import { YelpService } from '../../services/yelp.service';
 
 declare var cordova;
-var testingInBrowser = true;
+var testingInBrowser = false;
 
 @Component({
   selector: 'page-listView',
@@ -18,6 +18,7 @@ export class ListViewPage {
   distance: number = 5;
   sortBy: string = "best_match";
   loadingControl: any;
+  waitingForLocations: boolean = false;
 
   constructor(public navCtrl: NavController,
               public http: Http,
@@ -36,10 +37,20 @@ export class ListViewPage {
         .then(
           (location) => {
             loadingControl.dismissAll();
-            this.getLocations();
+            if (!this.waitingForLocations) {
+              this.getLocations();
+            }
           }
         );
     }
+  }
+
+
+  ionViewWillEnter() {
+    this.openNow = this.yelpService.getOpenNow();
+    this.distance = this.yelpService.getDistance();
+    this.sortBy = this.yelpService.getSortBy();
+    this.getLocations();
   }
 
   // Updates search params in service and updates new locations
@@ -56,16 +67,22 @@ export class ListViewPage {
   // Loads locations from service to local variable
   getLocations() {
     if (!testingInBrowser) {
-      let loadingControl = this.loadingController.create({content: "Loading..."});
-      loadingControl.present();
-
-      this.yelpService.findLocations()
-        .subscribe(
-          data => {
-            this.bobaLocations = this.yelpService.getLocations();
-            loadingControl.dismissAll();
-          }
-        )
+      if (this.yelpService.getIsDirty()) {
+        let loadingControl = this.loadingController.create({content: "Loading..."});
+        loadingControl.present();
+        this.waitingForLocations = true;
+        this.yelpService.findLocations()
+          .subscribe(
+            data => {
+              this.bobaLocations = this.yelpService.getLocations();
+              this.waitingForLocations = false;
+              loadingControl.dismissAll();
+            }
+          )
+      }
+      else {
+        this.bobaLocations = this.yelpService.getLocations();
+      }
     }
   }
 

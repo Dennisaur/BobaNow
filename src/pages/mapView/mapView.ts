@@ -1,10 +1,9 @@
 import { Component } from '@angular/core';
-import { NavController, Platform } from 'ionic-angular';
+import { NavController, Platform, LoadingController } from 'ionic-angular';
 import { Http, Headers, RequestOptions } from '@angular/http';
 import { Geolocation } from '@ionic-native/geolocation';
 import { Observable } from 'rxjs/RX';
 import 'rxjs/add/operator/map';
-import { LaunchNavigator, LaunchNavigatorOptions } from '@ionic-native/launch-navigator';
 
 import { YelpService } from '../../services/yelp.service';
 
@@ -40,23 +39,28 @@ export class MapViewPage {
   constructor(public navCtrl: NavController,
               public http: Http,
               public platform: Platform,
+              public loadingController: LoadingController,
               private geolocation: Geolocation,
-              private launchNavigator: LaunchNavigator,
               private yelpService: YelpService) {
 
-    this.bobaLocations = yelpService.getLocations();
-    console.log("constructor");
-    console.log(this.bobaLocations);
   }
 
   // Load map only after view is initialized
   ngAfterViewInit() {
+    this.getLocations();
     this.platform.ready()
       .then(
         () => {
           this.loadMap();
         }
       );
+  }
+
+  ionViewWillEnter() {
+    this.openNow = this.yelpService.getOpenNow();
+    this.distance = this.yelpService.getDistance();
+    this.sortBy = this.yelpService.getSortBy();
+    this.getLocations();
   }
 
   // Updates search params in service and updates new locations
@@ -72,15 +76,22 @@ export class MapViewPage {
 
   // Loads locations from service to local locations
   getLocations() {
-    this.yelpService.findLocations()
-      .subscribe(
-        data => {
-          this.bobaLocations = this.yelpService.getLocations();
-          console.log("getLocations");
-          console.log(this.bobaLocations);
-          this.addMarkersToMap();
-        }
-      )
+    if (this.yelpService.getIsDirty()) {
+      let loadingControl = this.loadingController.create({content: "Loading..."});
+      loadingControl.present();
+      this.yelpService.findLocations()
+        .subscribe(
+          data => {
+            this.bobaLocations = this.yelpService.getLocations();
+            this.addMarkersToMap();
+            loadingControl.dismissAll();
+          }
+        )
+    }
+    else {
+      this.bobaLocations = this.yelpService.getLocations();
+      this.addMarkersToMap();
+    }
   }
 
   // Toggles open now "button"
@@ -184,19 +195,20 @@ export class MapViewPage {
       });
 
       // Call service to get todays hours for this location
-      this.yelpService.getMoreInfo(location)
-        .subscribe(
-          data => {
-            // Update info window content for this location when this marker is selected
-            google.maps.event.addListener(marker, 'click', function(self, marker, location) {
-              return function() {
-                let content = self.createInfoWindowContent(location);
-                self.infoWindow.setContent(content);
-                self.infoWindow.open(self.map, marker);
-              }
-            }(this, marker, location));
-          }
-        );
+      // this.yelpService.getMoreInfo(location)
+      //   .subscribe(
+      //     data => {
+
+      // Update info window content for this location when this marker is selected
+      google.maps.event.addListener(marker, 'click', function(self, marker, location) {
+        return function() {
+          let content = self.createInfoWindowContent(location);
+          self.infoWindow.setContent(content);
+          self.infoWindow.open(self.map, marker);
+        }
+      }(this, marker, location));
+        //   }
+        // );
 
       this.markers.push(marker);
       count += 1;
