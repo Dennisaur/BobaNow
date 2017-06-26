@@ -1,12 +1,6 @@
 page-about {
-  .yelpTrademark {
-    width: 100px;
-    height: auto;
-    vertical-align: middle;
-  }
 
   ion-header {
-    height: 60px;
     vertical-align: middle;
     text-align: center;
     font-size: 20px;
@@ -25,10 +19,14 @@ page-about {
     vertical-align: middle;
     padding-top: 5px;
   }
+  .yelpTrademark {
+    width: 100px;
+    height: auto;
+    vertical-align: middle;
+  }
   .poweredByYelp {
     position: absolute;
     bottom: 0;
     right: 0;
-    vertical-align: center;
   }
 }

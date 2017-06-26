@@ -1,42 +1,48 @@
 page-listView {
-  font-size: 13px;
-
   .scroll-content {
     background-color: color($colors, milkTea, base);
   }
 
-  .scroll-content .elementOutline {
-    background-color: color($colors, milkTeaXLt, base);
-    padding: 4px;
-    margin: 4px;
-    // box-shadow: 0 0 15px color($colors, milkTeaDk, base) inset,
-    //             0 0 25px color($colors, milkTea, base) inset;
+  .scroll-content ion-grid {
+    margin-top: 8px;
   }
 
+  .locationRow {
+    background-color: color($colors, milkTeaXLt, base);
+    border: 4px solid color($colors, dark, base);
+    border-radius: 10px;
+    height: 100%;
+    padding: 4px;
+    margin: 4px;
+  }
+
+  // Add padding for each line in location info
   .locationInfo div {
     font-size: 11px;
     padding-bottom: 2px;
     vertical-align: middle;
   }
+  // Rating image already has some padding
   .locationInfo div:last-child {
     padding-bottom: 0px;
   }
+  // Add emphasis for business name
   .locationInfo .locationName {
     font-size: 13px;
     font-weight: bold;
   }
-  .ratingImage {
-    vertical-align: middle;
-  }
+
   .reviewCount {
     display: inline-block;
-    padding: 2px 0px 0px 2px;
   }
+
   .timeIcon {
     width: 30px;
     height: 30px;
   }
+
   .distance {
+    font-size: 11px;
     margin-bottom: 2px;
   }
   .directionsButton {
@@ -59,9 +65,6 @@ page-listView {
 
   // http://enjoycss.com/gallery/text_effects/dF#text
   .elementOutline.neonDiv {
-    // border: none;
-    // box-shadow: 0 0 5px #222,
-    //             0 0 5px #222 inset;
    -webkit-transition: all 200ms cubic-bezier(0.42, 0, 0.58, 1);
    -moz-transition: all 200ms cubic-bezier(0.42, 0, 0.58, 1);
    -o-transition: all 200ms cubic-bezier(0.42, 0, 0.58, 1);
@@ -80,11 +83,6 @@ page-listView {
   }
 
   .neonButton {
-    // text-shadow: -0.5px -0.5px 0 color($colors, dark, base),
-    //              0.5px -0.5px 0 color($colors, dark, base),
-    //              -0.5px 0.5px 0 color($colors, dark, base),
-    //              0.5px 0.5px 0 color($colors, dark, base);
-    // color: color($colors, ice, base);
     width: 100%;
     height: 100%;
     margin: 0px !important;

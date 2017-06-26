@@ -36,13 +36,10 @@
 </ion-header>
 
 <ion-content class="listContent">
-  <div hidden class="straw">
-
-  </div>
   <ion-grid>
     <ion-row text-wrap *ngFor="let bobaLocation of bobaLocations; let i = index"
              (click)="launch(bobaLocation.url)"
-             class="elementOutline">
+             class="locationRow">
       <ion-col align-self-start col-auto>{{i + 1}}.</ion-col>
       <ion-col class="locationInfo">
         <div class="locationName">

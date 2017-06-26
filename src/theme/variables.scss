@@ -22,7 +22,7 @@ $font-path: "../assets/fonts";
 // The "primary" color is the only required color in the map.
 
 $colors: (
-  primary:    black, //#488aff,
+  primary:    #488aff,
   secondary:  #E3C483,
   danger:     #f53d3d,
   light:      #f4f4f4,
@@ -38,6 +38,7 @@ $colors: (
 ion-header {
   background-color: color($colors, milkTeaXLt, base);
   border-bottom: 4px solid color($colors, dark, base);
+  font-size: 13px;
 }
 // Second border
 ion-header:before {
@@ -53,23 +54,19 @@ ion-header:before {
 
 ion-header .elementOutline {
   background-color: color($colors, ice, base);
-  border-color: color($colors, milkTeaXDk, base);
-}
-
-ion-header ion-select {
-  max-width: 100%;
-  height: 100%;
-  //padding: 12px 12px 8px 12px !important;
-}
-
-.elementOutline {
   border: 4px solid color($colors, dark, base);
   border-radius: 10px;
   height: 100%;
 }
 
+ion-header ion-select {
+  max-width: 100%;
+  height: 100%;
+}
+
+
 .tabbar {
-  background: color($colors, milkTeaDk, base) !important;
+  background: color($colors, milkTeaXLt, base) !important;
   border-top: 4px solid color($colors, dark, base);
   height: 75px;
   padding-top: 4px;
@@ -83,51 +80,39 @@ ion-header ion-select {
     left: 0px;
     right: 0px;
     bottom: 0px;
-    border-bottom: 4px solid color($colors, milkTeaXDk, base);
+    border-bottom: 4px solid color($colors, milkTeaDk, base);
 }
 
 .tab-button {
-  // border-color: color($colors, milkTea, base) !important;
-  // border-style: solid none solid solid !important;
-  // border-width: 4px !important;
-  // border-color: color($colors, milkTea, base) !important;
-  // box-shadow: 0 0 5px color($colors, milkTeaDk, base) inset,
-  //             0 0 5px color($colors, milkTeaDk, base) inset,
-  //             0 0 15px color($colors, milkTeaDk, base) inset,
-  //             0 0 15px color($colors, milkTeaDk, base) inset,
-  //             0 0 15px color($colors, milkTeaDk, base) inset,
-  //             0 0 25px color($colors, milkTeaDk, base) inset;
   border-radius: 100% !important;
   background-color: black !important;
-  margin: 18px !important;
-  height: 80%;
+  margin-left: auto !important;
+  margin-right: auto !important;
+  height: 55px !important;
+  max-width: 55px !important;
+}
+.tab-button[aria-selected="true"] {
+  // border: 3px solid color($colors, milkTeaXDk, base) !important;
+  box-shadow: 0 0 5px black, //color($colors, milkTeaDk, base),
+              0 0 10px black; //color($colors, milkTeaDk, base);
 }
 
+// Add own image as tab icon
 .tab-button-icon[ng-reflect-name=U], .tab-button-icon[aria-label=U] {
   background-repeat: no-repeat;
   background-image: url('../img/U.png');
   background-size: contain;
-  height: 60%;
-  width: 70%;
-  margin-top: 15px !important;
+  height: 40px !important;
+  width: 40px !important;
+  vertical-align: bottom !important;
+  position: absolute;
+  top: 35%;
 }
+// Remove background for middle tab
 .tab-button:nth-child(2) {
    box-shadow: none;
    background-color: transparent !important;
-//   .tab-button-text {
-//     font-size: 24px !important;
-//   }
-//   $tabs-md-tab-text-color: black !important;
-//   $tabs-md-tab-text-color-active: black !important;
 }
-
-// .tab-button[aria-selected="true"] {
-//   border-style: solid !important;
-// }
-//
-// .tab-button[aria-selected="true"] ~ .tab-button {
-//   border-style: solid solid solid none !important;
-// }
 
 // App iOS Variables
 // --------------------------------------------------

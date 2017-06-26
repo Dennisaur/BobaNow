@@ -2,7 +2,6 @@ import { Component } from '@angular/core';
 import { NavController, Platform, LoadingController } from 'ionic-angular';
 import { Http } from '@angular/http';
 import 'rxjs/add/operator/map';
-//import { InAppBrowser } from '@ionic-native/in-app-browser';
 
 import { YelpService } from '../../services/yelp.service';
 
@@ -40,23 +39,21 @@ export class ListViewPage {
             this.getLocations();
           }
         );
-
     }
-
   }
 
   // Updates search params in service and updates new locations
   refreshLocations() {
     this.yelpService.updateSearchParams({
       openNow: this.openNow,
-      distance: this.distance * 1609.34,
+      distance: this.distance * 1609.34, // Convert to meters
       sortBy: this.sortBy
     });
 
     this.getLocations();
   }
 
-  // Loads locations from service to local locations
+  // Loads locations from service to local variable
   getLocations() {
     if (!testingInBrowser) {
       let loadingControl = this.loadingController.create({content: "Loading..."});
@@ -91,6 +88,7 @@ export class ListViewPage {
     );
   }
 
+  // For testing without using calling Yelp API
   getTestResults() {
     this.http.get("./testResults.json").map(res => res.json())
       .subscribe(
