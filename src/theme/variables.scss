@@ -35,84 +35,9 @@ $colors: (
   dark:       #5E3806,
 );
 
-ion-header {
-  background-color: color($colors, milkTeaXLt, base);
-  border-bottom: 4px solid color($colors, dark, base);
-  font-size: 13px;
-}
-// Second border
-ion-header:before {
-  content: "";
-  position: absolute;
-  z-index: -1;
-  top: 0px;
-  left: 0px;
-  right: 0px;
-  bottom: 0px;
-  border-bottom: 4px solid color($colors, milkTeaDk, base);
-}
 
-ion-header .elementOutline {
-  background-color: color($colors, ice, base);
-  border: 4px solid color($colors, dark, base);
-  border-radius: 10px;
-  height: 100%;
-}
-
-ion-header ion-select {
-  max-width: 100%;
-  height: 100%;
-}
-
-
-.tabbar {
-  background: color($colors, milkTeaXLt, base) !important;
-  border-top: 4px solid color($colors, dark, base);
-  height: 75px;
-  padding-top: 4px;
-}
-// Second border
-.tabbar:before {
-    content: "";
-    position: absolute;
-    z-index: -1;
-    top: 0px;
-    left: 0px;
-    right: 0px;
-    bottom: 0px;
-    border-bottom: 4px solid color($colors, milkTeaDk, base);
-}
-
-.tab-button {
-  border-radius: 100% !important;
-  background-color: black !important;
-  margin-left: auto !important;
-  margin-right: auto !important;
-  height: 55px !important;
-  max-width: 55px !important;
-}
-.tab-button[aria-selected="true"] {
-  // border: 3px solid color($colors, milkTeaXDk, base) !important;
-  box-shadow: 0 0 5px black, //color($colors, milkTeaDk, base),
-              0 0 10px black; //color($colors, milkTeaDk, base);
-}
-
-// Add own image as tab icon
-.tab-button-icon[ng-reflect-name=U], .tab-button-icon[aria-label=U] {
-  background-repeat: no-repeat;
-  background-image: url('../img/U.png');
-  background-size: contain;
-  height: 40px !important;
-  width: 40px !important;
-  vertical-align: bottom !important;
-  position: absolute;
-  top: 35%;
-}
-// Remove background for middle tab
-.tab-button:nth-child(2) {
-   box-shadow: none;
-   background-color: transparent !important;
-}
+$menu-width: 60%;
+$menu-small-width: 60%;
 
 // App iOS Variables
 // --------------------------------------------------

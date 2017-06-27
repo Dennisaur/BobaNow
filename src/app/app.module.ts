@@ -6,9 +6,7 @@ import { HttpModule } from '@angular/http';
 import { IonicStorageModule } from '@ionic/storage';
 
 import { AboutPage } from '../pages/about/about';
-import { MapViewPage } from '../pages/mapView/mapView';
 import { ListViewPage } from '../pages/listView/listView';
-import { TabsPage } from '../pages/tabs/tabs';
 import { YelpService } from '../services/yelp.service';
 
 import { StatusBar } from '@ionic-native/status-bar';
@@ -23,14 +21,14 @@ import { LaunchNavigator } from '@ionic-native/launch-navigator';
   declarations: [
     MyApp,
     AboutPage,
-    MapViewPage,
-    ListViewPage,
-    TabsPage
+    ListViewPage
   ],
   imports: [
     BrowserModule,
     HttpModule,
-    IonicModule.forRoot(MyApp),
+    IonicModule.forRoot(MyApp, {
+      tabsPlacement: 'top'
+    }),
     AgmCoreModule.forRoot({
       apiKey: 'AIzaSyDcCzzTSBvYIgH8AdNYgkSlaVO5Jnlb0rk'
     }),
@@ -40,9 +38,7 @@ import { LaunchNavigator } from '@ionic-native/launch-navigator';
   entryComponents: [
     MyApp,
     AboutPage,
-    MapViewPage,
-    ListViewPage,
-    TabsPage
+    ListViewPage
   ],
   providers: [
     StatusBar,

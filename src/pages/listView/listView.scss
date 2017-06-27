@@ -3,10 +3,6 @@ page-listView {
     background-color: color($colors, milkTea, base);
   }
 
-  .scroll-content ion-grid {
-    margin-top: 8px;
-  }
-
   .locationRow {
     background-color: color($colors, milkTeaXLt, base);
     border: 4px solid color($colors, dark, base);
@@ -63,46 +59,111 @@ page-listView {
   }
 
 
-  // http://enjoycss.com/gallery/text_effects/dF#text
-  .elementOutline.neonDiv {
-   -webkit-transition: all 200ms cubic-bezier(0.42, 0, 0.58, 1);
-   -moz-transition: all 200ms cubic-bezier(0.42, 0, 0.58, 1);
-   -o-transition: all 200ms cubic-bezier(0.42, 0, 0.58, 1);
-   transition: all 200ms cubic-bezier(0.42, 0, 0.58, 1);
+  ion-footer ion-col {
+    text-align: center;
+  }
+  ion-footer ion-col > div {
+    height: 50px;
+    width: 50px;
+    background-color: black;
+    border-radius: 100%;
+    margin: auto;
+  }
+  ion-footer ion-col:nth-child(2) > div {
+    background-color: transparent;
   }
 
-  .elementOutline.neonDivOn {
-    border: none;
-    box-shadow: 0 0 10px #0000ff,
-                0 0 10px #0000ff inset;
-    background-color: color($colors, ice, base);
-    -webkit-transition: all 200ms cubic-bezier(0.42, 0, 0.58, 1);
-    -moz-transition: all 200ms cubic-bezier(0.42, 0, 0.58, 1);
-    -o-transition: all 200ms cubic-bezier(0.42, 0, 0.58, 1);
-    transition: all 200ms cubic-bezier(0.42, 0, 0.58, 1);
-  }
-
-  .neonButton {
-    width: 100%;
+  ion-footer ion-col button {
     height: 100%;
+    width: 100%;
     margin: 0px !important;
-    -webkit-transition: all 200ms cubic-bezier(0.42, 0, 0.58, 1);
-    -moz-transition: all 200ms cubic-bezier(0.42, 0, 0.58, 1);
-    -o-transition: all 200ms cubic-bezier(0.42, 0, 0.58, 1);
-    transition: all 200ms cubic-bezier(0.42, 0, 0.58, 1);
   }
 
-  .neonButtonOn {
-    color: color($colors, ice, base);
-    text-shadow: 0 0 1px #ff0000,
-                 0 0 2px #ff0000,
-                 0 0 5px #ff0000,
-                 0 0 10px #ff0000,
-                 0 0 15px #ff0000;
-    -webkit-transition: all 200ms cubic-bezier(0.42, 0, 0.58, 1);
-    -moz-transition: all 200ms cubic-bezier(0.42, 0, 0.58, 1);
-    -o-transition: all 200ms cubic-bezier(0.42, 0, 0.58, 1);
-    transition: all 200ms cubic-bezier(0.42, 0, 0.58, 1);
+  ion-footer ion-col img {
+    height: 30px;
+    width: 30px;
   }
+
+  // Hide x in infoWindow
+  .gm-style-iw + div {
+    display: none;
+  }
+  #map {
+    height: 100%;
+  }
+
+  .infoWindowContent {
+    width: 100%;
+    padding-left: 10px;
+    padding-right: 10px;
+  }
+
+  .infoWindowContent div {
+    padding-bottom: 2px;
+  }
+  .infoWindowContent .leftContent {
+    float: left;
+    width: 170px;
+  }
+  .infoWindowContent .launchMaps {
+    float: right;
+    width: 36px;
+  }
+
+  .directionsIcon {
+    width: 36px;
+    height: 36px;
+  }
+
+  // See https://stackoverflow.com/questions/28589361/google-maps-infowindow-width-is-overwritten-even-when-set-correctly
+
+  // Remove right margin from info window
+  .custom-iw .gm-style-iw {
+    top:10px !important;
+    left:0 !important;
+    border-radius:2px;
+  }
+  .custom-iw>div:first-child>div:nth-child(2) {
+      display:none;
+  }
+  /** the shadow **/
+  .custom-iw>div:first-child>div:last-child {
+      left:0 !important;
+      top:0px;
+      box-shadow: rgba(0, 0, 0, 0.6) 0px 1px 6px;
+      z-index:-1 !important;
+  }
+
+  .custom-iw .gm-style-iw,
+  .custom-iw .gm-style-iw>div,
+  .custom-iw .gm-style-iw>div>div {
+      width:100% !important;
+      max-width:100% !important;
+  }
+  /** set here the width **/
+  .custom-iw,
+  .custom-iw>div:first-child>div:last-child {
+      width:230px !important;
+  }
+
+
+  /** set here the desired background-color **/
+  .custom-iw,
+  .custom-iw>div:first-child>div:nth-child(n-1)>div>div,
+  .custom-iw>div>div:last-child,
+  .custom-iw .gm-style-iw,
+  .custom-iw .gm-style-iw>div,
+  .custom-iw .gm-style-iw>div>div {
+    //background-color: color($colors, milkTeaXLt, base);
+  }
+
+  /** close-button(note that there may be a scrollbar) **/
+  /*
+  .custom-iw>div:last-child {
+      top:1px !important;
+      right:0 !important;
+  }
+  */
+
 
 }

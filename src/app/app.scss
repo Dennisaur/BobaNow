@@ -14,3 +14,40 @@
 // To declare rules for a specific mode, create a child rule
 // for the .md, .ios, or .wp mode classes. The mode class is
 // automatically applied to the <body> element in the app.
+
+ion-footer {
+  background-color: color($colors, milkTeaXLt, base);
+  border-top: 4px solid color($colors, dark, base);
+}
+// Second border
+ion-footer:before {
+  content: "";
+  position: absolute;
+  z-index: -1;
+  top: 0px;
+  left: 0px;
+  right: 0px;
+  bottom: 0px;
+  border-top: 4px solid color($colors, milkTeaDk, base);
+}
+
+ion-menu ion-select {
+  max-width: 100%;
+  width: 100% !important;
+  height: 100%;
+}
+
+.poweredByText {
+  display: inline-block;
+  padding-top: 5px;
+}
+.yelpTrademark {
+  width: 100px;
+  height: auto;
+  vertical-align: bottom;
+}
+.poweredByYelp {
+  position: absolute;
+  bottom: 0;
+  right: 0;
+}

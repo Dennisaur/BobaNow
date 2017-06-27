@@ -1,43 +1,44 @@
-<ion-header>
+<ion-footer>
   <ion-grid>
     <ion-row>
-      <ion-col col-4>
-        <div class="elementOutline neonDiv" [class.neonDivOn]="openNow" (click)="toggleOpenNow(); refreshLocations();">
-          <button ion-button clear class="neonButton" [class.neonButtonOn]="openNow">
-            Open Now
+      <ion-col col-4 class="headerCol">
+        <div text-center (click)="toggleView()">
+          <button ion-button icon-only large clear color="ice">
+            <div [hidden]="!mapView">
+              <ion-icon name="list"></ion-icon>
+              <!-- <div class='viewIconLabel'>
+                List View
+              </div> -->
+            </div>
+            <div [hidden]="mapView" >
+              <ion-icon name="map"></ion-icon>
+              <!-- <div class='viewIconLabel'>
+                Map View>
+              </div> -->
+            </div>
           </button>
         </div>
-        <div hidden (click)="toggleOpenNow(); refreshLocations();">
-          <img class='openSign' src="img/Open.png" [hidden]="!openNow" />
-          <img class='openSign' src="img/Closed.png" [hidden]="openNow" />
+      </ion-col>
+      <ion-col col-4>
+        <div>
+          <img src='img/U.png' class="mouthImage"/>
         </div>
       </ion-col>
       <ion-col col-4>
-        <div class="elementOutline">
-          <ion-select class="distanceSelect" [(ngModel)]="distance" interface=popover selectedText="Distance" (ngModelChange)="refreshLocations()">
-            <ion-option value=1>1 mile</ion-option>
-            <ion-option value=5>5 miles</ion-option>
-            <ion-option value=10>10 miles</ion-option>
-            <ion-option value=25>25 miles</ion-option>
-          </ion-select>
-        </div>
-      </ion-col>
-      <ion-col col-4>
-        <div class="elementOutline">
-          <ion-select class="sortBy" [(ngModel)]="sortBy" interface=popover selectedText="Sort By" (ngModelChange)="refreshLocations()">
-            <ion-option value='best_match'>Best Match</ion-option>
-            <ion-option value='rating'>Rating</ion-option>
-            <ion-option value='distance'>Distance</ion-option>
-          </ion-select>
+        <div menuToggle>
+          <button ion-button icon-only clear color="ice">
+            <ion-icon name="settings"></ion-icon>
+          </button>
         </div>
       </ion-col>
     </ion-row>
   </ion-grid>
-</ion-header>
+</ion-footer>
 
 <ion-content class="listContent">
-  <ion-grid>
-    <ion-row text-wrap *ngFor="let bobaLocation of bobaLocations; let i = index"
+  <ion-grid [hidden]="mapView">
+    <ion-row text-wrap
+             *ngFor="let bobaLocation of bobaLocations; let i = index"
              (click)="launch(bobaLocation.url)"
              class="locationRow">
       <ion-col align-self-start col-auto>{{i + 1}}.</ion-col>
@@ -58,9 +59,6 @@
           </div>
         </div>
       </ion-col>
-      <ion-col col-1 hidden>
-        <ion-icon class="timeIcon" name="time"></ion-icon>
-      </ion-col>
       <ion-col col-auto>
         <div class="distance">
           {{bobaLocation.distance / 1609.3445 | number:'1.2-2'}} mi
@@ -71,4 +69,6 @@
       </ion-col>
     </ion-row>
   </ion-grid>
+
+  <div id="map" [hidden]="!mapView"></div>
 </ion-content>

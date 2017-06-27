@@ -1,1 +1,34 @@
-<ion-nav [root]="rootPage"></ion-nav>
+<ion-nav #menuContent [root]="rootPage"></ion-nav>
+
+<ion-menu side="right" [content]="menuContent">
+  <ion-content>
+    <ion-list>
+      <ion-item>
+        <ion-label>Open Now</ion-label>
+        <ion-toggle [(ngModel)]="openNow" color="green"></ion-toggle>
+      </ion-item>
+      <ion-item>
+        <ion-select class="sortBy" [(ngModel)]="sortBy" interface=popover selectedText="Sort By" (ngModelChange)="refreshLocations()">
+          <ion-option value='best_match'>Best Match</ion-option>
+          <ion-option value='rating'>Rating</ion-option>
+          <ion-option value='distance'>Distance</ion-option>
+        </ion-select>
+      </ion-item>
+      <ion-item>
+        <ion-select class="distanceSelect" [(ngModel)]="distance" interface=popover selectedText="Distance" (ngModelChange)="refreshLocations()">
+          <ion-option value=1>1 mile</ion-option>
+          <ion-option value=5>5 miles</ion-option>
+          <ion-option value=10>10 miles</ion-option>
+          <ion-option value=25>25 miles</ion-option>
+        </ion-select>
+      </ion-item>
+    </ion-list>
+    <div class="poweredByYelp">
+      <div class="poweredByText">
+        Powered by
+      </div>
+      <img class="yelpTrademark" src="img/Yelp%20Logo%20Trademark/Screen/Yelp_trademark_RGB_outline.png"
+        (click)="launch('https://www.yelp.com')" />
+    </div>
+  </ion-content>
+</ion-menu>

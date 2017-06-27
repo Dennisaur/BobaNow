@@ -2,12 +2,12 @@ import { Storage } from '@ionic/storage';
 import { Injectable } from '@angular/core';
 import { Geolocation, Geoposition } from '@ionic-native/geolocation';
 import { Http, Headers, RequestOptions } from '@angular/http';
+import { Observable } from 'rxjs/Observable';
 
 @Injectable()
 export class YelpService {
   private lat: number;
   private lng: number;
-  private currentLocation: {};
   private locations: any;
   private clientId: string;
   private clientSecret: string;
@@ -17,11 +17,17 @@ export class YelpService {
 
   private defaultSearchParams: any;
   private openNow: boolean;
-  private distance: number;
+  private radius: number;
   private sortBy: string;
-  private isDirty: boolean = true;
 
   private getRequests: number;
+  private remainingBusinessesToCheck: number;
+
+  private currentLocation: any;
+  private currentLocationObserver: any;
+  private search: any;
+  private searchObserver: any;
+
 
   constructor (public http: Http,
                private geolocation: Geolocation,
@@ -32,6 +38,14 @@ export class YelpService {
     this.clientId = "OXIJVK12GNTdHlmKJR7xbg";
     this.clientSecret = "Kui2Eqxk9OOl7pGXH2yOKLkY32oAWWZRSYENc8hFA9jZbMTnTypcWUM46kzLTAcf"
     this.accessToken = "4CsWcVaxR1MdfR55e6vVjH0XRJNUkDsBHOc7HM073bhnnAbBr2f4-4QliYaYR4QabhRBhRiDfgYiLYYeN9m0scWLcvRAPZqfnC8c8RMe-qUGhmteiNkpx8anPFlDWXYx";
+
+    this.search = Observable.create(observer => {
+      this.searchObserver = observer;
+    });
+
+    this.currentLocation = Observable.create(observer => {
+      this.currentLocationObserver = observer;
+    })
 
     /*
     let headers = new Headers({'Content-Type': "application/x-www-form-urlencoded"});
@@ -67,16 +81,20 @@ export class YelpService {
         };
   }
 
-  getDayOfWeek() {
-    return this.dayOfWeek;
+  currentLocationUpdate(): Observable<any> {
+    return this.currentLocation;
+  }
+
+  searchUpdates(): Observable<any> {
+    return this.search;
   }
 
   getOpenNow() {
     return this.openNow;
   }
 
-  getDistance() {
-    return this.distance;
+  getRadius() {
+    return this.radius;
   }
 
   getSortBy() {
@@ -93,7 +111,7 @@ export class YelpService {
           this.lng = location.coords.longitude;
           this.defaultSearchParams.latitude = location.coords.latitude;
           this.defaultSearchParams.longitude = location.coords.longitude;
-          this.currentLocation = location;
+          this.currentLocationObserver.next(location);
         }
       )
       .catch(
@@ -110,32 +128,28 @@ export class YelpService {
     return this.lng;
   }
 
-  // Returns whether a new search needs to be applied
-  getIsDirty() {
-    return this.isDirty;
-  }
-
   // Returns current search locations
   getLocations() {
     return this.locations;
   }
 
+  // Updates search params for Yelp get request
   updateSearchParams(newParams) {
     this.defaultSearchParams = Object.assign(this.defaultSearchParams, newParams);
     this.openNow = newParams.openNow;
     this.sortBy = newParams.sortBy;
-    this.distance = newParams.distance;
-    this.isDirty = true;
+    this.radius = newParams.radius;
   }
 
   // Use Yelp API to locate nearby locations
-  findLocations(yelpParams = this.defaultSearchParams) {
+  findLocations() {
+    let yelpParams = this.defaultSearchParams;
     // Generate get request URL
     let getRequestUrl = "https://api.yelp.com/v3/businesses/search?";
     let term = "term=" + yelpParams.term;
     let latitude = "latitude=" + yelpParams.latitude;
     let longitude = "longitude=" + yelpParams.longitude;
-    let radius = "radius=" + yelpParams.radius; // In meters
+    let radius = "radius=" + Math.round(yelpParams.radius); // In meters
     let limit = "limit=" + yelpParams.limit;
     let openNow = "open_now=" + yelpParams.openNow;
     let sortBy = "sort_by=" + yelpParams.sortBy;
@@ -156,6 +170,7 @@ export class YelpService {
     observableGetRequest.subscribe(
       data => {
         this.locations = data.businesses;
+        this.remainingBusinessesToCheck = this.locations.length;
         for (let location of this.locations) {
           // Add some new properties to locations for easier access
           location.ratingImage = this.getRatingImage(location.rating);
@@ -164,7 +179,6 @@ export class YelpService {
           // Get hours for each location (not provided from search API)
           this.getMoreInfo(location);
         }
-        this.isDirty = false;
       }
     );
 
@@ -191,6 +205,10 @@ export class YelpService {
           }
           else {
             location.hasHours = false;
+          }
+          this.remainingBusinessesToCheck--;
+          if (this.remainingBusinessesToCheck <= 0) {
+            this.searchObserver.next(this.locations);
           }
         }
       );
