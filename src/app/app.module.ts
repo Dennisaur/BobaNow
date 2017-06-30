@@ -4,8 +4,8 @@ import { IonicApp, IonicModule, IonicErrorHandler } from 'ionic-angular';
 import { MyApp } from './app.component';
 import { HttpModule } from '@angular/http';
 import { IonicStorageModule } from '@ionic/storage';
+import { AppVersion } from '@ionic-native/app-version';
 
-import { AboutPage } from '../pages/about/about';
 import { ListViewPage } from '../pages/listView/listView';
 import { YelpService } from '../services/yelp.service';
 
@@ -20,7 +20,6 @@ import { LaunchNavigator } from '@ionic-native/launch-navigator';
 @NgModule({
   declarations: [
     MyApp,
-    AboutPage,
     ListViewPage
   ],
   imports: [
@@ -37,7 +36,6 @@ import { LaunchNavigator } from '@ionic-native/launch-navigator';
   bootstrap: [IonicApp],
   entryComponents: [
     MyApp,
-    AboutPage,
     ListViewPage
   ],
   providers: [
@@ -48,6 +46,7 @@ import { LaunchNavigator } from '@ionic-native/launch-navigator';
     YelpService,
     Storage,
     LaunchNavigator,
+    AppVersion,
     {provide: ErrorHandler, useClass: IonicErrorHandler}
   ]
 })

@@ -1,40 +1,3 @@
-<ion-footer>
-  <ion-grid>
-    <ion-row>
-      <ion-col col-4 class="headerCol">
-        <div text-center (click)="toggleView()">
-          <button ion-button icon-only large clear color="ice">
-            <div [hidden]="!mapView">
-              <ion-icon name="list"></ion-icon>
-              <!-- <div class='viewIconLabel'>
-                List View
-              </div> -->
-            </div>
-            <div [hidden]="mapView" >
-              <ion-icon name="map"></ion-icon>
-              <!-- <div class='viewIconLabel'>
-                Map View>
-              </div> -->
-            </div>
-          </button>
-        </div>
-      </ion-col>
-      <ion-col col-4>
-        <div>
-          <img src='img/U.png' class="mouthImage"/>
-        </div>
-      </ion-col>
-      <ion-col col-4>
-        <div menuToggle>
-          <button ion-button icon-only clear color="ice">
-            <ion-icon name="settings"></ion-icon>
-          </button>
-        </div>
-      </ion-col>
-    </ion-row>
-  </ion-grid>
-</ion-footer>
-
 <ion-content class="listContent">
   <ion-grid [hidden]="mapView">
     <ion-row text-wrap
@@ -63,8 +26,8 @@
         <div class="distance">
           {{bobaLocation.distance / 1609.3445 | number:'1.2-2'}} mi
         </div>
-        <button ion-button round icon-only (click)="launch(bobaLocation.launchMapsUrl, $event)" class="directionsButton">
-          <img src='img/DirectionsIconLightGray.png' class='directionsIcon' />
+        <button ion-button round (click)="launch(bobaLocation.launchMapsUrl, $event)" class="directionsButton">
+          <img src='img/DirectionsIconBlue.png' class='directionsIcon' />
         </button>
       </ion-col>
     </ion-row>
@@ -72,3 +35,44 @@
 
   <div id="map" [hidden]="!mapView"></div>
 </ion-content>
+
+<ion-footer>
+  <ion-grid>
+    <ion-row>
+      <ion-col col-4>
+        <div (click)="toggleView()">
+          <button ion-button icon-only clear color="ice">
+            <div [hidden]="!mapView">
+              <ion-icon name="list"></ion-icon>
+              <!-- <div class='viewIconLabel'>
+                List View
+              </div> -->
+            </div>
+            <div [hidden]="mapView" >
+              <ion-icon name="map"></ion-icon>
+              <!-- <div class='viewIconLabel'>
+                Map View>
+              </div> -->
+            </div>
+          </button>
+        </div>
+      </ion-col>
+      <ion-col col-4>
+        <div menuToggle>
+          <button ion-button icon-only clear color="ice">
+            <ion-icon name="options"></ion-icon>
+          </button>
+        </div>
+      </ion-col>
+      <ion-col col-4>
+        <div (click)="openInfo()">
+          <button ion-button icon-only large clear color="ice">
+            <ion-icon name="information"></ion-icon>
+          </button>
+        </div>
+        <!-- <span class="verticalAlignHelper"></span>
+        <img src='img/U.png' class="mouthImage"/> -->
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+</ion-footer>

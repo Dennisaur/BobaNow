@@ -1,34 +1,87 @@
 <ion-nav #menuContent [root]="rootPage"></ion-nav>
 
-<ion-menu side="right" [content]="menuContent">
+<ion-menu side="right" [content]="menuContent" swipeEnabled="false" (ionClose)="getSearchParams()">
   <ion-content>
-    <ion-list>
-      <ion-item>
-        <ion-label>Open Now</ion-label>
-        <ion-toggle [(ngModel)]="openNow" color="green"></ion-toggle>
-      </ion-item>
-      <ion-item>
-        <ion-select class="sortBy" [(ngModel)]="sortBy" interface=popover selectedText="Sort By" (ngModelChange)="refreshLocations()">
-          <ion-option value='best_match'>Best Match</ion-option>
-          <ion-option value='rating'>Rating</ion-option>
-          <ion-option value='distance'>Distance</ion-option>
-        </ion-select>
-      </ion-item>
-      <ion-item>
-        <ion-select class="distanceSelect" [(ngModel)]="distance" interface=popover selectedText="Distance" (ngModelChange)="refreshLocations()">
-          <ion-option value=1>1 mile</ion-option>
-          <ion-option value=5>5 miles</ion-option>
-          <ion-option value=10>10 miles</ion-option>
-          <ion-option value=25>25 miles</ion-option>
-        </ion-select>
-      </ion-item>
-    </ion-list>
-    <div class="poweredByYelp">
-      <div class="poweredByText">
-        Powered by
-      </div>
-      <img class="yelpTrademark" src="img/Yelp%20Logo%20Trademark/Screen/Yelp_trademark_RGB_outline.png"
-        (click)="launch('https://www.yelp.com')" />
+
+    <ion-item class="openNow">
+      <ion-label>Open Now</ion-label>
+      <ion-toggle [(ngModel)]="openNow" color="primary"></ion-toggle>
+    </ion-item>
+
+    <div class="menuOption">
+      <ion-label>
+        Results to display
+      </ion-label>
+      <ion-segment [(ngModel)]="limit">
+        <ion-segment-button value='5'>
+          5
+        </ion-segment-button>
+        <ion-segment-button value='10'>
+          10
+        </ion-segment-button>
+        <ion-segment-button value='20'>
+          20
+        </ion-segment-button>
+      </ion-segment>
+    </div>
+
+    <div class="menuOption">
+      <ion-label>
+        Sort by
+      </ion-label>
+      <ion-segment [(ngModel)]="sortBy">
+        <ion-segment-button value='best_match'>
+          Best
+        </ion-segment-button>
+        <ion-segment-button value='rating'>
+          Rating
+        </ion-segment-button>
+        <ion-segment-button value='distance'>
+          Distance
+        </ion-segment-button>
+      </ion-segment>
+    </div>
+
+    <div class="menuOption">
+      <ion-label>
+        <div text-left>
+          Distance
+        </div>
+        <div text-right style="padding-right: 15px">
+          {{radius}} mi
+        </div>
+      </ion-label>
+      <ion-segment [(ngModel)]="radius">
+        <ion-segment-button value='1'>
+          <ion-icon name="walk"></ion-icon>
+        </ion-segment-button>
+        <ion-segment-button value='2'>
+          <ion-icon name="bicycle"></ion-icon>
+        </ion-segment-button>
+        <ion-segment-button value='5'>
+          <ion-icon name="car"></ion-icon>
+        </ion-segment-button>
+        <ion-segment-button value='10'>
+          <ion-icon name="plane"></ion-icon>
+        </ion-segment-button>
+      </ion-segment>
+    </div>
+
+    <div class="menuFooter">
+      <ion-grid>
+        <ion-row>
+          <ion-col col-6>
+            <button ion-button menuClose>
+              Cancel
+            </button>
+          </ion-col>
+          <ion-col>
+            <button ion-button menuClose (click)="refreshLocations()">
+              Save
+            </button>
+          </ion-col>
+      </ion-row>
+    </ion-grid>
     </div>
   </ion-content>
 </ion-menu>

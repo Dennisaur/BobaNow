@@ -22,10 +22,10 @@ $font-path: "../assets/fonts";
 // The "primary" color is the only required color in the map.
 
 $colors: (
-  primary:    #488aff,
+  primary:    #916831,
   secondary:  #E3C483,
   danger:     #f53d3d,
-  light:      #f4f4f4,
+  light:      #FDF7EA,
   ice:        #DCFAFF,
   milkTeaXLt: #F1E3CE,
   milkTeaLt:  #E5D3BA,
@@ -36,8 +36,8 @@ $colors: (
 );
 
 
-$menu-width: 60%;
-$menu-small-width: 60%;
+$menu-width: 75%;
+$menu-small-width: 75%;
 
 // App iOS Variables
 // --------------------------------------------------
@@ -49,10 +49,10 @@ $menu-small-width: 60%;
 // App Material Design Variables
 // --------------------------------------------------
 // Material Design only Sass variables can go here
-$tabs-md-tab-icon-color: color($colors, ice, base);
-$tabs-md-tab-text-color: color($colors, ice, base);
-$tabs-md-tab-icon-color-active: color($colors, ice, base);
-$tabs-md-tab-text-color-active: color($colors, ice, base);
+// $tabs-md-tab-icon-color: color($colors, ice, base);
+// $tabs-md-tab-text-color: color($colors, ice, base);
+// $tabs-md-tab-icon-color-active: color($colors, ice, base);
+// $tabs-md-tab-text-color-active: color($colors, ice, base);
 
 // App Windows Variables
 // --------------------------------------------------

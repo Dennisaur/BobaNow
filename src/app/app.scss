@@ -24,30 +24,121 @@ ion-footer:before {
   content: "";
   position: absolute;
   z-index: -1;
+  top: 0px !important;
+  background-image: none !important;
+  left: 0px;
+  right: 0px;
+  border-top: 4px solid color($colors, milkTeaDk, base);
+}
+
+// Back to exit toast window
+.backToExit {
+  text-align: center;
+
+  .toast-container {
+    background: transparent;
+  }
+  .toast-wrapper {
+    width: 50%;
+    border-radius: 25px;
+    background-color: rgba(0, 0, 0, 0.75);
+  }
+  .toast-message {
+    padding: 0px;
+  }
+}
+
+// Split width for open now item
+ion-label div {
+  display: inline-block;
+  width: 50%;
+}
+
+ion-menu .scroll-content {
+  background-color: color($colors, milkTeaXLt, base);
+}
+ion-menu .scroll-content:before {
+  content: "";
+  position: absolute;
+  z-index: -1;
   top: 0px;
   left: 0px;
   right: 0px;
   bottom: 0px;
-  border-top: 4px solid color($colors, milkTeaDk, base);
 }
 
-ion-menu ion-select {
-  max-width: 100%;
-  width: 100% !important;
-  height: 100%;
+.openNow {
+  background-color: transparent;
+  margin: 4px 0px 4px 0px !important;
+}
+.openNow .item-inner {
+  border-color: color($colors, milkTeaXDk, base) !important;
+  padding-bottom: 4px;
 }
 
-.poweredByText {
-  display: inline-block;
-  padding-top: 5px;
+.menuOption {
+  padding: 4px 0px 4px 16px;
+  margin: 12px 4px;
+  font-size: 16px;
 }
-.yelpTrademark {
-  width: 100px;
-  height: auto;
-  vertical-align: bottom;
+.menuOption ion-label {
+  margin: 8px 0px !important;
 }
-.poweredByYelp {
+
+// About us overlay window
+.aboutWindow {
+  .alert-wrapper {
+    background-color: color($colors, milkTeaXLt, base);
+  }
+
+  .alert-head {
+    padding: 20px !important;
+  }
+
+  .alert-message {
+    padding: 0px 20px 0px 20px !important;
+    overflow: hidden;
+  }
+  .alert-message div {
+    padding-bottom: 4px;
+  }
+
+  .poweredByText {
+    display: inline-block;
+    vertical-align: middle;
+    padding-top: 5px;
+  }
+  .yelpTrademark {
+    width: auto;
+    height: 48px;
+    vertical-align: middle;
+  }
+
+  .companyInfo {
+    margin-top: 6px;
+  }
+  .companyInfo .companyName {
+    font-size: 16px;
+    font-weight: bold;
+  }
+  .companyInfo div {
+    padding: 4px 0px;
+  }
+
+}
+
+
+
+.menuFooter {
   position: absolute;
+  width: 100%;
   bottom: 0;
-  right: 0;
+}
+
+.menuFooter ion-col {
+  padding-top: 0px !important;
+}
+.menuFooter button {
+  width: 100%;
+  padding: 0px !important;
 }
