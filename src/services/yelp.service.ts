@@ -10,13 +10,14 @@ var useTestLocations = false;
 export class YelpService {
   private locations: any;
 
-  private clientId: string;
-  private clientSecret: string;
-  private accessToken: string;
+  private clientId: string = "OXIJVK12GNTdHlmKJR7xbg";
+  private clientSecret: string = "Kui2Eqxk9OOl7pGXH2yOKLkY32oAWWZRSYENc8hFA9jZbMTnTypcWUM46kzLTAcf";
+  private accessToken: string = "4CsWcVaxR1MdfR55e6vVjH0XRJNUkDsBHOc7HM073bhnnAbBr2f4-4QliYaYR4QabhRBhRiDfgYiLYYeN9m0scWLcvRAPZqfnC8c8RMe-qUGhmteiNkpx8anPFlDWXYx";
   private requestOptions: RequestOptions;
 
   private dayOfWeek: number;
 
+  private readyToSearch: boolean;
   private searchParams: any;
   private defaultSearchParams: any = {
         'term': "boba bubble tea",
@@ -28,7 +29,6 @@ export class YelpService {
         'sortBy': "best_match"
       };
 
-  private getRequests: number;
   private remainingBusinessesToCheck: number;
 
   private currentLocation: any;
@@ -40,11 +40,6 @@ export class YelpService {
   constructor (public http: Http,
                private geolocation: Geolocation,
                private storage: Storage) {
-    this.getRequests = 0;
-
-    this.clientId = "OXIJVK12GNTdHlmKJR7xbg";
-    this.clientSecret = "Kui2Eqxk9OOl7pGXH2yOKLkY32oAWWZRSYENc8hFA9jZbMTnTypcWUM46kzLTAcf"
-    this.accessToken = "4CsWcVaxR1MdfR55e6vVjH0XRJNUkDsBHOc7HM073bhnnAbBr2f4-4QliYaYR4QabhRBhRiDfgYiLYYeN9m0scWLcvRAPZqfnC8c8RMe-qUGhmteiNkpx8anPFlDWXYx";
 
     // Create observables for views to listen to update markers
     this.search = Observable.create(observer => {
@@ -54,55 +49,46 @@ export class YelpService {
       this.currentLocationObserver = observer;
     })
 
-    /*
-    let headers = new Headers({'Content-Type': "application/x-www-form-urlencoded"});
-    let options = new RequestOptions({headers: headers});
     let body = new FormData();
     body.append('grant_type', 'client_credentials');
     body.append('client_id', this.clientId);
     body.append('client_secret', this.clientSecret);
 
-    http.post("https://api.yelp.com/oauth2/token", body, options)
-    .subscribe(
-    data => {
-    console.log("post" + data.json());
-    }
+    http.post("https://api.yelp.com/oauth2/token", body)
+      .subscribe(
+        data => {
+          let headers = new Headers();
+          this.accessToken = data.json().access_token;
+          headers.append('Authorization', "Bearer " + this.accessToken);
+          this.requestOptions = new RequestOptions({headers: headers});
+        }
     );
-    */
-
-    let headers = new Headers();
-    headers.append('Authorization', "Bearer " + this.accessToken);
-    this.requestOptions = new RequestOptions({headers: headers});
 
     let date = new Date();
     this.dayOfWeek = date.getDay();
 
-    this.searchParams = this.defaultSearchParams;
     // Get values from storage
+    this.searchParams = this.defaultSearchParams;
     this.storage.get('radius')
       .then((radius) => {
-        console.log("radius " + this.searchParams.radius + " to " + radius);
         if (radius != null) {
           this.searchParams.radius = radius;
         }
       });
     this.storage.get('limit')
       .then((limit) => {
-        console.log("limit " + this.searchParams.limit + " to " + limit);
         if (limit != null) {
           this.searchParams.limit = limit;
         }
       });
     this.storage.get('openNow')
       .then((openNow) => {
-        console.log("openNow " + this.searchParams.openNow + " to " + openNow);
         if (openNow != null) {
           this.searchParams.openNow = openNow;
         }
       });
     this.storage.get('sortBy')
       .then((sortBy) => {
-        console.log("sortBy " + this.searchParams.sortBy + " to " + sortBy);
         if (sortBy != null) {
           this.searchParams.sortBy = sortBy;
         }
@@ -119,6 +105,9 @@ export class YelpService {
   }
 
   // Getter functions
+  getReadyToSearch() {
+    return this.readyToSearch;
+  }
   getRadius() {
     return this.searchParams.radius;
   }
@@ -147,11 +136,11 @@ export class YelpService {
   // Get current location and center map to current position
   locateUser() {
     let getPosition = this.geolocation.getCurrentPosition();
-
     getPosition.then(
         (location) => {
           this.searchParams.latitude = location.coords.latitude;
           this.searchParams.longitude = location.coords.longitude;
+          this.readyToSearch = true;
           this.currentLocationObserver.next(location);
         }
       )
@@ -179,8 +168,6 @@ export class YelpService {
       return this.getTestResults();
     }
 
-    console.log(this.searchParams);
-
     // Generate get request URL
     let getRequestUrl = "https://api.yelp.com/v3/businesses/search?";
     let term = "term=" + this.searchParams.term;
@@ -198,9 +185,6 @@ export class YelpService {
       + limit + "&"
       + openNow + "&"
       + sortBy;
-
-    this.getRequests++;
-    console.log("Get requests: " + this.getRequests + " search");
 
     let observableGetRequest = this.http.get(getRequestUrl, this.requestOptions).map(res => res.json());
 
@@ -224,8 +208,6 @@ export class YelpService {
 
   // Separate get request to received specific hours for a given business location
   getMoreInfo(location: any) {
-    this.getRequests++;
-    console.log("Get requests: " + this.getRequests + " hours");
 
     let getRequestUrl = "https://api.yelp.com/v3/businesses/" + location.id;
     this.http.get(getRequestUrl, this.requestOptions).map(res => res.json())
@@ -252,6 +234,11 @@ export class YelpService {
           },
           (err) => {
             console.log("Error getting hours from " + location.id);
+            location.hasHours = false;
+            this.remainingBusinessesToCheck--;
+            if (this.remainingBusinessesToCheck <= 0) {
+              this.searchObserver.next(this.locations);
+            }
           }
         );
   }
@@ -274,8 +261,7 @@ export class YelpService {
   // For testing without using calling Yelp API
   getTestResults() {
     let observableGetRequest = this.http.get("./testResults.json").map(res => res.json());
-    console.log("gettestresults");
-    console.log(observableGetRequest);
+
     observableGetRequest.subscribe(
       (data) => {
         this.locations = data.businesses;

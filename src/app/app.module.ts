@@ -14,8 +14,6 @@ import { SplashScreen } from '@ionic-native/splash-screen';
 
 import { Geolocation } from '@ionic-native/geolocation';
 import { AgmCoreModule } from '@agm/core';
-import { GoogleMaps } from '@ionic-native/google-maps';
-import { LaunchNavigator } from '@ionic-native/launch-navigator';
 
 @NgModule({
   declarations: [
@@ -42,10 +40,8 @@ import { LaunchNavigator } from '@ionic-native/launch-navigator';
     StatusBar,
     SplashScreen,
     Geolocation,
-    GoogleMaps,
     YelpService,
     Storage,
-    LaunchNavigator,
     AppVersion,
     {provide: ErrorHandler, useClass: IonicErrorHandler}
   ]

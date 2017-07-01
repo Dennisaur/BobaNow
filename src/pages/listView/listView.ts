@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { NavController, Platform, MenuController, AlertController } from 'ionic-angular';
+import { NavController, Platform, MenuController, AlertController, LoadingController } from 'ionic-angular';
 import { Http } from '@angular/http';
 import { AppVersion } from '@ionic-native/app-version';
 import 'rxjs/add/operator/map';
@@ -8,7 +8,6 @@ import { YelpService } from '../../services/yelp.service';
 
 declare var cordova;
 declare var google;
-var consoleLogging = true;
 
 @Component({
   selector: 'page-listView',
@@ -23,7 +22,7 @@ export class ListViewPage {
 
   mapView: boolean = true;
   map: any;
-  currentLocMarker: any;
+  currentLocationMarker: any;
   markers: any = [];
   infoWindow: any;
   infoWindowClickListener: any;
@@ -31,12 +30,18 @@ export class ListViewPage {
   markersAdded: boolean;
 
   menuContent: any;
+  locationAvailable: boolean;
+  locationEnabled: boolean;
+  locationPermissionGranted: boolean;
+  task: any;
+  resume: any;
 
   constructor(public navCtrl: NavController,
               public http: Http,
               public platform: Platform,
               public menuController: MenuController,
               public alertController: AlertController,
+              public loadingController: LoadingController,
               private appVersion: AppVersion,
               private yelpService: YelpService) {
 
@@ -47,29 +52,108 @@ export class ListViewPage {
     this.platform.ready()
       .then(
         () => {
-          // Load map before adding markers
-          this.loadMap();
-
-          // Subscribe to observable to add current location marker
-          this.yelpService.currentLocationUpdate()
-            .subscribe(
-              (location) => {
-                this.addCurrentLocationMarker();
-              }
-            )
-          // Subscribe to observable to get search locations
-          this.yelpService.searchUpdates()
-            .subscribe(
-              (locations) => {
-                this.bobaLocations = locations;
-                this.addMarkersToMap();
-                if (!this.mapView) {
-                  this.needUpdateCamera = true;
-                }
-              }
-            );
+          this.locationPermissions();
+          this.task = setInterval(() => {
+            this.checkLocationEnabled();
+          }, 1000);
         }
       );
+  }
+
+  // Load map and subscribe to observables from Yelp service
+  initializeMapAndMarkers() {
+    if (!this.mapReady) {
+      // Load map before adding markers
+      this.loadMap();
+
+      // Subscribe to observable to add current location marker
+      this.yelpService.currentLocationUpdate()
+        .subscribe(
+          (location) => {
+            this.addCurrentLocationMarker();
+          }
+        )
+      // Subscribe to observable to get search locations
+      this.yelpService.searchUpdates()
+        .subscribe(
+          (locations) => {
+            this.bobaLocations = locations;
+            this.addMarkersToMap();
+            if (!this.mapView) {
+              this.needUpdateCamera = true;
+            }
+          }
+        );
+    }
+  }
+
+  // Check if location is available before initializing map and markers
+  checkLocationAvailable() {
+    cordova.plugins.diagnostic.isLocationAvailable(function(available) {
+      this.locationAvailable = available;
+      if (available) {
+        let loading = this.loadingController.create({
+          content: "Finding boba..."
+        });
+        loading.present();
+        clearInterval(this.task);
+
+        this.yelpService.locateUser()
+          .then(
+            (location) => {
+              this.yelpService.findLocations()
+                .subscribe(
+                  (data) => {
+                    loading.dismiss();
+                  }
+                );
+            }
+          );
+
+        this.initializeMapAndMarkers();
+      }
+    }.bind(this), function(error) {
+      console.log("The following error occurred: " + error);
+    });
+  }
+
+  // Request location permission
+  locationPermissions() {
+    cordova.plugins.diagnostic.requestLocationAuthorization(function(status){
+      switch(status){
+          case cordova.plugins.diagnostic.permissionStatus.NOT_REQUESTED:
+          case cordova.plugins.diagnostic.permissionStatus.DENIED:
+              this.locationPermissionGranted = false;
+              break;
+          case cordova.plugins.diagnostic.permissionStatus.GRANTED:
+          case cordova.plugins.diagnostic.permissionStatus.GRANTED_WHEN_IN_USE:
+              this.locationPermissionGranted = true;
+              this.checkLocationAvailable();
+              break;
+      }
+    }.bind(this), function(error){
+      console.error("The following error occurred: " + error);
+    });
+  }
+
+  // Checks if gps location is enabled
+  checkLocationEnabled() {
+    cordova.plugins.diagnostic.getLocationMode(function(locationMode) {
+      if (locationMode == cordova.plugins.diagnostic.locationMode.LOCATION_OFF) {
+        this.locationEnabled = false;
+      }
+      else {
+        this.locationEnabled = true;
+        this.checkLocationAvailable();
+      }
+    }.bind(this),function(error){
+      console.error("The following error occurred: " + error);
+    });
+  }
+
+  // Goes to location settings, then checks if location is available when resuming app
+  locationSettings() {
+    cordova.plugins.diagnostic.switchToLocationSettings();
   }
 
   // Creates map using google maps API
@@ -91,33 +175,31 @@ export class ListViewPage {
     });
 
     this.addCurrentLocationControl();
-    console.log("loading map now " + Date.now().toLocaleString());
 
+    // Create and add current location marker to map
     let icon = {
-      url: "img/CurrentLocation3.png",
+      url: "img/CurrentLocation.png",
       scaledSize: new google.maps.Size(36, 36),
       origin: new google.maps.Point(0, 0),
       anchor: new google.maps.Point(0, 0)
     }
-
-    // Add marker to map
-    this.currentLocMarker = new google.maps.Marker({
+    this.currentLocationMarker = new google.maps.Marker({
       'map': this.map,
       'icon': icon
     });
 
     // Create info window for marker information
     //*todo fix resizing issue
-    this.infoWindow = new google.maps.InfoWindow({maxWidth: 230});
+    this.infoWindow = new google.maps.InfoWindow({
+      maxWidth: 230,
+      disableAutoPan: true
+    });
     google.maps.event.addListener(this.infoWindow, 'domready', function() {
       let element = document.getElementsByClassName('gm-style-iw')[0];
       element.parentElement.className += ' custom-iw';
     });
 
     this.mapReady = true;
-    if (consoleLogging) {
-      console.log("Map is ready");
-    }
 
     // Add event listener to close infoWindow when map is clicked
     google.maps.event.addListener(this.map, 'click', function(infoWindow) {
@@ -134,10 +216,6 @@ export class ListViewPage {
       return;
     }
 
-    if (consoleLogging) {
-      console.log("Updating camera");
-    }
-
     let bounds = new google.maps.LatLngBounds();
 
     // Add current location to bounds
@@ -151,49 +229,39 @@ export class ListViewPage {
 
     // Move camera to fit bounds
     //*todo get panToBounds working
-    this.map.fitBounds(bounds, 25);
+    this.map.fitBounds(bounds, 10);
     this.needUpdateCamera = false;
   }
 
+  // Creates control to center on current location in map
   addCurrentLocationControl() {
     let controlDiv = document.createElement('div');
 
     controlDiv.className = "getCurrentLocation";
     controlDiv.innerHTML = `<img src='img/GetCurrentLocation.png' />`;
 
+    // Close info window and pan to current position when clicked
     controlDiv.addEventListener('click', function() {
       this.yelpService.locateUser()
         .then(
           (location) => {
+            this.infoWindow.close();
+
             let position = new google.maps.LatLng(location.coords.latitude, location.coords.longitude);
             this.map.panTo(position);
           }
         );
     }.bind(this));
 
+    // Add the control element to map
     this.map.controls[google.maps.ControlPosition.RIGHT_TOP].push(controlDiv);
   }
 
   // Add marker for current location
   addCurrentLocationMarker() {
-    if (consoleLogging) {
-      console.log("Adding current location marker " + this.yelpService.getLat() + ", " + this.yelpService.getLng());
-    }
-
     // Update current location marker position
     let position = new google.maps.LatLng(this.yelpService.getLat(), this.yelpService.getLng());
-    this.currentLocMarker.setPosition(position);
-
-    // Attach info window for current location
-    //*todo Infowindow sizing
-    google.maps.event.addListener(this.currentLocMarker, 'click', function(self, marker) {
-      return function() {
-        let content = "Current location";
-        self.infoWindow.setContent(content);
-        self.infoWindow.open(self.map, marker);
-        self.map.panTo(marker.position);
-      }
-    }(this, this.currentLocMarker));
+    this.currentLocationMarker.setPosition(position);
   }
 
   // Clear current markers and add new markers to map using list of businesses returned from search
@@ -203,10 +271,6 @@ export class ListViewPage {
       return;
     }
 
-    if (consoleLogging) {
-      console.log("Adding location markers");
-      console.log(this.bobaLocations);
-    }
     this.clearMarkers();
 
     // Iterate through and create a marker for each location
@@ -225,8 +289,10 @@ export class ListViewPage {
       google.maps.event.addListener(marker, 'click', function(self, marker, location) {
         return function() {
           let content = self.createInfoWindowContent(location);
-          self.infoWindow.open(self.map, marker);
+          self.map.panTo(marker.position);
           self.infoWindow.setContent(content);
+          self.infoWindow.open(self.map, marker);
+          self.map.panBy(-20, -60);
         }
       }(this, marker, location));
 
@@ -249,9 +315,10 @@ export class ListViewPage {
   }
 
   // Returns HTML content string for info window using a given location
-  //*todo Improve styling
   createInfoWindowContent(location) {
-    let leftContent = "<div class='name'><b>" + location.name + "</b></div>";
+    let leftContent = "<div class='name'>" + location.name + "</div>";
+    // Address
+    leftContent += "<div class='address'>" + location.location.address1 + ", " + location.location.city + "</div>";
     // Don't display this div if invalid open/close time
     let openTimeString = location.openTime.toLocaleTimeString('en-US', {hour: 'numeric', minute: '2-digit'});
     let closeTimeString = location.closeTime.toLocaleTimeString('en-US', {hour: 'numeric', minute: '2-digit'});
@@ -259,7 +326,7 @@ export class ListViewPage {
       leftContent += "<div class='hours'>Hours: " + openTimeString + " - " + closeTimeString + "</div>";
     }
     // Rating and review count
-    leftContent += "<div class='ratings'><img src=\"" + location.ratingImage + "\" />&nbsp;" + location.review_count + " reviews</div>";
+    leftContent += "<div class='ratings'><img src=\"" + location.ratingImage + "\" /><div>&nbsp;" + location.review_count + " reviews</div></div>";
     // Wrap in leftContent div
     leftContent = "<div class='leftContent'>" + leftContent + "</div>";
 
@@ -274,13 +341,18 @@ export class ListViewPage {
     return "<div class='infoWindowContent' onclick=\"location.href='" + location.url + "'\">" + leftContent + rightContent + "</div>";
   }
 
+  getInfoWindowOpen() {
+    var map = this.infoWindow.getMap();
+    return (map !== null && typeof map !== "undefined");
+  }
+
+  closeInfoWindow() {
+    this.infoWindow.close();
+  }
 
   // Toggles between list and map view
   toggleView() {
     this.mapView = !this.mapView;
-    if (consoleLogging) {
-      console.log("Toggle view");
-    }
 
     // Update camera in case search was changed
     if (this.needUpdateCamera) {

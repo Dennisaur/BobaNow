@@ -3,6 +3,7 @@ page-listView {
     background-color: color($colors, milkTea, base);
   }
 
+
   .locationRow {
     background-color: color($colors, milkTeaXLt, base);
     border: 4px solid color($colors, dark, base);
@@ -11,7 +12,6 @@ page-listView {
     padding: 4px;
     margin: 4px;
   }
-
   // Add padding for each line in location info
   .locationInfo div {
     font-size: 11px;
@@ -26,14 +26,12 @@ page-listView {
   }
   // Add emphasis for business name
   .locationInfo .locationName {
-    font-size: 13px;
+    font-size: 14px;
     font-weight: bold;
   }
-
   .reviewCount {
     display: inline-block;
   }
-
   .distance {
     font-size: 11px;
     margin-bottom: 2px;
@@ -43,14 +41,12 @@ page-listView {
     height: 35px;
     background-color: white;
     padding: 4px !important;
-    // box-shadow: 0 0 5px black,
-    //            0 0 10px black;
   }
   .directionsIcon {
     width: 100%;
     height: 100%;
   }
-
+  // Remove extra padding from navigation button
   .scroll-content ion-col:last-child{
     padding-bottom: 0px;
   }
@@ -66,16 +62,11 @@ page-listView {
     border-radius: 100%;
     margin: auto;
   }
-  // ion-footer ion-col:nth-child(2) > div {
-  //   background-color: transparent;
-  // }
-
   ion-footer ion-col button {
     height: 100% !important;
     width: 100% !important;
     margin: 0px !important;
   }
-
   ion-footer ion-col img {
     max-height: 36px;
     max-width: 36px;
@@ -88,14 +79,35 @@ page-listView {
     vertical-align: middle;
   }
 
-  // Hide x in infoWindow
-  .gm-style-iw + div {
-    display: none;
+  .needLocationDiv {
+    position: relative;
+    background-color: color($colors, milkTeaXLt, base);
+    width: 100%;
+    height: 100%;
   }
-  #map {
-    height: 99.5%;
+  .needLocation {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 75%;
+    transform: translate(-50%, -50%);
+    text-align: center;
+  }
+  .needLocationText {
+    margin-bottom: 12px;
+    font-size: 20px;
+  }
+  .needLocation .greenLightText {
+    color: green;
+    font-weight: bold;
   }
 
+  #map {
+    height: 99.5%;
+    background-color: color($colors, milkTea, base);
+  }
+
+  // Current location control
   .getCurrentLocation {
     width: 36px;
     height: 36px;
@@ -116,12 +128,24 @@ page-listView {
     padding-left: 10px;
     padding-right: 10px;
 
-    div {
-      padding-bottom: 2px;
-    }
     .leftContent {
       float: left;
       width: 170px;
+      font-size: 11px;
+    }
+    .leftContent > div {
+      padding-bottom: 4px;
+    }
+    .leftContent .name {
+      font-size: 13px;
+      font-weight: bold;
+    }
+    .ratings img,div {
+      vertical-align: middle;
+      display: inline-block;
+    }
+    .ratings div {
+      padding-top: 2px;
     }
     .rightContent {
       float: right;
@@ -129,14 +153,18 @@ page-listView {
     }
     .rightContent div {
       width: 100%;
+      padding-top: 2px;
     }
     .navigationButton {
       width: 36px;
       height: 36px;
       padding: 4px;
+      margin-top: 4px;
       background-color: white;
       border-radius: 100%;
-      box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.14), 0 3px 1px -2px rgba(0, 0, 0, 0.2), 0 1px 5px 0 rgba(0, 0, 0, 0.12);
+      box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.14),
+                  0 3px 1px -2px rgba(0, 0, 0, 0.2),
+                  0 1px 5px 0 rgba(0, 0, 0, 0.12);
       transition: box-shadow 300ms cubic-bezier(0.4, 0, 0.2, 1),
                   background-color 300ms cubic-bezier(0.4, 0, 0.2, 1),
                   color 300ms cubic-bezier(0.4, 0, 0.2, 1);
@@ -145,7 +173,16 @@ page-listView {
 
 
   // See https://stackoverflow.com/questions/28589361/google-maps-infowindow-width-is-overwritten-even-when-set-correctly
-
+  .gm-style div[style*="cursor: default;"] {
+    visibility: hidden;
+  }
+  .gm-style div[style*="cursor: default;"].custom-iw {
+    visibility: visible;
+  }
+  // Hide x in infoWindow
+  .gm-style-iw + div {
+    display: none;
+  }
   // Remove right margin from info window
   .custom-iw .gm-style-iw {
     top:10px !important;
@@ -162,7 +199,6 @@ page-listView {
       box-shadow: rgba(0, 0, 0, 0.6) 0px 1px 6px;
       z-index:-1 !important;
   }
-
   .custom-iw .gm-style-iw,
   .custom-iw .gm-style-iw>div,
   .custom-iw .gm-style-iw>div>div {
@@ -174,8 +210,6 @@ page-listView {
   .custom-iw>div:first-child>div:last-child {
       width:230px !important;
   }
-
-
   /** set here the desired background-color **/
   .custom-iw,
   .custom-iw>div:first-child>div:nth-child(n-1)>div>div,
@@ -185,7 +219,6 @@ page-listView {
   .custom-iw .gm-style-iw>div>div {
     background-color: color($colors, light, base) !important;
   }
-
   /** close-button(note that there may be a scrollbar) **/
   /*
   .custom-iw>div:last-child {
@@ -193,6 +226,5 @@ page-listView {
       right:0 !important;
   }
   */
-
 
 }

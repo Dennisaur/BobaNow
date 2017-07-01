@@ -1,5 +1,5 @@
-<ion-content class="listContent">
-  <ion-grid [hidden]="mapView">
+<ion-content>
+  <ion-grid [hidden]="mapView || !locationAvailable">
     <ion-row text-wrap
              *ngFor="let bobaLocation of bobaLocations; let i = index"
              (click)="launch(bobaLocation.url)"
@@ -33,7 +33,26 @@
     </ion-row>
   </ion-grid>
 
-  <div id="map" [hidden]="!mapView"></div>
+  <div id="map" [hidden]="!mapView || !locationAvailable"></div>
+  <div class="needLocationDiv" [hidden]="locationAvailable">
+    <div class="needLocation">
+      <div class="needLocationText">
+        We can't find boba near you if we don't know where you are!
+      </div>
+      <div [hidden]="locationPermissionGranted">
+        <button ion-button (click)="locationPermissions()">
+          <div >
+            Request permission
+          </div>
+        </button>
+      </div>
+      <div [hidden]="locationEnabled">
+        <button ion-button (click)="locationSettings()">
+          Turn on location
+        </button>
+      </div>
+    </div>
+  </div>
 </ion-content>
 
 <ion-footer>
@@ -41,37 +60,29 @@
     <ion-row>
       <ion-col col-4>
         <div (click)="toggleView()">
-          <button ion-button icon-only clear color="ice">
+          <button ion-button icon-only clear color="light">
             <div [hidden]="!mapView">
               <ion-icon name="list"></ion-icon>
-              <!-- <div class='viewIconLabel'>
-                List View
-              </div> -->
             </div>
             <div [hidden]="mapView" >
               <ion-icon name="map"></ion-icon>
-              <!-- <div class='viewIconLabel'>
-                Map View>
-              </div> -->
             </div>
           </button>
         </div>
       </ion-col>
       <ion-col col-4>
         <div menuToggle>
-          <button ion-button icon-only clear color="ice">
+          <button ion-button icon-only clear color="light">
             <ion-icon name="options"></ion-icon>
           </button>
         </div>
       </ion-col>
       <ion-col col-4>
         <div (click)="openInfo()">
-          <button ion-button icon-only large clear color="ice">
+          <button ion-button icon-only large clear color="light">
             <ion-icon name="information"></ion-icon>
           </button>
         </div>
-        <!-- <span class="verticalAlignHelper"></span>
-        <img src='img/U.png' class="mouthImage"/> -->
       </ion-col>
     </ion-row>
   </ion-grid>

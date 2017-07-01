@@ -31,28 +31,13 @@ export class MyApp {
               public menuController: MenuController,
               private yelpService: YelpService) {
 
-    console.log("Constructor");
     this.lastBack = Date.now();
     platform.ready().then(() => {
-      console.log("Platform ready");
       // Okay, so the platform is ready and our plugins are available.
       // Here you can do any higher level native things you might need.
       statusBar.styleDefault();
-
-      yelpService.locateUser()
-        .then(
-          (location) => {
-            console.log("Located user");
-            yelpService.findLocations()
-              .subscribe(
-                data => {
-                  console.log("Found locations, hiding splash screen");
-                  this.getSearchParams();
-                  splashScreen.hide();
-                }
-              );
-          }
-        );
+      splashScreen.hide();
+      this.getSearchParams();
 
       // Back button twice to exit
       platform.registerBackButtonAction(() => {
@@ -93,11 +78,8 @@ export class MyApp {
           platform.exitApp();
         }
         this.lastBack = Date.now();
-
       });
     });
-
-
   }
 
   // Get search params
@@ -106,16 +88,10 @@ export class MyApp {
     this.limit = this.yelpService.getLimit().toString();
     this.openNow = this.yelpService.getOpenNow();
     this.radius = this.yelpService.getRadius().toString();
-
-    console.log(this.sortBy + " " + this.limit + " " + this.openNow + " " + this.radius);
   }
 
   // Updates search params in service and updates new locations
   refreshLocations() {
-    let loading = this.loadingController.create({
-      content: "Finding boba..."
-    });
-    loading.present();
 
     this.yelpService.updateSearchParams({
       openNow: this.openNow,
@@ -124,12 +100,19 @@ export class MyApp {
       limit: Number(this.limit)
     });
 
-    this.yelpService.findLocations()
-      .subscribe(
-          data => {
-            loading.dismiss();
-          }
-      );
+    // Prevent searching for locations when Yelp service not ready
+    if (this.yelpService.getReadyToSearch()) {
+      let loading = this.loadingController.create({
+        content: "Finding boba..."
+      });
+      loading.present();
+      this.yelpService.findLocations()
+        .subscribe(
+            data => {
+              loading.dismiss();
+            }
+        );
+    }
   }
 
   // Function to use InAppBrowser to navigate to given URL
