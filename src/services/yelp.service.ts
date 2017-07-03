@@ -4,7 +4,7 @@ import { Geolocation } from '@ionic-native/geolocation';
 import { Http, Headers, RequestOptions } from '@angular/http';
 import { Observable } from 'rxjs/Observable';
 
-var useTestLocations = true;
+var useTestLocations = false;
 
 @Injectable()
 export class YelpService {
@@ -44,7 +44,6 @@ export class YelpService {
     // Create observables for views to listen to update markers
     this.search = Observable.create(observer => {
       this.searchObserver = observer;
-      this.searchObserver.next(this.locations);
     });
     this.currentLocation = Observable.create(observer => {
       this.currentLocationObserver = observer;

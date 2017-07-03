@@ -101,7 +101,6 @@ export class MyApp {
 
   // Updates search params in service and updates new locations
   refreshLocations() {
-
     this.yelpService.updateSearchParams({
       openNow: this.openNow,
       radius: Number(this.radius),
@@ -112,7 +111,7 @@ export class MyApp {
     // Prevent searching for locations when Yelp service not ready
     if (this.yelpService.getReadyToSearch()) {
       let loading = this.loadingController.create({
-        content: "Finding boba..."
+        content: "Searching for boba..."
       });
       loading.present();
       this.yelpService.findLocations()
@@ -138,11 +137,13 @@ export class MyApp {
     );
   }
 
+  // Changes global theme
   changeTheme(theme: string) {
     this.theme = theme;
     this.global.set('theme', this.theme);
   }
 
+  // Resets theme to what's saved in storage
   resetTheme() {
     this.settingsService.getTheme()
       .then(
@@ -152,6 +153,7 @@ export class MyApp {
       );
   }
 
+  // Saves theme to storage
   saveTheme() {
     this.settingsService.setTheme(this.global.get('theme'));
   }

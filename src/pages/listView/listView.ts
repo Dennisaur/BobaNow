@@ -21,7 +21,7 @@ export class ListViewPage {
   waitingForLocations: boolean = false;
   needUpdateCamera: boolean;
 
-  mapView: boolean = false;
+  mapView: boolean = true;
   map: any;
   currentLocationMarker: any;
   markers: any = [];
@@ -54,6 +54,7 @@ export class ListViewPage {
     this.platform.ready()
       .then(
         () => {
+          // For testing
           if (this.yelpService.isTesting()) {
             this.locationAvailable = true;
             this.locationEnabled = true;
@@ -108,7 +109,7 @@ export class ListViewPage {
       this.locationAvailable = available;
       if (available) {
         let loading = this.loadingController.create({
-          content: "Finding boba..."
+          content: "Searching for boba..."
         });
         loading.present();
         clearInterval(this.task);
@@ -290,6 +291,9 @@ export class ListViewPage {
 
     // Iterate through and create a marker for each location
     let count = 1;
+    if (this.bobaLocations.length == 0) {
+      // Oh noo! None nearby
+    }
     for (let location of this.bobaLocations) {
       let position = new google.maps.LatLng(location.coordinates.latitude, location.coordinates.longitude);
 

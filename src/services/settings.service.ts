@@ -12,7 +12,7 @@ export class SettingsService {
   getTheme() {
     return this.storage.get('theme')
       .then((theme) => {
-        this.theme = theme;
+        this.theme = (theme == null) ? "theme-milkTea" : theme;
         return this.theme;
       });
   }
