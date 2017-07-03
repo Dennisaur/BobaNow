@@ -23,7 +23,7 @@ $font-path: "../assets/fonts";
 
 $colors: (
   primary:    #B89466,  // Standard UI buttons/etc
-  background:  #D8C1A2,  // Background color
+  background: #D8C1A2,  // Background color
   light:      #F1E3CE,  // About us title bg
   xLight:     #FBF9F2,  // List item bg
   dark:       #916831,  // Borders
@@ -63,6 +63,7 @@ $menu-small-width: 75%;
 @import "ionic.theme.default";
 
 @import "./taro";
+@import "./honeydew";
 
 
 // Ionicons

@@ -134,36 +134,36 @@ export class ListViewPage {
 
   // Request location permission
   locationPermissions() {
-    // cordova.plugins.diagnostic.requestLocationAuthorization(function(status){
-    //   switch(status){
-    //       case cordova.plugins.diagnostic.permissionStatus.NOT_REQUESTED:
-    //       case cordova.plugins.diagnostic.permissionStatus.DENIED:
-    //           this.locationPermissionGranted = false;
-    //           break;
-    //       case cordova.plugins.diagnostic.permissionStatus.GRANTED:
-    //       case cordova.plugins.diagnostic.permissionStatus.GRANTED_WHEN_IN_USE:
-    //           this.locationPermissionGranted = true;
-    //           this.checkLocationAvailable();
-    //           break;
-    //   }
-    // }.bind(this), function(error){
-    //   console.error("The following error occurred: " + error);
-    // });
+    cordova.plugins.diagnostic.requestLocationAuthorization(function(status){
+      switch(status){
+          case cordova.plugins.diagnostic.permissionStatus.NOT_REQUESTED:
+          case cordova.plugins.diagnostic.permissionStatus.DENIED:
+              this.locationPermissionGranted = false;
+              break;
+          case cordova.plugins.diagnostic.permissionStatus.GRANTED:
+          case cordova.plugins.diagnostic.permissionStatus.GRANTED_WHEN_IN_USE:
+              this.locationPermissionGranted = true;
+              this.checkLocationAvailable();
+              break;
+      }
+    }.bind(this), function(error){
+      console.error("The following error occurred: " + error);
+    });
   }
 
   // Checks if gps location is enabled
   checkLocationEnabled() {
-    // cordova.plugins.diagnostic.getLocationMode(function(locationMode) {
-    //   if (locationMode == cordova.plugins.diagnostic.locationMode.LOCATION_OFF) {
-    //     this.locationEnabled = false;
-    //   }
-    //   else {
-    //     this.locationEnabled = true;
-    //     this.checkLocationAvailable();
-    //   }
-    // }.bind(this),function(error){
-    //   console.error("The following error occurred: " + error);
-    // });
+    cordova.plugins.diagnostic.getLocationMode(function(locationMode) {
+      if (locationMode == cordova.plugins.diagnostic.locationMode.LOCATION_OFF) {
+        this.locationEnabled = false;
+      }
+      else {
+        this.locationEnabled = true;
+        this.checkLocationAvailable();
+      }
+    }.bind(this),function(error){
+      console.error("The following error occurred: " + error);
+    });
   }
 
   // Goes to location settings, then checks if location is available when resuming app

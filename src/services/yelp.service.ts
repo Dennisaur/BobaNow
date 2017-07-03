@@ -4,7 +4,7 @@ import { Geolocation } from '@ionic-native/geolocation';
 import { Http, Headers, RequestOptions } from '@angular/http';
 import { Observable } from 'rxjs/Observable';
 
-var useTestLocations = true;
+var useTestLocations = false;
 
 @Injectable()
 export class YelpService {

@@ -1,0 +1,113 @@
+$honeydew: (
+  primary:    #43BD24,  // Standard UI buttons/etc
+  background: #C0F7B2,  // Background color
+  light:      #C4EDB9,  // About us title bg
+  xLight:     #E8F5E4,  // List item bg
+  dark:       #5BC341,  // Borders
+
+  danger:     #f53d3d,
+);
+
+.theme-honeydew {
+  ion-footer {
+    background-color: color($honeydew, xLight, base);
+    border-top: 4px solid color($honeydew, dark, base);
+  }
+  // Second border
+  ion-footer:before {
+    border-top: 4px solid color($honeydew, background, base);
+  }
+
+  ion-menu {
+    .scroll-content {
+      background-color: color($honeydew, xLight, base);
+    }
+    .openNow .item-inner {
+      border-color: color($honeydew, dark, base) !important;
+      padding-bottom: 4px;
+    }
+  }
+
+  page-listView {
+    .scroll-content {
+      background-color: color($honeydew, background, base);
+    }
+
+    .locationRow {
+      background-color: color($honeydew, xLight, base);
+      border: 4px solid color($honeydew, dark, base);
+    }
+
+    .needLocationDiv {
+      background-color: color($honeydew, xLight, base);
+    }
+
+    #map {
+      background-color: color($honeydew, primary, base);
+    }
+
+    /** Info window set here the desired background-color **/
+    .custom-iw,
+    .custom-iw>div:first-child>div:nth-child(n-1)>div>div,
+    .custom-iw>div>div:last-child,
+    .custom-iw .gm-style-iw,
+    .custom-iw .gm-style-iw>div,
+    .custom-iw .gm-style-iw>div>div {
+      background-color: color($honeydew, xLight, base) !important;
+    }
+  }
+
+  // Button
+  .button-md:not(.button-clear) {
+    background-color: color($honeydew, primary, base);
+  }
+  .button-md:not(.button-clear).activated {
+    background-color: color-shade(color($honeydew, primary, base));
+  }
+  // Toggle
+  .toggle-checked {
+    .toggle-icon {
+     background-color: lighten(color($honeydew, primary, base), 15%) !important;
+   }
+   .toggle-inner {
+     background-color: color($honeydew, primary, base) !important;
+   }
+  }
+  // Segment
+  .segment-button {
+    color: color($honeydew, primary, base) !important;
+  }
+  .segment-button.segment-activated,.activated {
+    border-color: color($honeydew, primary, base) !important;
+  }
+  // Radio-button
+  .item-radio-checked {
+    .label {
+      color: color($honeydew, primary, base);
+    }
+    .radio-checked {
+      color: color($honeydew, primary, base);
+      border-color: color($honeydew, primary, base);
+      .radio-inner {
+        background-color: color($honeydew, primary, base);
+      }
+    }
+  }
+}
+
+// About window is separate from other element content
+.theme-honeydew.aboutWindow {
+  .alert-head {
+    background-color: color($honeydew, light, base);
+    border-bottom: 4px solid color($honeydew, dark, base);
+  }
+  .alert-wrapper {
+    background-color: color($honeydew, xLight, base);
+  }
+  a {
+    color: color($honeydew, primary, base);
+  }
+  .button-inner {
+    color: color($honeydew, primary, base);
+  }
+}

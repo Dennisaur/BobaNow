@@ -1,10 +1,9 @@
-
 $taro: (
-  primary:    #E1B9E1,  // Standard UI buttons/etc
-  background:  #EDC3ED,  // Background color
-  light:      #E7CBE7,  // About us title bg
-  xLight:     #EFDFEF,  // List item bg
-  dark:       #C344C3,  // Borders
+  primary:    #927DAF,  // Standard UI buttons/etc
+  background: #BEB4CD,  // Background color
+  light:      #CBC3D5,  // About us title bg
+  xLight:     #E4E2E7,  // List item bg
+  dark:       #857599,  // Borders
 
   danger:     #f53d3d,
 );
@@ -80,6 +79,19 @@ $taro: (
   }
   .segment-button.segment-activated,.activated {
     border-color: color($taro, primary, base) !important;
+  }
+  // Radio-button
+  .item-radio-checked {
+    .label {
+      color: color($taro, primary, base);
+    }
+    .radio-checked {
+      color: color($taro, primary, base);
+      border-color: color($taro, primary, base);
+      .radio-inner {
+        background-color: color($taro, primary, base);
+      }
+    }
   }
 }
 
