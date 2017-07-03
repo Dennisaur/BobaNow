@@ -4,7 +4,7 @@ import { Geolocation } from '@ionic-native/geolocation';
 import { Http, Headers, RequestOptions } from '@angular/http';
 import { Observable } from 'rxjs/Observable';
 
-var useTestLocations = false;
+var useTestLocations = true;
 
 @Injectable()
 export class YelpService {
@@ -276,7 +276,6 @@ export class YelpService {
       (data) => {
         this.locations = data.businesses;
         for (let location of this.locations) {
-          console.log(location.id);
           // Add some new properties to locations for easier access
           location.ratingImage = this.getRatingImage(location.rating);
           location.launchMapsUrl = this.getLaunchMapsUrl(location);

@@ -1,10 +1,12 @@
 import { Component } from '@angular/core';
+import { Deploy } from '@ionic/cloud-angular';
 import { Platform, App, LoadingController, ToastController, MenuController } from 'ionic-angular';
 import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
 
 import { AppState } from './app.global';
 import { ListViewPage } from '../pages/listView/listView';
+import { SettingsService } from '../services/settings.service';
 import { YelpService } from '../services/yelp.service';
 
 declare var cordova;
@@ -21,15 +23,19 @@ export class MyApp {
   radius: string; // Radius search in miles
   limit: string;
 
+  theme: string;
+
   lastBack: number;
   allowClose: boolean;
 
   constructor(private platform: Platform, statusBar: StatusBar, splashScreen: SplashScreen,
               private app: App,
               public global: AppState,
+              public deploy: Deploy,
               public loadingController: LoadingController,
               public toastController: ToastController,
               public menuController: MenuController,
+              private settingsService: SettingsService,
               private yelpService: YelpService) {
 
     this.lastBack = Date.now();
@@ -38,6 +44,8 @@ export class MyApp {
       // Here you can do any higher level native things you might need.
       statusBar.styleDefault();
       splashScreen.hide();
+
+      this.resetTheme();
       this.getSearchParams();
 
       // Back button twice to exit
@@ -131,6 +139,20 @@ export class MyApp {
   }
 
   changeTheme(theme: string) {
-    this.global.set('theme', 'theme-' + theme);
+    this.theme = theme;
+    this.global.set('theme', this.theme);
+  }
+
+  resetTheme() {
+    this.settingsService.getTheme()
+      .then(
+        (theme) => {
+          this.changeTheme(theme);
+        }
+      );
+  }
+
+  saveTheme() {
+    this.settingsService.setTheme(this.global.get('theme'));
   }
 }

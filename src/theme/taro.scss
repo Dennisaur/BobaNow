@@ -1,13 +1,3 @@
-$taro: (
-  primary:    #927DAF,  // Standard UI buttons/etc
-  background: #BEB4CD,  // Background color
-  light:      #CBC3D5,  // About us title bg
-  xLight:     #E4E2E7,  // List item bg
-  dark:       #857599,  // Borders
-
-  danger:     #f53d3d,
-);
-
 .theme-taro {
   ion-footer {
     background-color: color($taro, xLight, base);

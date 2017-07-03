@@ -1,0 +1,103 @@
+.theme-strawberry {
+  ion-footer {
+    background-color: color($strawberry, xLight, base);
+    border-top: 4px solid color($strawberry, dark, base);
+  }
+  // Second border
+  ion-footer:before {
+    border-top: 4px solid color($strawberry, background, base);
+  }
+
+  ion-menu {
+    .scroll-content {
+      background-color: color($strawberry, xLight, base);
+    }
+    .openNow .item-inner {
+      border-color: color($strawberry, dark, base) !important;
+      padding-bottom: 4px;
+    }
+  }
+
+  page-listView {
+    .scroll-content {
+      background-color: color($strawberry, background, base);
+    }
+
+    .locationRow {
+      background-color: color($strawberry, xLight, base);
+      border: 4px solid color($strawberry, dark, base);
+    }
+
+    .needLocationDiv {
+      background-color: color($strawberry, xLight, base);
+    }
+
+    #map {
+      background-color: color($strawberry, primary, base);
+    }
+
+    /** Info window set here the desired background-color **/
+    .custom-iw,
+    .custom-iw>div:first-child>div:nth-child(n-1)>div>div,
+    .custom-iw>div>div:last-child,
+    .custom-iw .gm-style-iw,
+    .custom-iw .gm-style-iw>div,
+    .custom-iw .gm-style-iw>div>div {
+      background-color: color($strawberry, xLight, base) !important;
+    }
+  }
+
+  // Button
+  .button-md:not(.button-clear) {
+    background-color: color($strawberry, primary, base);
+  }
+  .button-md:not(.button-clear).activated {
+    background-color: color-shade(color($strawberry, primary, base));
+  }
+  // Toggle
+  .toggle-checked {
+    .toggle-icon {
+     background-color: lighten(color($strawberry, primary, base), 15%) !important;
+   }
+   .toggle-inner {
+     background-color: color($strawberry, primary, base) !important;
+   }
+  }
+  // Segment
+  .segment-button {
+    color: color($strawberry, primary, base) !important;
+  }
+  .segment-button.segment-activated,.activated {
+    border-color: color($strawberry, primary, base) !important;
+  }
+  // Radio-button
+  // .item-radio-checked {
+  //   .label {
+  //     color: color($strawberry, primary, base);
+  //   }
+  //   .radio-checked {
+  //     color: color($strawberry, primary, base);
+  //     border-color: color($strawberry, primary, base);
+  //     .radio-inner {
+  //       background-color: color($strawberry, primary, base);
+  //     }
+  //   }
+  // }
+}
+
+// About window is separate from other element content
+.theme-strawberry.aboutWindow {
+  .alert-head {
+    background-color: color($strawberry, light, base);
+    border-bottom: 4px solid color($strawberry, dark, base);
+  }
+  .alert-wrapper {
+    background-color: color($strawberry, xLight, base);
+  }
+  a {
+    color: color($strawberry, primary, base);
+  }
+  .button-inner {
+    color: color($strawberry, primary, base);
+  }
+}

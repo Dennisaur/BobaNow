@@ -1,13 +1,3 @@
-$honeydew: (
-  primary:    #43BD24,  // Standard UI buttons/etc
-  background: #C0F7B2,  // Background color
-  light:      #C4EDB9,  // About us title bg
-  xLight:     #E8F5E4,  // List item bg
-  dark:       #5BC341,  // Borders
-
-  danger:     #f53d3d,
-);
-
 .theme-honeydew {
   ion-footer {
     background-color: color($honeydew, xLight, base);
@@ -81,18 +71,18 @@ $honeydew: (
     border-color: color($honeydew, primary, base) !important;
   }
   // Radio-button
-  .item-radio-checked {
-    .label {
-      color: color($honeydew, primary, base);
-    }
-    .radio-checked {
-      color: color($honeydew, primary, base);
-      border-color: color($honeydew, primary, base);
-      .radio-inner {
-        background-color: color($honeydew, primary, base);
-      }
-    }
-  }
+  // .item-radio-checked {
+  //   .label {
+  //     color: color($honeydew, primary, base);
+  //   }
+  //   .radio-checked {
+  //     color: color($honeydew, primary, base);
+  //     border-color: color($honeydew, primary, base);
+  //     .radio-inner {
+  //       background-color: color($honeydew, primary, base);
+  //     }
+  //   }
+  // }
 }
 
 // About window is separate from other element content

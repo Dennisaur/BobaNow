@@ -4,9 +4,7 @@ import { Injectable } from '@angular/core';
 export class AppState {
   _state = {}
 
-  constructor() {
-
-  }
+  constructor() {}
 
   get state() {
     return this._state = this._clone(this._state);

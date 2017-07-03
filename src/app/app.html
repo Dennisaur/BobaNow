@@ -2,7 +2,8 @@
 
   <ion-nav #menuContent [root]="rootPage"></ion-nav>
 
-  <ion-menu id='options' side="right" [content]="menuContent" swipeEnabled="false" (ionClose)="getSearchParams()">
+  <ion-menu id='options' side="right" [content]="menuContent" swipeEnabled="false"
+    class="options" (ionClose)="getSearchParams()">
     <ion-content>
 
       <ion-item class="openNow">
@@ -88,35 +89,45 @@
     </ion-content>
   </ion-menu>
 
-  <ion-menu id='settings' side="right" [content]="menuContent" swipeEnabled="false">
-    <ion-list radio-group>
+  <ion-menu id='settings' side="right" [content]="menuContent" swipeEnabled="false"
+    class="settings" (ionClose)="resetTheme()">
+    <ion-list radio-group [(ngModel)]="theme">
       <ion-list-header>
         Choose your flavor
       </ion-list-header>
-      <ion-item>
+      <ion-item color="xLight" no-lines>
         <ion-label>Milk Tea</ion-label>
-        <ion-radio value="milkTea" (ionSelect)="changeTheme('milkTea')"></ion-radio>
+        <ion-radio value="theme-milkTea" (ionSelect)="changeTheme('theme-milkTea')"></ion-radio>
       </ion-item>
-      <ion-item>
-        <ion-label>Honeydew</ion-label>
-        <ion-radio value="honeydew" (ionSelect)="changeTheme('honeydew')"></ion-radio>
-      </ion-item>
-      <ion-item>
+      <ion-item color="taroxLight" no-lines>
         <ion-label>Taro</ion-label>
-        <ion-radio value="taro" (ionSelect)="changeTheme('taro')"></ion-radio>
+        <ion-radio value="theme-taro" (ionSelect)="changeTheme('theme-taro')" color="taro"></ion-radio>
+      </ion-item>
+      <ion-item color="strawberryxLight" no-lines>
+        <ion-label>Strawberry</ion-label>
+        <ion-radio value="theme-strawberry" (ionSelect)="changeTheme('theme-strawberry')" color="strawberry"></ion-radio>
+      </ion-item>
+      <ion-item color="honeydewxLight" no-lines>
+        <ion-label>Honeydew</ion-label>
+        <ion-radio value="theme-honeydew" (ionSelect)="changeTheme('theme-honeydew')" color="honeydew"></ion-radio>
       </ion-item>
     </ion-list>
 
     <div class="menuFooter">
       <ion-grid>
         <ion-row>
+          <ion-col col-12 text-center class="centeredText">
+            More flavors coming soon!
+          </ion-col>
+        </ion-row>
+        <ion-row>
           <ion-col col-6>
-            <button ion-button menuClose>
+            <button ion-button menuClose (click)="resetTheme()">
               Cancel
             </button>
           </ion-col>
           <ion-col>
-            <button ion-button menuClose>
+            <button ion-button menuClose (click)="saveTheme()">
               Save
             </button>
           </ion-col>

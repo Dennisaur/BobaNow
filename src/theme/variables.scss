@@ -11,7 +11,27 @@ $font-path: "../assets/fonts";
 // the Sass variables found in Ionic's source scss files.
 // To view all the possible Ionic variables, see:
 // http://ionicframework.com/docs/v2/theming/overriding-ionic-variables/
-
+$strawberry: (
+  primary:    #E34447,  // Standard UI buttons/etc
+  background: #F7D4C9,  // Background color
+  light:      #EFB7A6,  // About us title bg
+  xLight:     #FFF3F3,  // List item bg
+  dark:       #FF8F8D,  // Borders
+);
+$honeydew: (
+  primary:    #43BD24,  // Standard UI buttons/etc
+  background: #C0F7B2,  // Background color
+  light:      #C4EDB9,  // About us title bg
+  xLight:     #F6FFF3,  // List item bg
+  dark:       #5BC341,  // Borders
+);
+$taro: (
+  primary:    #927DAF,  // Standard UI buttons/etc
+  background: #BEB4CD,  // Background color
+  light:      #CBC3D5,  // About us title bg
+  xLight:     #EBEBEB,  // List item bg
+  dark:       #857599,  // Borders
+);
 
 // Named Color Variables
 // --------------------------------------------------
@@ -29,6 +49,16 @@ $colors: (
   dark:       #916831,  // Borders
 
   danger:     #f53d3d,
+
+  honeydew:         color($honeydew, primary, base),
+  honeydewBg:       color($honeydew, background, base),
+  honeydewxLight:   color($honeydew, xLight, base),
+  strawberry:       color($strawberry, primary, base),
+  strawberryBg:     color($strawberry, background, base),
+  strawberryxLight: color($strawberry, xLight, base),
+  taro:             color($taro, primary, base),
+  taroBg:           color($taro, background, base),
+  taroxLight:       color($taro, xLight, base)
 );
 
 $menu-width: 75%;
@@ -64,6 +94,7 @@ $menu-small-width: 75%;
 
 @import "./taro";
 @import "./honeydew";
+@import "./strawberry";
 
 
 // Ionicons
