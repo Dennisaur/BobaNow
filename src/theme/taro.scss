@@ -1,0 +1,101 @@
+
+$taro: (
+  primary:    #E1B9E1,  // Standard UI buttons/etc
+  background:  #EDC3ED,  // Background color
+  light:      #E7CBE7,  // About us title bg
+  xLight:     #EFDFEF,  // List item bg
+  dark:       #C344C3,  // Borders
+
+  danger:     #f53d3d,
+);
+
+.theme-taro {
+  ion-footer {
+    background-color: color($taro, xLight, base);
+    border-top: 4px solid color($taro, dark, base);
+  }
+  // Second border
+  ion-footer:before {
+    border-top: 4px solid color($taro, background, base);
+  }
+
+  ion-menu {
+    .scroll-content {
+      background-color: color($taro, xLight, base);
+    }
+    .openNow .item-inner {
+      border-color: color($taro, dark, base) !important;
+      padding-bottom: 4px;
+    }
+  }
+
+  page-listView {
+    .scroll-content {
+      background-color: color($taro, background, base);
+    }
+
+    .locationRow {
+      background-color: color($taro, xLight, base);
+      border: 4px solid color($taro, dark, base);
+    }
+
+    .needLocationDiv {
+      background-color: color($taro, xLight, base);
+    }
+
+    #map {
+      background-color: color($taro, primary, base);
+    }
+
+    /** Info window set here the desired background-color **/
+    .custom-iw,
+    .custom-iw>div:first-child>div:nth-child(n-1)>div>div,
+    .custom-iw>div>div:last-child,
+    .custom-iw .gm-style-iw,
+    .custom-iw .gm-style-iw>div,
+    .custom-iw .gm-style-iw>div>div {
+      background-color: color($taro, xLight, base) !important;
+    }
+  }
+
+  // Button
+  .button-md:not(.button-clear) {
+    background-color: color($taro, primary, base);
+  }
+  .button-md:not(.button-clear).activated {
+    background-color: color-shade(color($taro, primary, base));
+  }
+  // Toggle
+  .toggle-checked {
+    .toggle-icon {
+     background-color: lighten(color($taro, primary, base), 15%) !important;
+   }
+   .toggle-inner {
+     background-color: color($taro, primary, base) !important;
+   }
+  }
+  // Segment
+  .segment-button {
+    color: color($taro, primary, base) !important;
+  }
+  .segment-button.segment-activated,.activated {
+    border-color: color($taro, primary, base) !important;
+  }
+}
+
+// About window is separate from other element content
+.theme-taro.aboutWindow {
+  .alert-head {
+    background-color: color($taro, light, base);
+    border-bottom: 4px solid color($taro, dark, base);
+  }
+  .alert-wrapper {
+    background-color: color($taro, xLight, base);
+  }
+  a {
+    color: color($taro, primary, base);
+  }
+  .button-inner {
+    color: color($taro, primary, base);
+  }
+}

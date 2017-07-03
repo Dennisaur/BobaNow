@@ -7,6 +7,7 @@ import { IonicStorageModule } from '@ionic/storage';
 import { AppVersion } from '@ionic-native/app-version';
 
 import { ListViewPage } from '../pages/listView/listView';
+import { AppState } from './app.global';
 import { YelpService } from '../services/yelp.service';
 
 import { StatusBar } from '@ionic-native/status-bar';
@@ -43,6 +44,7 @@ import { AgmCoreModule } from '@agm/core';
     YelpService,
     Storage,
     AppVersion,
+    AppState,
     {provide: ErrorHandler, useClass: IonicErrorHandler}
   ]
 })

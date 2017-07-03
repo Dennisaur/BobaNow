@@ -3,8 +3,8 @@ import { Platform, App, LoadingController, ToastController, MenuController } fro
 import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
 
+import { AppState } from './app.global';
 import { ListViewPage } from '../pages/listView/listView';
-
 import { YelpService } from '../services/yelp.service';
 
 declare var cordova;
@@ -26,6 +26,7 @@ export class MyApp {
 
   constructor(private platform: Platform, statusBar: StatusBar, splashScreen: SplashScreen,
               private app: App,
+              public global: AppState,
               public loadingController: LoadingController,
               public toastController: ToastController,
               public menuController: MenuController,
@@ -129,4 +130,7 @@ export class MyApp {
     );
   }
 
+  changeTheme(theme: string) {
+    this.global.set('theme', 'theme-' + theme);
+  }
 }

@@ -4,6 +4,7 @@ import { Http } from '@angular/http';
 import { AppVersion } from '@ionic-native/app-version';
 import 'rxjs/add/operator/map';
 
+import { AppState } from '../../app/app.global';
 import { YelpService } from '../../services/yelp.service';
 
 declare var cordova;
@@ -20,7 +21,7 @@ export class ListViewPage {
   waitingForLocations: boolean = false;
   needUpdateCamera: boolean;
 
-  mapView: boolean = true;
+  mapView: boolean = false;
   map: any;
   currentLocationMarker: any;
   markers: any = [];
@@ -42,6 +43,7 @@ export class ListViewPage {
               public menuController: MenuController,
               public alertController: AlertController,
               public loadingController: LoadingController,
+              public global: AppState,
               private appVersion: AppVersion,
               private yelpService: YelpService) {
 
@@ -52,10 +54,23 @@ export class ListViewPage {
     this.platform.ready()
       .then(
         () => {
-          this.locationPermissions();
-          this.task = setInterval(() => {
-            this.checkLocationEnabled();
-          }, 1000);
+          if (this.yelpService.isTesting()) {
+            this.locationAvailable = true;
+            this.locationEnabled = true;
+            this.locationPermissionGranted = true;
+            this.yelpService.findLocations()
+              .subscribe(
+                (data) => {
+                  this.initializeMapAndMarkers();
+                }
+              );
+          }
+          else {
+            this.locationPermissions();
+            this.task = setInterval(() => {
+              this.checkLocationEnabled();
+            }, 1000);
+          }
         }
       );
   }
@@ -119,36 +134,36 @@ export class ListViewPage {
 
   // Request location permission
   locationPermissions() {
-    cordova.plugins.diagnostic.requestLocationAuthorization(function(status){
-      switch(status){
-          case cordova.plugins.diagnostic.permissionStatus.NOT_REQUESTED:
-          case cordova.plugins.diagnostic.permissionStatus.DENIED:
-              this.locationPermissionGranted = false;
-              break;
-          case cordova.plugins.diagnostic.permissionStatus.GRANTED:
-          case cordova.plugins.diagnostic.permissionStatus.GRANTED_WHEN_IN_USE:
-              this.locationPermissionGranted = true;
-              this.checkLocationAvailable();
-              break;
-      }
-    }.bind(this), function(error){
-      console.error("The following error occurred: " + error);
-    });
+    // cordova.plugins.diagnostic.requestLocationAuthorization(function(status){
+    //   switch(status){
+    //       case cordova.plugins.diagnostic.permissionStatus.NOT_REQUESTED:
+    //       case cordova.plugins.diagnostic.permissionStatus.DENIED:
+    //           this.locationPermissionGranted = false;
+    //           break;
+    //       case cordova.plugins.diagnostic.permissionStatus.GRANTED:
+    //       case cordova.plugins.diagnostic.permissionStatus.GRANTED_WHEN_IN_USE:
+    //           this.locationPermissionGranted = true;
+    //           this.checkLocationAvailable();
+    //           break;
+    //   }
+    // }.bind(this), function(error){
+    //   console.error("The following error occurred: " + error);
+    // });
   }
 
   // Checks if gps location is enabled
   checkLocationEnabled() {
-    cordova.plugins.diagnostic.getLocationMode(function(locationMode) {
-      if (locationMode == cordova.plugins.diagnostic.locationMode.LOCATION_OFF) {
-        this.locationEnabled = false;
-      }
-      else {
-        this.locationEnabled = true;
-        this.checkLocationAvailable();
-      }
-    }.bind(this),function(error){
-      console.error("The following error occurred: " + error);
-    });
+    // cordova.plugins.diagnostic.getLocationMode(function(locationMode) {
+    //   if (locationMode == cordova.plugins.diagnostic.locationMode.LOCATION_OFF) {
+    //     this.locationEnabled = false;
+    //   }
+    //   else {
+    //     this.locationEnabled = true;
+    //     this.checkLocationAvailable();
+    //   }
+    // }.bind(this),function(error){
+    //   console.error("The following error occurred: " + error);
+    // });
   }
 
   // Goes to location settings, then checks if location is available when resuming app
@@ -362,12 +377,18 @@ export class ListViewPage {
     }
   }
 
+  // Opens the given menu
+  openMenu(id: string) {
+    this.menuController.enable(true, id);
+    this.menuController.open(id);
+  }
+
   // Opens alert window with About us info
   openInfo() {
     let alert = this.alertController.create({
       title: "About us",
       message: this.createAboutContent(),
-      cssClass: "aboutWindow",
+      cssClass: "aboutWindow " + this.global.get('theme'),
       buttons: ['OK']
     });
 

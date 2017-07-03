@@ -16,7 +16,7 @@
 // automatically applied to the <body> element in the app.
 
 ion-footer {
-  background-color: color($colors, milkTeaXLt, base);
+  background-color: color($colors, xLight, base);
   border-top: 4px solid color($colors, dark, base);
 }
 // Second border
@@ -28,7 +28,7 @@ ion-footer:before {
   background-image: none !important;
   left: 0px;
   right: 0px;
-  border-top: 4px solid color($colors, milkTeaDk, base);
+  border-top: 4px solid color($colors, background, base);
 }
 
 // Back to exit toast window
@@ -52,7 +52,7 @@ ion-footer:before {
 // Menu content
 ion-menu {
   .scroll-content {
-    background-color: color($colors, milkTeaXLt, base);
+    background-color: color($colors, xLight, base);
   }
   .openNow {
     background-color: transparent;
@@ -64,7 +64,7 @@ ion-menu {
     width: 50%;
   }
   .openNow .item-inner {
-    border-color: color($colors, milkTeaXDk, base) !important;
+    border-color: color($colors, dark, base) !important;
     padding-bottom: 4px;
   }
   .menuOption {
@@ -101,13 +101,13 @@ ion-menu {
 
 // About us overlay window
 .aboutWindow {
-  .alert-wrapper {
-    background-color: color($colors, light, base);
-  }
   .alert-head {
     padding: 20px 20px 16px 20px !important;
-    background-color: color($colors, milkTeaLt, base);
-    border-bottom: 4px solid color($colors, milkTeaXDk, base);
+    background-color: color($colors, light, base);
+    border-bottom: 4px solid color($colors, dark, base);
+  }
+  .alert-wrapper {
+    background-color: color($colors, xLight, base);
   }
   .alert-message {
     padding: 12px 20px 0px 20px !important;

@@ -1,71 +1,111 @@
-<ion-nav #menuContent [root]="rootPage"></ion-nav>
+<div class="{{global.state['theme']}}">
 
-<ion-menu side="right" [content]="menuContent" swipeEnabled="false" (ionClose)="getSearchParams()">
-  <ion-content>
+  <ion-nav #menuContent [root]="rootPage"></ion-nav>
 
-    <ion-item class="openNow">
-      <ion-label>Open Now</ion-label>
-      <ion-toggle [(ngModel)]="openNow" color="primary"></ion-toggle>
-    </ion-item>
+  <ion-menu id='options' side="right" [content]="menuContent" swipeEnabled="false" (ionClose)="getSearchParams()">
+    <ion-content>
 
-    <div class="menuOption">
-      <ion-label>
-        Results to display
-      </ion-label>
-      <ion-segment [(ngModel)]="limit">
-        <ion-segment-button value='5'>
-          5
-        </ion-segment-button>
-        <ion-segment-button value='10'>
-          10
-        </ion-segment-button>
-        <ion-segment-button value='20'>
-          20
-        </ion-segment-button>
-      </ion-segment>
-    </div>
+      <ion-item class="openNow">
+        <ion-label>Open Now</ion-label>
+        <ion-toggle [(ngModel)]="openNow" color="primary"></ion-toggle>
+      </ion-item>
 
-    <div class="menuOption">
-      <ion-label>
-        Sort by
-      </ion-label>
-      <ion-segment [(ngModel)]="sortBy">
-        <ion-segment-button value='best_match'>
-          Best
-        </ion-segment-button>
-        <ion-segment-button value='rating'>
-          Rating
-        </ion-segment-button>
-        <ion-segment-button value='distance'>
-          Distance
-        </ion-segment-button>
-      </ion-segment>
-    </div>
+      <div class="menuOption">
+        <ion-label>
+          Results to display
+        </ion-label>
+        <ion-segment [(ngModel)]="limit">
+          <ion-segment-button value='5'>
+            5
+          </ion-segment-button>
+          <ion-segment-button value='10'>
+            10
+          </ion-segment-button>
+          <ion-segment-button value='20'>
+            20
+          </ion-segment-button>
+        </ion-segment>
+      </div>
 
-    <div class="menuOption">
-      <ion-label>
-        <div text-left>
-          Distance
-        </div>
-        <div text-right style="padding-right: 15px">
-          {{radius}} mi
-        </div>
-      </ion-label>
-      <ion-segment [(ngModel)]="radius">
-        <ion-segment-button value='1'>
-          <ion-icon name="walk"></ion-icon>
-        </ion-segment-button>
-        <ion-segment-button value='2'>
-          <ion-icon name="bicycle"></ion-icon>
-        </ion-segment-button>
-        <ion-segment-button value='5'>
-          <ion-icon name="car"></ion-icon>
-        </ion-segment-button>
-        <ion-segment-button value='10'>
-          <ion-icon name="plane"></ion-icon>
-        </ion-segment-button>
-      </ion-segment>
-    </div>
+      <div class="menuOption">
+        <ion-label>
+          Sort by
+        </ion-label>
+        <ion-segment [(ngModel)]="sortBy">
+          <ion-segment-button value='best_match'>
+            Best
+          </ion-segment-button>
+          <ion-segment-button value='rating'>
+            Rating
+          </ion-segment-button>
+          <ion-segment-button value='distance'>
+            Distance
+          </ion-segment-button>
+        </ion-segment>
+      </div>
+
+      <div class="menuOption">
+        <ion-label>
+          <div text-left>
+            Distance
+          </div>
+          <div text-right style="padding-right: 15px">
+            {{radius}} mi
+          </div>
+        </ion-label>
+        <ion-segment [(ngModel)]="radius">
+          <ion-segment-button value='1'>
+            <ion-icon name="walk"></ion-icon>
+          </ion-segment-button>
+          <ion-segment-button value='2'>
+            <ion-icon name="bicycle"></ion-icon>
+          </ion-segment-button>
+          <ion-segment-button value='5'>
+            <ion-icon name="car"></ion-icon>
+          </ion-segment-button>
+          <ion-segment-button value='10'>
+            <ion-icon name="plane"></ion-icon>
+          </ion-segment-button>
+        </ion-segment>
+      </div>
+
+      <div class="menuFooter">
+        <ion-grid>
+          <ion-row>
+            <ion-col col-6>
+              <button ion-button menuClose>
+                Cancel
+              </button>
+            </ion-col>
+            <ion-col>
+              <button ion-button menuClose (click)="refreshLocations()">
+                Save
+              </button>
+            </ion-col>
+        </ion-row>
+      </ion-grid>
+      </div>
+    </ion-content>
+  </ion-menu>
+
+  <ion-menu id='settings' side="right" [content]="menuContent" swipeEnabled="false">
+    <ion-list radio-group>
+      <ion-list-header>
+        Choose your flavor
+      </ion-list-header>
+      <ion-item>
+        <ion-label>Milk Tea</ion-label>
+        <ion-radio value="milkTea" (ionSelect)="changeTheme('milkTea')"></ion-radio>
+      </ion-item>
+      <ion-item>
+        <ion-label>Green Tea</ion-label>
+        <ion-radio value="greenTea" (ionSelect)="changeTheme('greenTea')"></ion-radio>
+      </ion-item>
+      <ion-item>
+        <ion-label>Taro</ion-label>
+        <ion-radio value="taro" (ionSelect)="changeTheme('taro')"></ion-radio>
+      </ion-item>
+    </ion-list>
 
     <div class="menuFooter">
       <ion-grid>
@@ -76,12 +116,13 @@
             </button>
           </ion-col>
           <ion-col>
-            <button ion-button menuClose (click)="refreshLocations()">
+            <button ion-button menuClose>
               Save
             </button>
           </ion-col>
       </ion-row>
     </ion-grid>
     </div>
-  </ion-content>
-</ion-menu>
+  </ion-menu>
+
+</div>

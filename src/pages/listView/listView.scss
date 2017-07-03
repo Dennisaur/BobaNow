@@ -1,11 +1,10 @@
 page-listView {
   .scroll-content {
-    background-color: color($colors, milkTea, base);
+    background-color: color($colors, background, base);
   }
 
-
   .locationRow {
-    background-color: color($colors, milkTeaXLt, base);
+    background-color: color($colors, xLight, base);
     border: 4px solid color($colors, dark, base);
     border-radius: 10px;
     height: 100%;
@@ -39,7 +38,7 @@ page-listView {
   .directionsButton {
     width: 35px;
     height: 35px;
-    background-color: white;
+    background-color: white !important;
     padding: 4px !important;
   }
   .directionsIcon {
@@ -67,6 +66,9 @@ page-listView {
     width: 100% !important;
     margin: 0px !important;
   }
+  ion-footer .button-clear-md {
+    color: white;
+  }
   ion-footer ion-col img {
     max-height: 36px;
     max-width: 36px;
@@ -81,7 +83,7 @@ page-listView {
 
   .needLocationDiv {
     position: relative;
-    background-color: color($colors, milkTeaXLt, base);
+    background-color: color($colors, xLight, base);
     width: 100%;
     height: 100%;
   }
@@ -104,7 +106,7 @@ page-listView {
 
   #map {
     height: 99.5%;
-    background-color: color($colors, milkTea, base);
+    background-color: color($colors, primary, base);
   }
 
   // Current location control
@@ -217,7 +219,7 @@ page-listView {
   .custom-iw .gm-style-iw,
   .custom-iw .gm-style-iw>div,
   .custom-iw .gm-style-iw>div>div {
-    background-color: color($colors, light, base) !important;
+    background-color: color($colors, xLight, base) !important;
   }
   /** close-button(note that there may be a scrollbar) **/
   /*

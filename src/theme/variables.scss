@@ -22,19 +22,14 @@ $font-path: "../assets/fonts";
 // The "primary" color is the only required color in the map.
 
 $colors: (
-  primary:    #916831,
-  secondary:  #E3C483,
-  danger:     #f53d3d,
-  light:      #FBF9F2,
-  ice:        #DCFAFF,
-  milkTeaXLt: #F1E3CE,
-  milkTeaLt:  #E5D3BA,
-  milkTea:    #D8C1A2,
-  milkTeaDk:  #B89466,
-  milkTeaXDk: #916831,
-  dark:       #5E3806,
-);
+  primary:    #B89466,  // Standard UI buttons/etc
+  background:  #D8C1A2,  // Background color
+  light:      #F1E3CE,  // About us title bg
+  xLight:     #FBF9F2,  // List item bg
+  dark:       #916831,  // Borders
 
+  danger:     #f53d3d,
+);
 
 $menu-width: 75%;
 $menu-small-width: 75%;
@@ -49,7 +44,6 @@ $menu-small-width: 75%;
 // App Material Design Variables
 // --------------------------------------------------
 // Material Design only Sass variables can go here
-$button-md-background-color-activated: color($colors, milkTeaXLt, base);
 
 
 // App Windows Variables
@@ -67,6 +61,8 @@ $button-md-background-color-activated: color($colors, milkTeaXLt, base);
 // default are overridden.
 
 @import "ionic.theme.default";
+
+@import "./taro";
 
 
 // Ionicons

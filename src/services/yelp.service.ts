@@ -4,7 +4,7 @@ import { Geolocation } from '@ionic-native/geolocation';
 import { Http, Headers, RequestOptions } from '@angular/http';
 import { Observable } from 'rxjs/Observable';
 
-var useTestLocations = false;
+var useTestLocations = true;
 
 @Injectable()
 export class YelpService {
@@ -44,6 +44,7 @@ export class YelpService {
     // Create observables for views to listen to update markers
     this.search = Observable.create(observer => {
       this.searchObserver = observer;
+      this.searchObserver.next(this.locations);
     });
     this.currentLocation = Observable.create(observer => {
       this.currentLocationObserver = observer;
@@ -54,15 +55,20 @@ export class YelpService {
     body.append('client_id', this.clientId);
     body.append('client_secret', this.clientSecret);
 
-    http.post("https://api.yelp.com/oauth2/token", body)
-      .subscribe(
-        data => {
-          let headers = new Headers();
-          this.accessToken = data.json().access_token;
-          headers.append('Authorization', "Bearer " + this.accessToken);
-          this.requestOptions = new RequestOptions({headers: headers});
-        }
-    );
+    if (!useTestLocations) {
+      http.post("https://api.yelp.com/oauth2/token", body)
+        .subscribe(
+          data => {
+            let headers = new Headers();
+            this.accessToken = data.json().access_token;
+            headers.append('Authorization', "Bearer " + this.accessToken);
+            this.requestOptions = new RequestOptions({headers: headers});
+          }
+      );
+    }
+    else {
+      this.readyToSearch = true;
+    }
 
     let date = new Date();
     this.dayOfWeek = date.getDay();
@@ -94,6 +100,10 @@ export class YelpService {
         }
       });
 
+  }
+
+  isTesting() {
+    return useTestLocations;
   }
 
   // Returns observables for views to listen to update markers
@@ -266,13 +276,15 @@ export class YelpService {
       (data) => {
         this.locations = data.businesses;
         for (let location of this.locations) {
+          console.log(location.id);
           // Add some new properties to locations for easier access
           location.ratingImage = this.getRatingImage(location.rating);
           location.launchMapsUrl = this.getLaunchMapsUrl(location);
 
           location.hasHours = false;
         }
-        this.searchObserver.next(this.locations);
+        if (typeof this.searchObserver != "undefined")
+          this.searchObserver.next(this.locations);
       }
     );
 
