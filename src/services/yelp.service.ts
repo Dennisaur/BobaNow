@@ -65,7 +65,7 @@ export class YelpService {
     );
 
     let date = new Date();
-    this.dayOfWeek = date.getDay();
+    this.dayOfWeek = (date.getDay() + 6) % 7; // Convert to 0 indexed at Monday
 
     // Get values from storage
     this.searchParams = this.defaultSearchParams;
