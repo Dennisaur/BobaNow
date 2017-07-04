@@ -28,7 +28,7 @@
       border: 4px solid color($taro, dark, base);
     }
 
-    .needLocationDiv {
+    .wrapperContentDiv {
       background-color: color($taro, xLight, base);
     }
 
@@ -43,7 +43,7 @@
     .custom-iw .gm-style-iw,
     .custom-iw .gm-style-iw>div,
     .custom-iw .gm-style-iw>div>div {
-      background-color: color($taro, xLight, base) !important;
+      //background-color: color($taro, xLight, base) !important;
     }
   }
 
@@ -71,22 +71,22 @@
     border-color: color($taro, primary, base) !important;
   }
   // Radio-button
-  .item-radio-checked {
-    .label {
-      color: color($taro, primary, base);
-    }
-    .radio-checked {
-      color: color($taro, primary, base);
-      border-color: color($taro, primary, base);
-      .radio-inner {
-        background-color: color($taro, primary, base);
-      }
-    }
-  }
+  // .item-radio-checked {
+  //   .label {
+  //     color: color($taro, primary, base);
+  //   }
+  //   .radio-checked {
+  //     color: color($taro, primary, base);
+  //     border-color: color($taro, primary, base);
+  //     .radio-inner {
+  //       background-color: color($taro, primary, base);
+  //     }
+  //   }
+  // }
 }
 
 // About window is separate from other element content
-.theme-taro.aboutWindow {
+.theme-taro.alertWindow {
   .alert-head {
     background-color: color($taro, light, base);
     border-bottom: 4px solid color($taro, dark, base);

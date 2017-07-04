@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { Deploy } from '@ionic/cloud-angular';
-import { Platform, App, LoadingController, ToastController, MenuController } from 'ionic-angular';
+import { Platform, App, ViewController, LoadingController, ToastController, MenuController } from 'ionic-angular';
 import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
 
@@ -54,6 +54,7 @@ export class MyApp {
         const nav = app.getActiveNav();
         const closeDelay = 2000;
         const spamDelay = 100;
+        let activeView: ViewController = nav.getActive();
 
         // Dismiss overlay if active
         if (overlay && overlay.dismiss) {
@@ -66,6 +67,10 @@ export class MyApp {
         // Close menu if open
         else if (menuController.getOpen() != null) {
           menuController.close();
+        }
+        // Return to map view if currently on list view
+        else if (typeof activeView.instance.getIsMapView === 'function' && !activeView.instance.getIsMapView()) {
+          activeView.instance.toggleView();
         }
         // First back button press, display toast
         else if (Date.now() - this.lastBack > spamDelay && !this.allowClose) {

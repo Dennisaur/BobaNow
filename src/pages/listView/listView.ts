@@ -30,6 +30,8 @@ export class ListViewPage {
   mapReady: boolean;
   markersAdded: boolean;
 
+  packageName: string;
+
   menuContent: any;
   locationAvailable: boolean;
   locationEnabled: boolean;
@@ -54,6 +56,11 @@ export class ListViewPage {
     this.platform.ready()
       .then(
         () => {
+          // Get package name
+          this.appVersion.getPackageName()
+            .then(
+              (name) => this.packageName = name
+            );
           // For testing
           if (this.yelpService.isTesting()) {
             this.locationAvailable = true;
@@ -94,6 +101,21 @@ export class ListViewPage {
         .subscribe(
           (locations) => {
             this.bobaLocations = locations;
+            // No locations found
+            if (this.bobaLocations.length == 0) {
+              let message = "";
+              if (this.yelpService.getRadius() < 10) {
+                message += "Try a larger search area.";
+              }
+              if (this.yelpService.getOpenNow()) {
+                message += (message.length > 0 ? "<br>or<br>" : "") + "Try unchecking Open Now to find boba for another time.<br>";
+              }
+              if (message.length == 0) {
+                message = "Sorry, we couldn't find any boba near you.";
+              }
+              this.openAlertWindow("No results", message)
+            }
+            
             this.addMarkersToMap();
             if (!this.mapView) {
               this.needUpdateCamera = true;
@@ -117,19 +139,26 @@ export class ListViewPage {
         this.yelpService.locateUser()
           .then(
             (location) => {
-              this.yelpService.findLocations()
-                .subscribe(
-                  (data) => {
-                    loading.dismiss();
-                  }
-                );
+              if (this.yelpService.getReadyToSearch()) {
+                this.yelpService.findLocations()
+                  .subscribe(
+                    (data) => {
+                      loading.dismiss();
+                    }
+                  );
+              }
+              else {
+                loading.dismiss();
+
+                this.openAlertWindow("Error", "Oh no, an error occurred trying to locate you! Please try restarting the app.");
+              }
             }
           );
 
         this.initializeMapAndMarkers();
       }
     }.bind(this), function(error) {
-      console.log("The following error occurred: " + error);
+      console.log("The following error occurred checking if location available: " + error);
     });
   }
 
@@ -163,7 +192,7 @@ export class ListViewPage {
         this.checkLocationAvailable();
       }
     }.bind(this),function(error){
-      console.error("The following error occurred: " + error);
+      console.error("The following error occurred getting location mode: " + error);
     });
   }
 
@@ -235,7 +264,8 @@ export class ListViewPage {
     let bounds = new google.maps.LatLngBounds();
 
     // Add current location to bounds
-    bounds.extend(new google.maps.LatLng(this.yelpService.getLat(), this.yelpService.getLng()));
+    let currentPosition = new google.maps.LatLng(this.yelpService.getLat(), this.yelpService.getLng());
+    bounds.extend(currentPosition);
 
     // Add search locations to bounds
     for (let location of this.bobaLocations) {
@@ -243,9 +273,29 @@ export class ListViewPage {
       bounds.extend(bound);
     }
 
-    // Move camera to fit bounds
+    // Move camera to fit all locations
     //*todo get panToBounds working
-    this.map.fitBounds(bounds, 10);
+    if (this.bobaLocations.length == 0) {
+      this.map.setCenter(currentPosition);
+      // Variable zoom based on radius of search
+      switch (this.yelpService.getRadius()) {
+        case 1:
+          this.map.setZoom(14);
+          break;
+        case 2:
+          this.map.setZoom(13);
+          break;
+        case 5:
+          this.map.setZoom(12);
+          break;
+        default:
+          this.map.setZoom(11);
+          break;
+      }
+    }
+    else {
+      this.map.fitBounds(bounds, 10);
+    }
     this.needUpdateCamera = false;
   }
 
@@ -360,11 +410,13 @@ export class ListViewPage {
     return "<div class='infoWindowContent' onclick=\"location.href='" + location.url + "'\">" + leftContent + rightContent + "</div>";
   }
 
+  // Returns if an info window is open
   getInfoWindowOpen() {
     var map = this.infoWindow.getMap();
     return (map !== null && typeof map !== "undefined");
   }
 
+  // Close the info window
   closeInfoWindow() {
     this.infoWindow.close();
   }
@@ -381,6 +433,11 @@ export class ListViewPage {
     }
   }
 
+  // Getter function for which view we're in
+  getIsMapView() {
+    return this.mapView;
+  }
+
   // Opens the given menu
   openMenu(id: string) {
     this.menuController.enable(true, id);
@@ -389,18 +446,24 @@ export class ListViewPage {
 
   // Opens alert window with About us info
   openInfo() {
-    let alert = this.alertController.create({
-      title: "About us",
-      message: this.createAboutContent(),
-      cssClass: "aboutWindow " + this.global.get('theme'),
-      buttons: ['OK']
-    });
+    this.openAlertWindow("About us", this.createAboutContent());
+  }
 
-    alert.present();
+  // Generic open alert window
+  openAlertWindow(title: string, message: string) {
+      let alert = this.alertController.create({
+        title: title,
+        message: message,
+        cssClass: "alertWindow " + this.global.get('theme'),
+        buttons: ['OK']
+      });
+
+      alert.present();
   }
 
   // Creates message content for about window
   createAboutContent() {
+    let playStoreLink = "<a href='https://play.google.com/store/apps/details?id=" + this.packageName + "'>Rate/review</a>"
     let htmlContent = `
     <div>
       Thank you for using Boba Now!
@@ -417,9 +480,7 @@ export class ListViewPage {
       <div class="companyName">
         Dennisaur Co.
       </div>
-      <div>
-        <a href="https://play.google.com/store/apps/details?id="` + this.appVersion.getPackageName() + `>Rate/review</a>
-      </div>
+      <div>` + playStoreLink + `</div>
       <div>
         <a href="mailto:dennisaur.co@gmail.com">Contact us</a>
       </div>

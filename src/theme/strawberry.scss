@@ -28,7 +28,7 @@
       border: 4px solid color($strawberry, dark, base);
     }
 
-    .needLocationDiv {
+    .wrapperContentDiv {
       background-color: color($strawberry, xLight, base);
     }
 
@@ -43,7 +43,7 @@
     .custom-iw .gm-style-iw,
     .custom-iw .gm-style-iw>div,
     .custom-iw .gm-style-iw>div>div {
-      background-color: color($strawberry, xLight, base) !important;
+      //background-color: color($strawberry, xLight, base) !important;
     }
   }
 
@@ -86,7 +86,7 @@
 }
 
 // About window is separate from other element content
-.theme-strawberry.aboutWindow {
+.theme-strawberry.alertWindow {
   .alert-head {
     background-color: color($strawberry, light, base);
     border-bottom: 4px solid color($strawberry, dark, base);

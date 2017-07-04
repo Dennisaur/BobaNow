@@ -147,8 +147,8 @@ export class YelpService {
     let getPosition = this.geolocation.getCurrentPosition();
     getPosition.then(
         (location) => {
-          this.searchParams.latitude = location.coords.latitude;
-          this.searchParams.longitude = location.coords.longitude;
+          this.searchParams.latitude = location.coords.latitude; //43.012796; //
+          this.searchParams.longitude = location.coords.longitude; //-89.5041027; //
           this.readyToSearch = true;
           this.currentLocationObserver.next(location);
         }
@@ -200,14 +200,20 @@ export class YelpService {
     observableGetRequest.subscribe(
         data => {
           this.locations = data.businesses;
-          this.remainingBusinessesToCheck = this.locations.length;
-          for (let location of this.locations) {
-            // Add some new properties to locations for easier access
-            location.ratingImage = this.getRatingImage(location.rating);
-            location.launchMapsUrl = this.getLaunchMapsUrl(location);
+          // No results found
+          if (this.locations.length == 0) {
+            this.searchObserver.next(this.locations);
+          }
+          else {
+            this.remainingBusinessesToCheck = this.locations.length;
+            for (let location of this.locations) {
+              // Add some new properties to locations for easier access
+              location.ratingImage = this.getRatingImage(location.rating);
+              location.launchMapsUrl = this.getLaunchMapsUrl(location);
 
-            // Get hours for each location (not provided from business search API)
-            this.getMoreInfo(location);
+              // Get hours for each location (not provided from business search API)
+              this.getMoreInfo(location);
+            }
           }
         }
       );

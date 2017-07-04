@@ -34,8 +34,17 @@
   </ion-grid>
 
   <div id="map" [hidden]="!mapView || !locationAvailable"></div>
-  <div class="needLocationDiv" [hidden]="locationAvailable">
-    <div class="needLocation">
+
+  <div class="wrapperContentDiv" [hidden]="mapView || !locationAvailable || (bobaLocations.length > 0)">
+    <div class="contentDiv">
+      <div class="needLocationText">
+        We couldn't find any boba near you ]:
+      </div>
+    </div>
+  </div>
+
+  <div class="wrapperContentDiv" [hidden]="locationAvailable">
+    <div class="contentDiv">
       <div class="needLocationText">
         We can't find boba near you if we don't know where you are!
       </div>
