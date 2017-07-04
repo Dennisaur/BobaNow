@@ -10,7 +10,7 @@
 
   ion-menu {
     .scroll-content {
-      background-color: color($honeydew, xLight, base);
+      background-color: color($honeydew, xLight, base) !important;
     }
     .openNow .item-inner {
       border-color: color($honeydew, dark, base) !important;

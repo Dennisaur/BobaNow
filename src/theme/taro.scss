@@ -10,7 +10,7 @@
 
   ion-menu {
     .scroll-content {
-      background-color: color($taro, xLight, base);
+      background-color: color($taro, xLight, base) !important;
     }
     .openNow .item-inner {
       border-color: color($taro, dark, base) !important;
