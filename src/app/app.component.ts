@@ -39,62 +39,67 @@ export class MyApp {
               private yelpService: YelpService) {
 
     this.lastBack = Date.now();
+
     platform.ready().then(() => {
       // Okay, so the platform is ready and our plugins are available.
       // Here you can do any higher level native things you might need.
       statusBar.styleDefault();
       splashScreen.hide();
 
+
+      // Get values from storage
       this.resetTheme();
       this.getSearchParams();
 
       // Back button twice to exit
-      platform.registerBackButtonAction(() => {
-        const overlay = app._appRoot._overlayPortal.getActive();
-        const nav = app.getActiveNav();
-        const closeDelay = 2000;
-        const spamDelay = 100;
-        let activeView: ViewController = nav.getActive();
+      if (!this.global.get('ios'))
+        platform.registerBackButtonAction(() => {
+          const overlay = app._appRoot._overlayPortal.getActive();
+          const nav = app.getActiveNav();
+          const closeDelay = 2000;
+          const spamDelay = 100;
+          let activeView: ViewController = nav.getActive();
 
-        // Dismiss overlay if active
-        if (overlay && overlay.dismiss) {
-          overlay.dismiss();
-        }
-        // Go back a page if we can go back
-        else if (nav.canGoBack()) {
-          nav.pop();
-        }
-        // Close menu if open
-        else if (menuController.getOpen() != null) {
-          menuController.close();
-        }
-        // Return to map view if currently on list view
-        else if (typeof activeView.instance.getIsMapView === 'function' && !activeView.instance.getIsMapView()) {
-          activeView.instance.toggleView();
-        }
-        // First back button press, display toast
-        else if (Date.now() - this.lastBack > spamDelay && !this.allowClose) {
-          this.allowClose = true;
-          let toast = toastController.create({
-            message: "Press again to exit",
-            duration: closeDelay,
-            position: 'middle',
-            cssClass: 'backToExit',
-            dismissOnPageChange: true
-          });
-          toast.onDidDismiss(() => {
-            this.allowClose = false;
-          });
-          toast.present();
-        }
-        // Second back button press, exit app
-        else if (Date.now() - this.lastBack < closeDelay && this.allowClose) {
-          platform.exitApp();
-        }
-        this.lastBack = Date.now();
+          // Dismiss overlay if active
+          if (overlay && overlay.dismiss) {
+            overlay.dismiss();
+          }
+          // Go back a page if we can go back
+          else if (nav.canGoBack()) {
+            nav.pop();
+          }
+          // Close menu if open
+          else if (menuController.getOpen() != null) {
+            menuController.close();
+          }
+          // Return to map view if currently on list view
+          else if (typeof activeView.instance.getIsMapView === 'function' && !activeView.instance.getIsMapView()) {
+            activeView.instance.toggleView();
+          }
+          // First back button press, display toast
+          else if (Date.now() - this.lastBack > spamDelay && !this.allowClose) {
+            this.allowClose = true;
+            let toast = toastController.create({
+              message: "Press again to exit",
+              duration: closeDelay,
+              position: 'middle',
+              cssClass: 'backToExit',
+              dismissOnPageChange: true
+            });
+            toast.onDidDismiss(() => {
+              this.allowClose = false;
+            });
+            toast.present();
+          }
+          // Second back button press, exit app
+          else if (Date.now() - this.lastBack < closeDelay && this.allowClose) {
+            platform.exitApp();
+          }
+          this.lastBack = Date.now();
       });
     });
   }
+
 
   // Get search params
   getSearchParams() {
@@ -120,11 +125,9 @@ export class MyApp {
       });
       loading.present();
       this.yelpService.findLocations()
-        .subscribe(
-            data => {
-              loading.dismiss();
-            }
-        );
+        .subscribe((data) => {
+          loading.dismiss();
+        });
     }
   }
 
@@ -135,11 +138,9 @@ export class MyApp {
     }
 
     this.platform.ready()
-    .then(
-      () => {
+      .then(() => {
         cordova.InAppBrowser.open(url, "_system", "location=yes");
-      }
-    );
+      });
   }
 
   // Changes global theme
@@ -151,11 +152,9 @@ export class MyApp {
   // Resets theme to what's saved in storage
   resetTheme() {
     this.settingsService.getTheme()
-      .then(
-        (theme) => {
-          this.changeTheme(theme);
-        }
-      );
+      .then((theme) => {
+        this.changeTheme(theme);
+      });
   }
 
   // Saves theme to storage

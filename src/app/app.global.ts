@@ -18,6 +18,7 @@ export class AppState {
     return state.hasOwnProperty(prop) ? state[prop] : state;
   }
   set(prop: string, value: any) {
+    console.log("set " + prop + " " + value);
     return this._state[prop] = value;
   }
 

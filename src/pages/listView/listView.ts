@@ -54,33 +54,29 @@ export class ListViewPage {
   // Load map only after view is initialized
   ngAfterViewInit() {
     this.platform.ready()
-      .then(
-        () => {
-          // Get package name
-          this.appVersion.getPackageName()
-            .then(
-              (name) => this.packageName = name
-            );
-          // For testing
-          if (this.yelpService.isTesting()) {
-            this.locationAvailable = true;
-            this.locationEnabled = true;
-            this.locationPermissionGranted = true;
-            this.yelpService.findLocations()
-              .subscribe(
-                (data) => {
-                  this.initializeMapAndMarkers();
-                }
-              );
-          }
-          else {
-            this.locationPermissions();
-            this.task = setInterval(() => {
-              this.checkLocationEnabled();
-            }, 1000);
-          }
+      .then(() => {
+        // Get package name
+        this.appVersion.getPackageName()
+          .then(
+            (name) => this.packageName = name
+          );
+        // For testing
+        if (this.global.get('testLocations')) {
+          this.locationAvailable = true;
+          this.locationEnabled = true;
+          this.locationPermissionGranted = true;
+          this.yelpService.findLocations()
+            .subscribe((data) => {
+              this.initializeMapAndMarkers();
+            });
         }
-      );
+        else {
+          this.locationPermissions();
+          this.task = setInterval(() => {
+            this.checkLocationEnabled();
+          }, 1000);
+        }
+      });
   }
 
   // Load map and subscribe to observables from Yelp service
@@ -91,37 +87,33 @@ export class ListViewPage {
 
       // Subscribe to observable to add current location marker
       this.yelpService.currentLocationUpdate()
-        .subscribe(
-          (location) => {
-            this.addCurrentLocationMarker();
-          }
-        )
+        .subscribe((location) => {
+          this.addCurrentLocationMarker();
+        });
       // Subscribe to observable to get search locations
       this.yelpService.searchUpdates()
-        .subscribe(
-          (locations) => {
-            this.bobaLocations = locations;
-            // No locations found
-            if (this.bobaLocations.length == 0) {
-              let message = "";
-              if (this.yelpService.getRadius() < 10) {
-                message += "Try a larger search area.";
-              }
-              if (this.yelpService.getOpenNow()) {
-                message += (message.length > 0 ? "<br>or<br>" : "") + "Try unchecking Open Now to find boba for another time.<br>";
-              }
-              if (message.length == 0) {
-                message = "Sorry, we couldn't find any boba near you.";
-              }
-              this.openAlertWindow("No results", message)
+        .subscribe((locations) => {
+          this.bobaLocations = locations;
+          // No locations found
+          if (this.bobaLocations.length == 0) {
+            let message = "";
+            if (this.yelpService.getRadius() < 10) {
+              message += "Try a larger search area.";
             }
-            
-            this.addMarkersToMap();
-            if (!this.mapView) {
-              this.needUpdateCamera = true;
+            if (this.yelpService.getOpenNow()) {
+              message += (message.length > 0 ? "<br>or<br>" : "") + "Try unchecking Open Now to find boba for another time.<br>";
             }
+            if (message.length == 0) {
+              message = "Sorry, we couldn't find any boba near you.";
+            }
+            this.openAlertWindow("No results", message)
           }
-        );
+
+          this.addMarkersToMap();
+          if (!this.mapView) {
+            this.needUpdateCamera = true;
+          }
+        });
     }
   }
 
@@ -137,23 +129,19 @@ export class ListViewPage {
         clearInterval(this.task);
 
         this.yelpService.locateUser()
-          .then(
-            (location) => {
-              if (this.yelpService.getReadyToSearch()) {
-                this.yelpService.findLocations()
-                  .subscribe(
-                    (data) => {
-                      loading.dismiss();
-                    }
-                  );
-              }
-              else {
-                loading.dismiss();
-
-                this.openAlertWindow("Error", "Oh no, an error occurred trying to locate you! Please try restarting the app.");
-              }
+          .then((location) => {
+            if (this.yelpService.getReadyToSearch()) {
+              this.yelpService.findLocations()
+                .subscribe((data) => {
+                  loading.dismiss();
+                });
             }
-          );
+            else {
+              loading.dismiss();
+
+              this.openAlertWindow("Error", "Oh no, an error occurred trying to locate you! Please try restarting the app.");
+            }
+          });
 
         this.initializeMapAndMarkers();
       }
@@ -183,6 +171,12 @@ export class ListViewPage {
 
   // Checks if gps location is enabled
   checkLocationEnabled() {
+    // ios doesn't have getLocationMode
+    if (this.global.get('ios')) {
+      this.locationEnabled = true;
+      return;
+    }
+
     cordova.plugins.diagnostic.getLocationMode(function(locationMode) {
       if (locationMode == cordova.plugins.diagnostic.locationMode.LOCATION_OFF) {
         this.locationEnabled = false;
@@ -309,14 +303,12 @@ export class ListViewPage {
     // Close info window and pan to current position when clicked
     controlDiv.addEventListener('click', function() {
       this.yelpService.locateUser()
-        .then(
-          (location) => {
-            this.infoWindow.close();
+        .then((location) => {
+          this.infoWindow.close();
 
-            let position = new google.maps.LatLng(location.coords.latitude, location.coords.longitude);
-            this.map.panTo(position);
-          }
-        );
+          let position = new google.maps.LatLng(location.coords.latitude, location.coords.longitude);
+          this.map.panTo(position);
+        });
     }.bind(this));
 
     // Add the control element to map
@@ -463,7 +455,13 @@ export class ListViewPage {
 
   // Creates message content for about window
   createAboutContent() {
-    let playStoreLink = "<a href='https://play.google.com/store/apps/details?id=" + this.packageName + "'>Rate/review</a>"
+    let storeLink: string;
+    if (this.global.get('ios')) {
+      storeLink = "";
+    }
+    else {
+      storeLink = "<a href='https://play.google.com/store/apps/details?id=" + this.packageName + "'>Rate/review</a>"
+    }
     let htmlContent = `
     <div>
       Thank you for using Boba Now!
@@ -480,7 +478,7 @@ export class ListViewPage {
       <div class="companyName">
         Dennisaur Co.
       </div>
-      <div>` + playStoreLink + `</div>
+      <div>` + storeLink + `</div>
       <div>
         <a href="mailto:dennisaur.co@gmail.com">Contact us</a>
       </div>
@@ -496,10 +494,8 @@ export class ListViewPage {
     }
 
     this.platform.ready()
-    .then(
-      () => {
-        cordova.InAppBrowser.open(url, "_system", "location=yes");
-      }
-    );
+    .then(() => {
+      cordova.InAppBrowser.open(url, "_system", "location=yes");
+    });
   }
 }

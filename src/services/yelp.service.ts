@@ -3,11 +3,13 @@ import { Injectable } from '@angular/core';
 import { Geolocation } from '@ionic-native/geolocation';
 import { Http, Headers, RequestOptions } from '@angular/http';
 import { Observable } from 'rxjs/Observable';
-
-var useTestLocations = false;
+import { AppState } from '../app/app.global';
 
 @Injectable()
 export class YelpService {
+  ios: boolean = false;
+  testLocations: boolean = false;
+
   private locations: any;
 
   private clientId: string = "OXIJVK12GNTdHlmKJR7xbg";
@@ -38,8 +40,14 @@ export class YelpService {
 
 
   constructor (public http: Http,
+               public global: AppState,
                private geolocation: Geolocation,
                private storage: Storage) {
+
+    // Use test locations
+    global.set('testLocations', this.testLocations);
+    // Set is ios in global
+    global.set('ios', this.ios);
 
     // Create observables for views to listen to update markers
     this.search = Observable.create(observer => {
@@ -49,31 +57,35 @@ export class YelpService {
       this.currentLocationObserver = observer;
     })
 
+    let date = new Date();
+    this.dayOfWeek = (date.getDay() + 6) % 7; // Convert to 0 indexed at Monday
+
+    // Get access token and store it in requestOptions
     let body = new FormData();
     body.append('grant_type', 'client_credentials');
     body.append('client_id', this.clientId);
     body.append('client_secret', this.clientSecret);
-
-    if (!useTestLocations) {
+    if (!this.testLocations) {
       http.post("https://api.yelp.com/oauth2/token", body)
-        .subscribe(
-          data => {
-            let headers = new Headers();
-            this.accessToken = data.json().access_token;
-            headers.append('Authorization', "Bearer " + this.accessToken);
-            this.requestOptions = new RequestOptions({headers: headers});
-          }
-      );
+        .subscribe((data) => {
+          let headers = new Headers();
+          this.accessToken = data.json().access_token;
+          headers.append('Authorization', "Bearer " + this.accessToken);
+          this.requestOptions = new RequestOptions({headers: headers});
+          console.log(this.requestOptions);
+        });
     }
     else {
       this.readyToSearch = true;
     }
 
-    let date = new Date();
-    this.dayOfWeek = (date.getDay() + 6) % 7; // Convert to 0 indexed at Monday
-
     // Get values from storage
     this.searchParams = this.defaultSearchParams;
+    this.getParamsFromStorage();
+  }
+
+  // Get search parameters from storage
+  getParamsFromStorage() {
     this.storage.get('radius')
       .then((radius) => {
         if (radius != null) {
@@ -98,11 +110,6 @@ export class YelpService {
           this.searchParams.sortBy = sortBy;
         }
       });
-
-  }
-
-  isTesting() {
-    return useTestLocations;
   }
 
   // Returns observables for views to listen to update markers
@@ -145,17 +152,15 @@ export class YelpService {
   // Get current location and center map to current position
   locateUser() {
     let getPosition = this.geolocation.getCurrentPosition();
-    getPosition.then(
-        (location) => {
-          this.searchParams.latitude = location.coords.latitude; //43.012796; //
-          this.searchParams.longitude = location.coords.longitude; //-89.5041027; //
-          this.readyToSearch = true;
-          this.currentLocationObserver.next(location);
-        }
-      )
-      .catch(
-        (error) => console.log("An error occurred getting current location")
-      );
+    getPosition.then((location) => {
+      this.searchParams.latitude = location.coords.latitude; //43.012796; //
+      this.searchParams.longitude = location.coords.longitude; //-89.5041027; //
+      this.readyToSearch = true;
+      this.currentLocationObserver.next(location);
+    })
+    .catch(
+      (error) => console.log("An error occurred getting current location")
+    );
 
     return getPosition;
   }
@@ -164,7 +169,7 @@ export class YelpService {
   updateSearchParams(newParams) {
     this.searchParams = Object.assign(this.searchParams, newParams);
 
-    // Set values in storage
+    // Save values in storage
     this.storage.set('radius', newParams.radius);
     this.storage.set('limit', newParams.limit);
     this.storage.set('openNow', newParams.openNow);
@@ -173,7 +178,7 @@ export class YelpService {
 
   // Use Yelp API to locate nearby locations
   findLocations() {
-    if (useTestLocations) {
+    if (this.testLocations) {
       return this.getTestResults();
     }
 
@@ -194,68 +199,62 @@ export class YelpService {
       + limit + "&"
       + openNow + "&"
       + sortBy;
-
     let observableGetRequest = this.http.get(getRequestUrl, this.requestOptions).map(res => res.json());
+    observableGetRequest.subscribe((data) => {
+      this.locations = data.businesses;
+      // No results found
+      if (this.locations.length == 0) {
+        this.searchObserver.next(this.locations);
+      }
+      else {
+        this.remainingBusinessesToCheck = this.locations.length;
+        for (let location of this.locations) {
+          // Add some new properties to locations for easier access
+          location.ratingImage = this.getRatingImage(location.rating);
+          location.launchMapsUrl = this.getLaunchMapsUrl(location);
 
-    observableGetRequest.subscribe(
-        data => {
-          this.locations = data.businesses;
-          // No results found
-          if (this.locations.length == 0) {
-            this.searchObserver.next(this.locations);
-          }
-          else {
-            this.remainingBusinessesToCheck = this.locations.length;
-            for (let location of this.locations) {
-              // Add some new properties to locations for easier access
-              location.ratingImage = this.getRatingImage(location.rating);
-              location.launchMapsUrl = this.getLaunchMapsUrl(location);
-
-              // Get hours for each location (not provided from business search API)
-              this.getMoreInfo(location);
-            }
-          }
+          // Get hours for each location (not provided from business search API)
+          this.getMoreInfo(location);
         }
-      );
+      }
+    });
 
     return observableGetRequest;
   }
 
   // Separate get request to received specific hours for a given business location
   getMoreInfo(location: any) {
-
     let getRequestUrl = "https://api.yelp.com/v3/businesses/" + location.id;
     this.http.get(getRequestUrl, this.requestOptions).map(res => res.json())
-      .subscribe(
-          (data) => {
-            // Add open and close times as date object to location
-            location.hours = data.hours[0].open;
-            let todayHours = location.hours[this.dayOfWeek];
-            if (typeof todayHours != 'undefined') {
-              let startTime = todayHours.start;
-              let endTime = todayHours.end;
-              location.openTime = new Date(0, 0, 0, Math.floor(startTime / 100), startTime % 100);
-              location.closeTime = new Date(0, 0, 0, Math.floor(endTime / 100), endTime % 100);
-              location.hasHours = true;
-            }
-            else {
-              location.hasHours = false;
-            }
-            // When all businesses have additional info stored, send updated location info to subscribers
-            this.remainingBusinessesToCheck--;
-            if (this.remainingBusinessesToCheck <= 0) {
-              this.searchObserver.next(this.locations);
-            }
-          },
-          (err) => {
-            console.log("Error getting hours from " + location.id);
-            location.hasHours = false;
-            this.remainingBusinessesToCheck--;
-            if (this.remainingBusinessesToCheck <= 0) {
-              this.searchObserver.next(this.locations);
-            }
-          }
-        );
+      .subscribe((data) => {
+        // Add open and close times as date object to location
+        location.hours = data.hours[0].open;
+        let todayHours = location.hours[this.dayOfWeek];
+        if (typeof todayHours != 'undefined') {
+          let startTime = todayHours.start;
+          let endTime = todayHours.end;
+          location.openTime = new Date(0, 0, 0, Math.floor(startTime / 100), startTime % 100); // We only care about the hours
+          location.closeTime = new Date(0, 0, 0, Math.floor(endTime / 100), endTime % 100); // We only care about the hours
+          location.hasHours = true;
+        }
+        else {
+          location.hasHours = false;
+        }
+        // When all businesses have additional info stored, send updated location info to subscribers
+        this.remainingBusinessesToCheck--;
+        if (this.remainingBusinessesToCheck <= 0) {
+          this.searchObserver.next(this.locations);
+        }
+      },
+      (err) => {
+        console.log("Error getting hours from " + location.id);
+        // Error occurred, mark this location as not having hours and decrement counter
+        location.hasHours = false;
+        this.remainingBusinessesToCheck--;
+        if (this.remainingBusinessesToCheck <= 0) {
+          this.searchObserver.next(this.locations);
+        }
+      });
   }
 
   // Returns ratings image URL
@@ -275,22 +274,22 @@ export class YelpService {
 
   // For testing without using calling Yelp API
   getTestResults() {
+    console.log("get results");
     let observableGetRequest = this.http.get("./testResults.json").map(res => res.json());
+    observableGetRequest.subscribe((data) => {
+      console.log("getting results");
+      this.locations = data.businesses;
+      for (let location of this.locations) {
+        // Add some new properties to locations for easier access
+        location.ratingImage = this.getRatingImage(location.rating);
+        location.launchMapsUrl = this.getLaunchMapsUrl(location);
 
-    observableGetRequest.subscribe(
-      (data) => {
-        this.locations = data.businesses;
-        for (let location of this.locations) {
-          // Add some new properties to locations for easier access
-          location.ratingImage = this.getRatingImage(location.rating);
-          location.launchMapsUrl = this.getLaunchMapsUrl(location);
-
-          location.hasHours = false;
-        }
-        if (typeof this.searchObserver != "undefined")
-          this.searchObserver.next(this.locations);
+        location.hasHours = false;
       }
-    );
+      if (typeof this.searchObserver != "undefined") {
+        this.searchObserver.next(this.locations);
+      }
+    });
 
     return observableGetRequest;
   }

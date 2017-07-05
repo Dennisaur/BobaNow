@@ -1,14 +1,14 @@
 import { NgModule, ErrorHandler } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { IonicApp, IonicModule, IonicErrorHandler } from 'ionic-angular';
-import { MyApp } from './app.component';
 import { HttpModule } from '@angular/http';
 import { IonicStorageModule } from '@ionic/storage';
 import { AppVersion } from '@ionic-native/app-version';
 import { CloudSettings, CloudModule } from '@ionic/cloud-angular';
 
-import { ListViewPage } from '../pages/listView/listView';
 import { AppState } from './app.global';
+import { MyApp } from './app.component';
+import { ListViewPage } from '../pages/listView/listView';
 import { SettingsService} from '../services/settings.service';
 import { YelpService } from '../services/yelp.service';
 
@@ -49,12 +49,12 @@ const cloudSettings: CloudSettings = {
   providers: [
     StatusBar,
     SplashScreen,
-    Geolocation,
+    AppState,
     SettingsService,
     YelpService,
-    Storage,
     AppVersion,
-    AppState,
+    Geolocation,
+    Storage,
     {provide: ErrorHandler, useClass: IonicErrorHandler}
   ]
 })
