@@ -422,7 +422,8 @@
             "phone": "+14088651689",
             "display_phone": "(408) 865-1689",
             "distance": 2682.7435477579997
-        },
+        }/*,*/
+        /*
         {
             "id": "super-cue-cafe-cupertino",
             "name": "Super Cue Cafe",
@@ -852,7 +853,7 @@
             "phone": "+16509692899",
             "display_phone": "(650) 969-2899",
             "distance": 8587.907040742
-        }
+        }*/
     ],
     "total": 186,
     "region": {

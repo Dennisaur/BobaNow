@@ -48,11 +48,11 @@
   }
 
   // Button
-  .button-md:not(.button-clear) {
-    background-color: color($taro, primary, base);
+  .button:not(.button-clear):not(.directionsButton) {
+    background-color: color($taro, primary, base) !important;
   }
-  .button-md:not(.button-clear).activated {
-    background-color: color-shade(color($taro, primary, base));
+  .button:not(.button-clear):not(.directionsButton).activated {
+    background-color: color-shade(color($taro, primary, base)) !important;
   }
   // Toggle
   .toggle-checked {
@@ -69,6 +69,15 @@
   }
   .segment-button.segment-activated,.activated {
     border-color: color($taro, primary, base) !important;
+  }
+  .segment-ios {
+    .segment-button {
+      border-color: color($taro, primary, base) !important;
+    }
+    .segment-button.segment-activated {
+      color: white !important;
+      background-color: color($taro, primary, base) !important;
+    }
   }
   // Radio-button
   // .item-radio-checked {

@@ -1,5 +1,5 @@
 <ion-content>
-  <ion-grid [hidden]="mapView || !locationAvailable">
+  <ion-grid [hidden]="mapView || !locationAvailable || (bobaLocations.length == 0)">
     <ion-row text-wrap
              *ngFor="let bobaLocation of bobaLocations; let i = index"
              (click)="launch(bobaLocation.url)"
