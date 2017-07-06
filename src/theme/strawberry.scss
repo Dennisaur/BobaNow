@@ -48,10 +48,10 @@
   }
 
   // Button
-  .button:not(.button-clear) {
+  .button:not(.button-clear):not(.directionsButton) {
     background-color: color($strawberry, primary, base) !important;
   }
-  .button:not(.button-clear).activated {
+  .button:not(.button-clear):not(.directionsButton).activated {
     background-color: color-shade(color($strawberry, primary, base)) !important;
   }
   // Toggle
