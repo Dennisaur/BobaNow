@@ -72,7 +72,6 @@ export class YelpService {
           this.accessToken = data.json().access_token;
           headers.append('Authorization', "Bearer " + this.accessToken);
           this.requestOptions = new RequestOptions({headers: headers});
-          console.log(this.requestOptions);
         });
     }
     else {
@@ -158,11 +157,18 @@ export class YelpService {
       this.readyToSearch = true;
       this.currentLocationObserver.next(location);
     })
-    .catch(
-      (error) => console.log("An error occurred getting current location")
-    );
+    .catch((error) => {
+      console.log("An error occurred getting current location");
+    });
 
     return getPosition;
+  }
+
+  loadTestCurrentLocation() {
+    this.searchParams.latitude = 37.311944; // location.coords.latitude; //
+    this.searchParams.longitude = -122.0553208; //  location.coords.longitude; //
+    this.readyToSearch = true;
+    this.currentLocationObserver.next(location);
   }
 
   // Updates search params for Yelp get request
@@ -275,7 +281,7 @@ export class YelpService {
   // For testing without using calling Yelp API
   getTestResults() {
     console.log("get results");
-    let observableGetRequest = this.http.get("./testResults.json").map(res => res.json());
+    let observableGetRequest = this.http.get("./testResults2.json").map(res => res.json());
     observableGetRequest.subscribe((data) => {
       console.log("getting results");
       this.locations = data.businesses;
@@ -286,6 +292,7 @@ export class YelpService {
 
         location.hasHours = false;
       }
+      console.log(this.searchObserver);
       if (typeof this.searchObserver != "undefined") {
         this.searchObserver.next(this.locations);
       }

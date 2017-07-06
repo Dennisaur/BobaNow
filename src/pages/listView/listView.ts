@@ -65,10 +65,30 @@ export class ListViewPage {
           this.locationAvailable = true;
           this.locationEnabled = true;
           this.locationPermissionGranted = true;
-          this.yelpService.findLocations()
-            .subscribe((data) => {
-              this.initializeMapAndMarkers();
+          this.yelpService.locateUser()
+            .then((location) => {
+              let loading = this.loadingController.create({
+                content: "Searching for boba..."
+              });
+              loading.present();
+              if (this.yelpService.getReadyToSearch()) {
+                this.yelpService.findLocations()
+                  .subscribe((data) => {
+                    loading.dismiss();
+                  });
+              }
+              else {
+                loading.dismiss();
+
+                this.openAlertWindow("Error", "Oh no, an error occurred trying to locate you! Please try restarting the app.");
+              }
             });
+  
+          this.initializeMapAndMarkers();
+          // this.yelpService.findLocations()
+          //   .subscribe((data) => {
+          //     this.initializeMapAndMarkers();
+          //   });
         }
         else {
           this.locationPermissions();
