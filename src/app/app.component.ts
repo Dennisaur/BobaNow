@@ -5,7 +5,7 @@ import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
 
 import { AppState } from './app.global';
-import { ListViewPage } from '../pages/listView/listView';
+import { MainViewPage } from '../pages/mainView/mainView';
 import { SettingsService } from '../services/settings.service';
 import { YelpService } from '../services/yelp.service';
 
@@ -15,18 +15,19 @@ declare var cordova;
   templateUrl: 'app.html'
 })
 export class MyApp {
-  rootPage:any = ListViewPage;
+  private rootPage:any = MainViewPage;
 
   // Menu options
-  sortBy: string = "best_match";
-  openNow: boolean = true;
-  radius: string; // Radius search in miles
-  limit: string;
+  private sortBy: string = "best_match";
+  private openNow: boolean = true;
+  private radius: string; // Radius search in miles
+  private limit: string;
 
-  theme: string;
+  // Back to exit [Android]
+  private lastBack: number;
+  private allowClose: boolean;
 
-  lastBack: number;
-  allowClose: boolean;
+  private theme: string;
 
   constructor(private platform: Platform, statusBar: StatusBar, splashScreen: SplashScreen,
               private app: App,
@@ -45,7 +46,6 @@ export class MyApp {
       // Here you can do any higher level native things you might need.
       statusBar.styleDefault();
       splashScreen.hide();
-
 
       // Get values from storage
       this.resetTheme();
@@ -100,13 +100,31 @@ export class MyApp {
     });
   }
 
-
   // Get search params
   getSearchParams() {
-    this.sortBy = this.yelpService.getSortBy();
-    this.limit = this.yelpService.getLimit().toString();
-    this.openNow = this.yelpService.getOpenNow();
-    this.radius = this.yelpService.getRadius().toString();
+    this.settingsService.getSearchParams()
+      .then((searchParams) => {
+        this.sortBy = searchParams.sortBy;
+        this.limit = searchParams.limit.toString();
+        this.openNow = searchParams.openNow;
+        this.radius = searchParams.radius.toString();
+      });
+    // this.settingsService.getSortBy()
+    //   .then((sortBy) => {
+    //     this.sortBy = sortBy;
+    //   });
+    // this.settingsService.getLimit()
+    //   .then((limit) => {
+    //     this.limit = limit.toString();
+    //   });
+    // this.settingsService.getOpenNow()
+    //   .then((openNow) => {
+    //     this.openNow = openNow;
+    //   });
+    // this.settingsService.getRadius()
+    //   .then((radius) => {
+    //     this.radius = radius.toString();
+    //   });
   }
 
   // Updates search params in service and updates new locations
@@ -118,8 +136,8 @@ export class MyApp {
       limit: Number(this.limit)
     });
 
-    // Prevent searching for locations when Yelp service not ready
-    if (this.yelpService.getReadyToSearch()) {
+    // Prevent searching for locations without current location
+    if (this.yelpService.getUserLocated()) {
       let loading = this.loadingController.create({
         content: "Searching for boba..."
       });

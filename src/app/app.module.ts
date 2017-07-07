@@ -8,7 +8,7 @@ import { CloudSettings, CloudModule } from '@ionic/cloud-angular';
 
 import { AppState } from './app.global';
 import { MyApp } from './app.component';
-import { ListViewPage } from '../pages/listView/listView';
+import { MainViewPage } from '../pages/mainView/mainView';
 import { SettingsService} from '../services/settings.service';
 import { YelpService } from '../services/yelp.service';
 
@@ -27,7 +27,7 @@ const cloudSettings: CloudSettings = {
 @NgModule({
   declarations: [
     MyApp,
-    ListViewPage
+    MainViewPage
   ],
   imports: [
     BrowserModule,
@@ -44,7 +44,7 @@ const cloudSettings: CloudSettings = {
   bootstrap: [IonicApp],
   entryComponents: [
     MyApp,
-    ListViewPage
+    MainViewPage
   ],
   providers: [
     StatusBar,

@@ -11,33 +11,31 @@ declare var cordova;
 declare var google;
 
 @Component({
-  selector: 'page-listView',
-  templateUrl: 'listView.html'
+  selector: 'page-mainView',
+  templateUrl: 'mainView.html'
 })
-export class ListViewPage {
-  bobaLocations: any = [];
+export class MainViewPage {
+  private packageName: string;
 
-  loadingControl: any;
-  waitingForLocations: boolean = false;
-  needUpdateCamera: boolean;
+  // Location permissions
+  private locationAvailable: boolean;
+  private locationEnabled: boolean;
+  private locationPermissionGranted: boolean;
+  private checkLocationTask: any;
 
-  mapView: boolean = true;
-  map: any;
-  currentLocationMarker: any;
-  markers: any = [];
-  infoWindow: any;
-  infoWindowClickListener: any;
-  mapReady: boolean;
-  markersAdded: boolean;
+  // Map variables
+  private map: any;
+  private mapReady: boolean;
+  private currentLocationMarker: any;
+  private markers: any = [];
+  private infoWindow: any;
+  private infoWindowClickListener: any;
+  private mapView: boolean = true;
+  private needUpdateCamera: boolean;
 
-  packageName: string;
+  // Search results
+  private bobaLocations: any = [];
 
-  menuContent: any;
-  locationAvailable: boolean;
-  locationEnabled: boolean;
-  locationPermissionGranted: boolean;
-  task: any;
-  resume: any;
 
   constructor(public navCtrl: NavController,
               public http: Http,
@@ -55,123 +53,31 @@ export class ListViewPage {
   ngAfterViewInit() {
     this.platform.ready()
       .then(() => {
+        this.subscribeToObservables();
+
         // Get package name
         this.appVersion.getPackageName()
           .then(
             (name) => this.packageName = name
           );
-        // For testing
+        // For testing, skip all locations checks
         if (this.global.get('testLocations')) {
           this.locationAvailable = true;
           this.locationEnabled = true;
           this.locationPermissionGranted = true;
-          this.yelpService.locateUser()
-            .then((location) => {
-              let loading = this.loadingController.create({
-                content: "Searching for boba..."
-              });
-              loading.present();
-              if (this.yelpService.getReadyToSearch()) {
-                this.yelpService.findLocations()
-                  .subscribe((data) => {
-                    loading.dismiss();
-                  });
-              }
-              else {
-                loading.dismiss();
-
-                this.openAlertWindow("Error", "Oh no, an error occurred trying to locate you! Please try restarting the app.");
-              }
-            });
-  
-          this.initializeMapAndMarkers();
-          // this.yelpService.findLocations()
-          //   .subscribe((data) => {
-          //     this.initializeMapAndMarkers();
-          //   });
+          this.initiateYelpSearch();
         }
         else {
-          this.locationPermissions();
-          this.task = setInterval(() => {
+          this.requestLocationPermission();
+          this.checkLocationTask = setInterval(() => {
             this.checkLocationEnabled();
           }, 1000);
         }
       });
   }
 
-  // Load map and subscribe to observables from Yelp service
-  initializeMapAndMarkers() {
-    if (!this.mapReady) {
-      // Load map before adding markers
-      this.loadMap();
-
-      // Subscribe to observable to add current location marker
-      this.yelpService.currentLocationUpdate()
-        .subscribe((location) => {
-          this.addCurrentLocationMarker();
-        });
-      // Subscribe to observable to get search locations
-      this.yelpService.searchUpdates()
-        .subscribe((locations) => {
-          this.bobaLocations = locations;
-          // No locations found
-          if (this.bobaLocations.length == 0) {
-            let message = "";
-            if (this.yelpService.getRadius() < 10) {
-              message += "Try a larger search area.";
-            }
-            if (this.yelpService.getOpenNow()) {
-              message += (message.length > 0 ? "<br>or<br>" : "") + "Try unchecking Open Now to find boba for another time.<br>";
-            }
-            if (message.length == 0) {
-              message = "Sorry, we couldn't find any boba near you.";
-            }
-            this.openAlertWindow("No results", message)
-          }
-
-          this.addMarkersToMap();
-          if (!this.mapView) {
-            this.needUpdateCamera = true;
-          }
-        });
-    }
-  }
-
-  // Check if location is available before initializing map and markers
-  checkLocationAvailable() {
-    cordova.plugins.diagnostic.isLocationAvailable(function(available) {
-      this.locationAvailable = available;
-      if (available) {
-        let loading = this.loadingController.create({
-          content: "Searching for boba..."
-        });
-        loading.present();
-        clearInterval(this.task);
-
-        this.yelpService.locateUser()
-          .then((location) => {
-            if (this.yelpService.getReadyToSearch()) {
-              this.yelpService.findLocations()
-                .subscribe((data) => {
-                  loading.dismiss();
-                });
-            }
-            else {
-              loading.dismiss();
-
-              this.openAlertWindow("Error", "Oh no, an error occurred trying to locate you! Please try restarting the app.");
-            }
-          });
-
-        this.initializeMapAndMarkers();
-      }
-    }.bind(this), function(error) {
-      console.log("The following error occurred checking if location available: " + error);
-    });
-  }
-
   // Request location permission
-  locationPermissions() {
+  requestLocationPermission() {
     cordova.plugins.diagnostic.requestLocationAuthorization(function(status){
       switch(status){
           case cordova.plugins.diagnostic.permissionStatus.NOT_REQUESTED:
@@ -190,10 +96,12 @@ export class ListViewPage {
   }
 
   // Checks if gps location is enabled
+  // [Android only]
   checkLocationEnabled() {
     // ios doesn't have getLocationMode
     if (this.global.get('ios')) {
       this.locationEnabled = true;
+      this.checkLocationAvailable();
       return;
     }
 
@@ -211,8 +119,95 @@ export class ListViewPage {
   }
 
   // Goes to location settings, then checks if location is available when resuming app
+  // [Android only]
   locationSettings() {
     cordova.plugins.diagnostic.switchToLocationSettings();
+  }
+
+  // Check if location is available before initializing map and markers
+  // This checks both permission and gps enabled
+  checkLocationAvailable() {
+    cordova.plugins.diagnostic.isLocationAvailable(function(available) {
+      this.locationAvailable = available;
+      if (available) {
+        this.loadMap();
+        this.initiateYelpSearch();
+      }
+    }.bind(this), function(error) {
+      console.log("The following error occurred checking if location available: " + error);
+    });
+  }
+
+  // For initial search, wait until search params fetched from storage
+  findLocationsWhenReady(loading: any) {
+    let findLocationsTask = setInterval(() => {
+      if (this.yelpService.getSearchReady()) {
+        this.yelpService.findLocations()
+          .subscribe((data) => {
+            loading.dismiss();
+          });
+        clearInterval(findLocationsTask);
+      }
+    }, 500);
+  }
+
+  // Initiates Yelp search (finding current location and nearby locations)
+  initiateYelpSearch() {
+    let loading = this.loadingController.create({
+      content: "Searching for boba..."
+    });
+    loading.present();
+    clearInterval(this.checkLocationTask);
+
+    // Find current location
+    this.yelpService.locateUser()
+      .then((location) => {
+        if (this.yelpService.getUserLocated()) {
+          this.findLocationsWhenReady(loading);
+        }
+        else {
+          loading.dismiss();
+          this.openAlertWindow("Error", "Oh no, an error occurred trying to locate you! Please try restarting the app.");
+        }
+      });
+  }
+
+  // Subscribe to observables from Yelp service
+  subscribeToObservables() {
+    // Observable to add current location marker
+    this.yelpService.getCurLocObservable()
+      .subscribe((location) => {
+        this.addCurrentLocationMarker();
+      });
+    // Observable to get search locations
+    this.yelpService.getSearchObservable()
+      .subscribe((locations) => {
+        this.bobaLocations = locations;
+        this.addMarkersToMap();
+
+        // Search was updated in list view, camera will need to be updated
+        if (!this.mapView) {
+          this.needUpdateCamera = true;
+        }
+        else {
+          this.updateCamera();
+        }
+
+        // No locations found
+        if (this.bobaLocations.length == 0) {
+          let message = "";
+          if (this.yelpService.getRadius() < 10) {
+            message += "Try a larger search area.";
+          }
+          if (this.yelpService.getOpenNow()) {
+            message += (message.length > 0 ? "<br>or<br>" : "") + "Try unchecking Open Now to find boba for another time.<br>";
+          }
+          if (message.length == 0) {
+            message = "Sorry, we couldn't find any boba near you.";
+          }
+          this.openAlertWindow("No results", message)
+        }
+      });
   }
 
   // Creates map using google maps API
@@ -248,7 +243,6 @@ export class ListViewPage {
     });
 
     // Create info window for marker information
-    //*todo fix resizing issue
     this.infoWindow = new google.maps.InfoWindow({
       maxWidth: 230,
       disableAutoPan: true
@@ -258,59 +252,14 @@ export class ListViewPage {
       element.parentElement.className += ' custom-iw';
     });
 
-    this.mapReady = true;
-
     // Add event listener to close infoWindow when map is clicked
     google.maps.event.addListener(this.map, 'click', function(infoWindow) {
       return function() {
         infoWindow.close();
       };
     }(this.infoWindow));
-  }
 
-  // Moves camera to fit current position and search locations
-  updateCamera() {
-    // Quit if we aren't in map view
-    if (!this.mapView) {
-      return;
-    }
-
-    let bounds = new google.maps.LatLngBounds();
-
-    // Add current location to bounds
-    let currentPosition = new google.maps.LatLng(this.yelpService.getLat(), this.yelpService.getLng());
-    bounds.extend(currentPosition);
-
-    // Add search locations to bounds
-    for (let location of this.bobaLocations) {
-      let bound = new google.maps.LatLng(location.coordinates.latitude, location.coordinates.longitude);
-      bounds.extend(bound);
-    }
-
-    // Move camera to fit all locations
-    //*todo get panToBounds working
-    if (this.bobaLocations.length == 0) {
-      this.map.setCenter(currentPosition);
-      // Variable zoom based on radius of search
-      switch (this.yelpService.getRadius()) {
-        case 1:
-          this.map.setZoom(14);
-          break;
-        case 2:
-          this.map.setZoom(13);
-          break;
-        case 5:
-          this.map.setZoom(12);
-          break;
-        default:
-          this.map.setZoom(11);
-          break;
-      }
-    }
-    else {
-      this.map.fitBounds(bounds, 10);
-    }
-    this.needUpdateCamera = false;
+    this.mapReady = true;
   }
 
   // Creates control to center on current location in map
@@ -335,16 +284,64 @@ export class ListViewPage {
     this.map.controls[google.maps.ControlPosition.RIGHT_TOP].push(controlDiv);
   }
 
-  // Add marker for current location
+  // Moves camera to fit current position and search locations
+  updateCamera() {
+    // Quit if we aren't in map view
+    if (!this.mapView) {
+      return;
+    }
+
+    let bounds = new google.maps.LatLngBounds();
+
+    // Add current location to bounds
+    let currentPosition = new google.maps.LatLng(this.yelpService.getLat(), this.yelpService.getLng());
+    bounds.extend(currentPosition);
+
+    // Add search locations to bounds
+    for (let location of this.bobaLocations) {
+      let bound = new google.maps.LatLng(location.coordinates.latitude, location.coordinates.longitude);
+      bounds.extend(bound);
+    }
+
+    // Variable zoom based on radius of search when no locations found
+    if (this.bobaLocations.length == 0) {
+      this.map.setCenter(currentPosition);
+      switch (this.yelpService.getRadius()) {
+        case 1:
+          this.map.setZoom(14);
+          break;
+        case 2:
+          this.map.setZoom(13);
+          break;
+        case 5:
+          this.map.setZoom(12);
+          break;
+        default:
+          this.map.setZoom(11);
+          break;
+      }
+    }
+    // Fit all locations and current location
+    else {
+      this.map.fitBounds(bounds, 30);
+    }
+    this.needUpdateCamera = false;
+  }
+
+  // Set position of current location marker
   addCurrentLocationMarker() {
-    // Update current location marker position
+    // Quit if map isn't ready
+    if (!this.mapReady) {
+      return;
+    }
+
     let position = new google.maps.LatLng(this.yelpService.getLat(), this.yelpService.getLng());
     this.currentLocationMarker.setPosition(position);
   }
 
   // Clear current markers and add new markers to map using list of businesses returned from search
   addMarkersToMap() {
-    // Return if map isn't ready
+    // Quit if map isn't ready
     if (!this.mapReady) {
       return;
     }
@@ -353,9 +350,6 @@ export class ListViewPage {
 
     // Iterate through and create a marker for each location
     let count = 1;
-    if (this.bobaLocations.length == 0) {
-      // Oh noo! None nearby
-    }
     for (let location of this.bobaLocations) {
       let position = new google.maps.LatLng(location.coordinates.latitude, location.coordinates.longitude);
 
@@ -380,9 +374,6 @@ export class ListViewPage {
       this.markers.push(marker);
       count += 1;
     }
-
-    this.markersAdded = true;
-    this.updateCamera();
   }
 
   // Removes all location markers from the map
@@ -401,10 +392,12 @@ export class ListViewPage {
     // Address
     leftContent += "<div class='address'>" + location.location.address1 + ", " + location.location.city + "</div>";
     // Don't display this div if invalid open/close time
-    let openTimeString = location.openTime.toLocaleTimeString('en-US', {hour: 'numeric', minute: '2-digit'});
-    let closeTimeString = location.closeTime.toLocaleTimeString('en-US', {hour: 'numeric', minute: '2-digit'});
-    if (openTimeString != "" && closeTimeString != "") {
-      leftContent += "<div class='hours'>Hours: " + openTimeString + " - " + closeTimeString + "</div>";
+    if (location.hasHours) {
+      let openTimeString = location.openTime.toLocaleTimeString('en-US', {hour: 'numeric', minute: '2-digit'});
+      let closeTimeString = location.closeTime.toLocaleTimeString('en-US', {hour: 'numeric', minute: '2-digit'});
+      if (openTimeString != "" && closeTimeString != "") {
+        leftContent += "<div class='hours'>Hours: " + openTimeString + " - " + closeTimeString + "</div>";
+      }
     }
     // Rating and review count
     leftContent += "<div class='ratings'><img src=\"" + location.ratingImage + "\" /><div>&nbsp;" + location.review_count + " reviews</div></div>";
@@ -420,17 +413,6 @@ export class ListViewPage {
     // Wrap in rightContent div
     rightContent = "<div class='rightContent'>" + rightContent + "</div>";
     return "<div class='infoWindowContent' onclick=\"location.href='" + location.url + "'\">" + leftContent + rightContent + "</div>";
-  }
-
-  // Returns if an info window is open
-  getInfoWindowOpen() {
-    var map = this.infoWindow.getMap();
-    return (map !== null && typeof map !== "undefined");
-  }
-
-  // Close the info window
-  closeInfoWindow() {
-    this.infoWindow.close();
   }
 
   // Toggles between list and map view
@@ -477,7 +459,7 @@ export class ListViewPage {
   createAboutContent() {
     let storeLink: string;
     if (this.global.get('ios')) {
-      storeLink = "";
+      storeLink = "<a href='https://play.google.com/store/apps/details?id=" + this.packageName + "'>Rate/review</a>"
     }
     else {
       storeLink = "<a href='https://play.google.com/store/apps/details?id=" + this.packageName + "'>Rate/review</a>"

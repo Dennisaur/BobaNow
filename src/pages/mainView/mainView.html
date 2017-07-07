@@ -49,7 +49,7 @@
         We can't find boba near you if we don't know where you are!
       </div>
       <div [hidden]="locationPermissionGranted">
-        <button ion-button (click)="locationPermissions()">
+        <button ion-button (click)="requestLocationPermission()">
           <div >
             Request permission
           </div>
