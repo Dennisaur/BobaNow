@@ -16,6 +16,7 @@ declare var google;
 })
 export class MainViewPage {
   private packageName: string;
+  private isIos: boolean;
 
   // Location permissions
   private locationAvailable: boolean;
@@ -24,13 +25,13 @@ export class MainViewPage {
   private checkLocationTask: any;
 
   // Map variables
+  private mapView: boolean = true;
   private map: any;
   private mapReady: boolean;
   private currentLocationMarker: any;
   private markers: any = [];
   private infoWindow: any;
   private infoWindowClickListener: any;
-  private mapView: boolean = true;
   private needUpdateCamera: boolean;
 
   // Search results
@@ -55,16 +56,21 @@ export class MainViewPage {
       .then(() => {
         this.subscribeToObservables();
 
+        this.isIos = this.global.get('ios');
+
         // Get package name
-        this.appVersion.getPackageName()
-          .then(
-            (name) => this.packageName = name
-          );
+        if (!this.global.get('browser')) {
+          this.appVersion.getPackageName()
+            .then(
+              (name) => this.packageName = name
+            );
+        }
         // For testing, skip all locations checks
-        if (this.global.get('testLocations')) {
+        if (this.global.get('testLocations') || this.global.get('skipLocationPermission')) {
           this.locationAvailable = true;
           this.locationEnabled = true;
           this.locationPermissionGranted = true;
+          this.loadMap();
           this.initiateYelpSearch();
         }
         else {
@@ -78,21 +84,23 @@ export class MainViewPage {
 
   // Request location permission
   requestLocationPermission() {
-    cordova.plugins.diagnostic.requestLocationAuthorization(function(status){
-      switch(status){
-          case cordova.plugins.diagnostic.permissionStatus.NOT_REQUESTED:
-          case cordova.plugins.diagnostic.permissionStatus.DENIED:
-              this.locationPermissionGranted = false;
-              break;
-          case cordova.plugins.diagnostic.permissionStatus.GRANTED:
-          case cordova.plugins.diagnostic.permissionStatus.GRANTED_WHEN_IN_USE:
-              this.locationPermissionGranted = true;
-              this.checkLocationAvailable();
-              break;
-      }
-    }.bind(this), function(error){
-      console.error("The following error occurred: " + error);
-    });
+    if (!this.global.get('browser')) {
+      cordova.plugins.diagnostic.requestLocationAuthorization(function(status){
+        switch(status){
+            case cordova.plugins.diagnostic.permissionStatus.NOT_REQUESTED:
+            case cordova.plugins.diagnostic.permissionStatus.DENIED:
+                this.locationPermissionGranted = false;
+                break;
+            case cordova.plugins.diagnostic.permissionStatus.GRANTED:
+            case cordova.plugins.diagnostic.permissionStatus.GRANTED_WHEN_IN_USE:
+                this.locationPermissionGranted = true;
+                this.checkLocationAvailable();
+                break;
+        }
+      }.bind(this), function(error){
+        console.error("The following error occurred: " + error);
+      });
+    }
   }
 
   // Checks if gps location is enabled
@@ -121,21 +129,25 @@ export class MainViewPage {
   // Goes to location settings, then checks if location is available when resuming app
   // [Android only]
   locationSettings() {
-    cordova.plugins.diagnostic.switchToLocationSettings();
+    if (!this.global.get('browser')) {
+      cordova.plugins.diagnostic.switchToLocationSettings();
+    }
   }
 
   // Check if location is available before initializing map and markers
   // This checks both permission and gps enabled
   checkLocationAvailable() {
-    cordova.plugins.diagnostic.isLocationAvailable(function(available) {
-      this.locationAvailable = available;
-      if (available) {
-        this.loadMap();
-        this.initiateYelpSearch();
-      }
-    }.bind(this), function(error) {
-      console.log("The following error occurred checking if location available: " + error);
-    });
+    if (!this.global.get('browser')) {
+      cordova.plugins.diagnostic.isLocationAvailable(function(available) {
+        this.locationAvailable = available;
+        if (available) {
+          this.loadMap();
+          this.initiateYelpSearch();
+        }
+      }.bind(this), function(error) {
+        console.log("The following error occurred checking if location available: " + error);
+      });
+    }
   }
 
   // For initial search, wait until search params fetched from storage
@@ -287,7 +299,7 @@ export class MainViewPage {
   // Moves camera to fit current position and search locations
   updateCamera() {
     // Quit if we aren't in map view
-    if (!this.mapView) {
+    if (!this.mapView || this.global.get('browser')) {
       return;
     }
 

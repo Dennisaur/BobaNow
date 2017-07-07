@@ -54,10 +54,13 @@
   .button:not(.button-clear):not(.directionsButton).activated {
     background-color: color-shade(color($honeydew, primary, base)) !important;
   }
+  .button-outline-ios {
+    border-color: color($honeydew, primary, base);
+  }
   // Toggle
   .toggle-checked {
     .toggle-icon {
-     background-color: lighten(color($honeydew, primary, base), 15%) !important;
+     background-color: lighten(color($honeydew, primary, base), 25%) !important;
    }
    .toggle-inner {
      background-color: color($honeydew, primary, base) !important;

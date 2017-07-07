@@ -7,17 +7,10 @@ import { AppState } from '../app/app.global';
 @Injectable()
 export class SettingsService {
   private testLocations: boolean = false;
+  private skipLocationPermission: boolean = false;
+  private browser: boolean = false;
   private ios: boolean = false;
   private theme: string = "milkTea";
-
-  private radius: number = 5;
-  private defaultRadius: number = 5;
-  private limit: number = 10;
-  private defaultLimit: number = 10;
-  private openNow: boolean = true;
-  private defaultOpenNow: boolean = true;
-  private sortBy: string = "best_match";
-  private defaultSortBy: string = "best_match";
 
   private searchParams: any;
   private defaultSearchParams: any = {
@@ -30,9 +23,12 @@ export class SettingsService {
   constructor (private storage: Storage,
                public global: AppState) {
      // Initialize globals
+     global.set('skipLocationPermission', this.skipLocationPermission);
      global.set('testLocations', this.testLocations);
      // Set is ios in global
      global.set('ios', this.ios);
+     // Set is browser for testing
+     global.set('browser', this.browser);
 
      storage.get('theme')
       .then((theme) => {

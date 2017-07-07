@@ -97,11 +97,14 @@ ion-menu.settings {
     padding: 4px 0px !important;
     margin: 0px !important;
     text-align: center;
-    font-size: 2rem; //20px;
+    font-size: 20px;
     font-weight: bold;
   }
+  ion-list-header.list-header-ios {
+    font-size: 16px;
+  }
   .centeredText {
-    font-size: 1.75rem; //16px;
+    font-size: 16px;
     margin-bottom: 10px;
   }
 }

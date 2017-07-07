@@ -109,22 +109,6 @@ export class MyApp {
         this.openNow = searchParams.openNow;
         this.radius = searchParams.radius.toString();
       });
-    // this.settingsService.getSortBy()
-    //   .then((sortBy) => {
-    //     this.sortBy = sortBy;
-    //   });
-    // this.settingsService.getLimit()
-    //   .then((limit) => {
-    //     this.limit = limit.toString();
-    //   });
-    // this.settingsService.getOpenNow()
-    //   .then((openNow) => {
-    //     this.openNow = openNow;
-    //   });
-    // this.settingsService.getRadius()
-    //   .then((radius) => {
-    //     this.radius = radius.toString();
-    //   });
   }
 
   // Updates search params in service and updates new locations

@@ -54,10 +54,13 @@
   .button:not(.button-clear):not(.directionsButton).activated {
     background-color: color-shade(color($taro, primary, base)) !important;
   }
+  .button-outline-ios {
+    border-color: color($taro, primary, base);
+  }
   // Toggle
   .toggle-checked {
     .toggle-icon {
-     background-color: lighten(color($taro, primary, base), 15%) !important;
+     background-color: lighten(color($taro, primary, base), 25%) !important;
    }
    .toggle-inner {
      background-color: color($taro, primary, base) !important;

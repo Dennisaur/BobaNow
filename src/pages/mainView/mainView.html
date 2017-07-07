@@ -26,7 +26,7 @@
         <div class="distance">
           {{bobaLocation.distance / 1609.3445 | number:'1.2-2'}} mi
         </div>
-        <button ion-button round (click)="launch(bobaLocation.launchMapsUrl, $event)" class="directionsButton">
+        <button ion-button round [outline]="isIos" (click)="launch(bobaLocation.launchMapsUrl, $event)" class="directionsButton">
           <img src='img/DirectionsIconBlue.png' class='directionsIcon' />
         </button>
       </ion-col>
