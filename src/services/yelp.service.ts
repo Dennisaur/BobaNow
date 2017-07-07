@@ -224,12 +224,9 @@ export class YelpService {
   // Separate get request to received specific hours for a given business location
   getMoreInfo(location: any) {
     let getRequestUrl = "https://api.yelp.com/v3/businesses/" + location.id;
-    console.log(location.id);
-    console.log(this.requestOptions);
     this.http.get(getRequestUrl, this.requestOptions).map(res => res.json())
       .subscribe((data) => {
         // Add open and close times as date object to location
-        console.log(data.hours);
         if (typeof data.hours != 'undefined') {
           location.hours = data.hours[0].open;
           let todayHours = location.hours[this.dayOfWeek];
