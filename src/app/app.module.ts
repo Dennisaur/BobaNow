@@ -54,7 +54,6 @@ const cloudSettings: CloudSettings = {
     YelpService,
     AppVersion,
     Geolocation,
-    Storage,
     {provide: ErrorHandler, useClass: IonicErrorHandler}
   ]
 })
