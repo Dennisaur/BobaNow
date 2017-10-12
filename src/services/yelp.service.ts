@@ -14,6 +14,7 @@ export class YelpService {
   private accessToken: string = "4CsWcVaxR1MdfR55e6vVjH0XRJNUkDsBHOc7HM073bhnnAbBr2f4-4QliYaYR4QabhRBhRiDfgYiLYYeN9m0scWLcvRAPZqfnC8c8RMe-qUGhmteiNkpx8anPFlDWXYx";
   private requestOptions: RequestOptions;
   private tokenReady: boolean = false;
+  private googleMapsAPIKey: string = "AIzaSyArdyECCHkDoR-Ozr48gjwdewXzkKPd8YY";
 
   // Observables to listen to
   private currentLocation: any;
@@ -180,7 +181,7 @@ export class YelpService {
     }
 
     // Generate get request URL
-    let term = "term=" + this.searchParams.term;
+    let term = "term=" + encodeURIComponent(this.searchParams.term);
     let latitude = "latitude=" + this.searchParams.latitude;
     let longitude = "longitude=" + this.searchParams.longitude;
     let radius = "radius=" + Math.round(this.searchParams.radius * 1609.34); // Convert miles to meters
@@ -210,7 +211,7 @@ export class YelpService {
         for (let location of this.locations) {
           // Add some new properties to locations for easier access
           location.ratingImage = this.getRatingImage(location.rating);
-          location.launchMapsUrl = this.getLaunchMapsUrl(location);
+          this.verifyLocationCoords(location);
 
           // Get hours for each location (not provided from business search API)
           this.getMoreInfo(location);
@@ -219,6 +220,33 @@ export class YelpService {
     });
 
     return observableGetRequest;
+  }
+
+  // Safety net to convert address to coordinates using google API in case results
+  // from Yelp API return null coordinates
+  verifyLocationCoords(location: any) {
+    if (location.coordinates.latitude == null || location.coordinates.longitude == null) {
+      let destination: string = location.location.address1 + '+' + location.location.city + '+' + location.location.country;
+      destination = destination.replace(/ /g, "+");
+      let getRequestUrl = "https://maps.googleapis.com/maps/api/geocode/json?address=" + destination + "&key=" + this.googleMapsAPIKey;
+
+      // This business needs to get checked again for new coords
+      this.remainingBusinessesToCheck++;
+      this.http.get(getRequestUrl).map(res => res.json())
+        .subscribe((data) => {
+          let newCoords = {
+            latitude: data.results[0].geometry.location.lat,
+            longitude: data.results[0].geometry.location.lng
+          };
+          location.coordinates = newCoords;
+          location.launchMapsUrl = this.getLaunchMapsUrl(location);
+
+          this.decrementBusinessesToCheck();
+        });
+    }
+    else {
+      location.launchMapsUrl = this.getLaunchMapsUrl(location);
+    }
   }
 
   // Separate get request to received specific hours for a given business location
@@ -230,37 +258,37 @@ export class YelpService {
         if (typeof data.hours != 'undefined') {
           location.hours = data.hours[0].open;
           let todayHours = location.hours[this.dayOfWeek];
-          // if (typeof todayHours != 'undefined') {
-          let startTime = todayHours.start;
-          let endTime = todayHours.end;
-          location.openTime = new Date(0, 0, 0, Math.floor(startTime / 100), startTime % 100); // We only care about the hours
-          location.closeTime = new Date(0, 0, 0, Math.floor(endTime / 100), endTime % 100); // We only care about the hours
-          location.hasHours = true;
+          if (typeof todayHours != 'undefined') {
+            let startTime = todayHours.start;
+            let endTime = todayHours.end;
+            location.openTime = new Date(0, 0, 0, Math.floor(startTime / 100), startTime % 100); // We only care about the hours
+            location.closeTime = new Date(0, 0, 0, Math.floor(endTime / 100), endTime % 100); // We only care about the hours
+            location.hasHours = true;
+          }
         }
         else {
           location.hasHours = false;
         }
+
         // When all businesses have additional info stored, send updated location info to subscribers
-        this.remainingBusinessesToCheck--;
-        if (this.remainingBusinessesToCheck <= 0) {
-          this.locationsFound = true;
-          if (this.searchObserverReady) {
-            this.searchObserver.next(this.locations);
-          }
-        }
+        this.decrementBusinessesToCheck();
       },
       (err) => {
         console.log("Error getting hours from " + location.id + ": " + err);
         // Error occurred, mark this location as not having hours and decrement counter
         location.hasHours = false;
-        this.remainingBusinessesToCheck--;
-        if (this.remainingBusinessesToCheck <= 0) {
-          this.locationsFound = true;
-          if (this.searchObserverReady) {
-            this.searchObserver.next(this.locations);
-          }
-        }
+        this.decrementBusinessesToCheck();
       });
+  }
+
+  decrementBusinessesToCheck() {
+    this.remainingBusinessesToCheck--;
+    if (this.remainingBusinessesToCheck <= 0) {
+      this.locationsFound = true;
+      if (this.searchObserverReady) {
+        this.searchObserver.next(this.locations);
+      }
+    }
   }
 
   // Returns ratings image URL
@@ -281,7 +309,8 @@ export class YelpService {
 
   // Returns google maps link to navigate to location from current position
   getLaunchMapsUrl(location) {
-    return "https://www.google.com/maps/dir/?api=1&destination=" + location.coordinates.latitude + "," + location.coordinates.longitude;
+    let destination: string = location.coordinates.latitude + "," + location.coordinates.longitude;
+    return "https://www.google.com/maps/dir/?api=1&destination=" + destination;
   }
 
   // For testing without using calling Yelp API

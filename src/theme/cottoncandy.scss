@@ -1,0 +1,115 @@
+.theme-cottoncandy {
+  ion-footer {
+    background-color: color($cottoncandy, xLight, base);
+    border-top: 4px solid color($cottoncandy, dark, base);
+  }
+  // Second border
+  ion-footer:before {
+    border-top: 4px solid color($cottoncandy, background, base);
+  }
+
+  ion-menu {
+    .scroll-content {
+      background-color: color($cottoncandy, xLight, base) !important;
+    }
+    .openNow .item-inner {
+      border-color: color($cottoncandy, dark, base) !important;
+      padding-bottom: 4px;
+    }
+  }
+
+  page-mainView {
+    .scroll-content {
+      background-color: color($cottoncandy, background, base);
+    }
+
+    .locationRow {
+      background-color: color($cottoncandy, xLight, base);
+      border: 4px solid color($cottoncandy, dark, base);
+    }
+
+    .wrapperContentDiv {
+      background-color: color($cottoncandy, xLight, base);
+    }
+
+    #map {
+      background-color: color($cottoncandy, primary, base);
+    }
+
+    /** Info window set here the desired background-color **/
+    .custom-iw,
+    .custom-iw>div:first-child>div:nth-child(n-1)>div>div,
+    .custom-iw>div>div:last-child,
+    .custom-iw .gm-style-iw,
+    .custom-iw .gm-style-iw>div,
+    .custom-iw .gm-style-iw>div>div {
+      //background-color: color($cottoncandy, xLight, base) !important;
+    }
+  }
+
+  // Button
+  .button:not(.button-clear):not(.directionsButton) {
+    background-color: color($cottoncandy, primary, base) !important;
+  }
+  .button:not(.button-clear):not(.directionsButton).activated {
+    background-color: color-shade(color($cottoncandy, primary, base)) !important;
+  }
+  .button-outline-ios {
+    border-color: color($cottoncandy, primary, base);
+  }
+  // Toggle
+  .toggle-checked {
+    .toggle-icon {
+     background-color: lighten(color($cottoncandy, primary, base), 25%) !important;
+   }
+   .toggle-inner {
+     background-color: color($cottoncandy, primary, base) !important;
+   }
+  }
+  // Segment
+  .segment-button {
+    color: color($cottoncandy, primary, base) !important;
+  }
+  .segment-button.segment-activated,.activated {
+    border-color: color($cottoncandy, primary, base) !important;
+  }
+  .segment-ios {
+    .segment-button {
+      border-color: color($cottoncandy, primary, base) !important;
+    }
+    .segment-button.segment-activated {
+      color: white !important;
+      background-color: color($cottoncandy, primary, base) !important;
+    }
+  }
+  // Radio-button
+  // .item-radio-checked {
+  //   .label {
+  //     color: color($cottoncandy, primary, base);
+  //   }
+  //   .radio-checked {
+  //     color: color($cottoncandy, primary, base);
+  //     border-color: color($cottoncandy, primary, base);
+  //     .radio-inner {
+  //       background-color: color($cottoncandy, primary, base);
+  //     }
+  //   }
+  // }
+}
+
+// About window is separate from other element content
+.theme-cottoncandy.alertWindow {
+  .alert-head {
+    background-color: color($cottoncandy, light, base);
+    border-bottom: 4px solid color($cottoncandy, dark, base);
+  }
+  .alert-wrapper {
+    background-color: color($cottoncandy, xLight, base);
+  }
+  a {
+    color: color($cottoncandy, primary, base);
+  }
+  .button-inner {
+    color: color($cottoncandy, primary, base);
+  }
+}

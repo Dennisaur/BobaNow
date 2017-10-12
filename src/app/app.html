@@ -111,15 +111,23 @@
         <ion-label>Honeydew</ion-label>
         <ion-radio value="theme-honeydew" (ionSelect)="changeTheme('theme-honeydew')" color="honeydew"></ion-radio>
       </ion-item>
+      <ion-item color="blueberryxLight" no-lines>
+        <ion-label>Blueberry</ion-label>
+        <ion-radio value="theme-blueberry" (ionSelect)="changeTheme('theme-blueberry')" color="blueberry"></ion-radio>
+      </ion-item>
+      <ion-item color="cottoncandyxLight" no-lines>
+        <ion-label>Cotton Candy</ion-label>
+        <ion-radio value="theme-cottoncandy" (ionSelect)="changeTheme('theme-cottoncandy')" color="cottoncandy"></ion-radio>
+      </ion-item>
     </ion-list>
 
     <div class="menuFooter">
       <ion-grid>
-        <ion-row>
+        <!-- <ion-row>
           <ion-col col-12 text-center class="centeredText">
             More flavors coming soon!
           </ion-col>
-        </ion-row>
+        </ion-row> -->
         <ion-row>
           <ion-col col-6>
             <button ion-button menuClose (click)="resetTheme()">

@@ -7,5 +7,8 @@
       "path": "/api",
       "proxyUrl": "https://api.yelp.com/v3/businesses"
     }
-  ]
+  ],
+  "integrations": {
+    "cordova": {}
+  }
 }

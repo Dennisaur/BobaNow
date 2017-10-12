@@ -1,0 +1,115 @@
+.theme-blueberry {
+  ion-footer {
+    background-color: color($blueberry, xLight, base);
+    border-top: 4px solid color($blueberry, dark, base);
+  }
+  // Second border
+  ion-footer:before {
+    border-top: 4px solid color($blueberry, background, base);
+  }
+
+  ion-menu {
+    .scroll-content {
+      background-color: color($blueberry, xLight, base) !important;
+    }
+    .openNow .item-inner {
+      border-color: color($blueberry, dark, base) !important;
+      padding-bottom: 4px;
+    }
+  }
+
+  page-mainView {
+    .scroll-content {
+      background-color: color($blueberry, background, base);
+    }
+
+    .locationRow {
+      background-color: color($blueberry, xLight, base);
+      border: 4px solid color($blueberry, dark, base);
+    }
+
+    .wrapperContentDiv {
+      background-color: color($blueberry, xLight, base);
+    }
+
+    #map {
+      background-color: color($blueberry, primary, base);
+    }
+
+    /** Info window set here the desired background-color **/
+    .custom-iw,
+    .custom-iw>div:first-child>div:nth-child(n-1)>div>div,
+    .custom-iw>div>div:last-child,
+    .custom-iw .gm-style-iw,
+    .custom-iw .gm-style-iw>div,
+    .custom-iw .gm-style-iw>div>div {
+      //background-color: color($blueberry, xLight, base) !important;
+    }
+  }
+
+  // Button
+  .button:not(.button-clear):not(.directionsButton) {
+    background-color: color($blueberry, primary, base) !important;
+  }
+  .button:not(.button-clear):not(.directionsButton).activated {
+    background-color: color-shade(color($blueberry, primary, base)) !important;
+  }
+  .button-outline-ios {
+    border-color: color($blueberry, primary, base);
+  }
+  // Toggle
+  .toggle-checked {
+    .toggle-icon {
+     background-color: lighten(color($blueberry, primary, base), 25%) !important;
+   }
+   .toggle-inner {
+     background-color: color($blueberry, primary, base) !important;
+   }
+  }
+  // Segment
+  .segment-button {
+    color: color($blueberry, primary, base) !important;
+  }
+  .segment-button.segment-activated,.activated {
+    border-color: color($blueberry, primary, base) !important;
+  }
+  .segment-ios {
+    .segment-button {
+      border-color: color($blueberry, primary, base) !important;
+    }
+    .segment-button.segment-activated {
+      color: white !important;
+      background-color: color($blueberry, primary, base) !important;
+    }
+  }
+  // Radio-button
+  // .item-radio-checked {
+  //   .label {
+  //     color: color($blueberry, primary, base);
+  //   }
+  //   .radio-checked {
+  //     color: color($blueberry, primary, base);
+  //     border-color: color($blueberry, primary, base);
+  //     .radio-inner {
+  //       background-color: color($blueberry, primary, base);
+  //     }
+  //   }
+  // }
+}
+
+// About window is separate from other element content
+.theme-blueberry.alertWindow {
+  .alert-head {
+    background-color: color($blueberry, light, base);
+    border-bottom: 4px solid color($blueberry, dark, base);
+  }
+  .alert-wrapper {
+    background-color: color($blueberry, xLight, base);
+  }
+  a {
+    color: color($blueberry, primary, base);
+  }
+  .button-inner {
+    color: color($blueberry, primary, base);
+  }
+}

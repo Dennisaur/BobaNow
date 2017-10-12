@@ -50,16 +50,25 @@ page-mainView {
     padding-bottom: 0px;
   }
 
-
+  ion-footer ion-grid {
+    padding-bottom: 0px;
+  }
   ion-footer ion-col {
     text-align: center;
   }
-  ion-footer ion-col > div {
+  ion-footer ion-col .footer-button {
     height: 50px;
     width: 50px;
     background-color: black;
     border-radius: 100%;
     margin: auto;
+  }
+  .footer-button ion-icon {
+    vertical-align: middle;
+  }
+  ion-col .button-label {
+    padding-top: 4px;
+    font-size: 1.3rem;
   }
   ion-footer ion-col button {
     height: 100% !important;

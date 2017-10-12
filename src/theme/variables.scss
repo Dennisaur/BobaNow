@@ -29,8 +29,22 @@ $taro: (
   primary:    #927DAF,  // Standard UI buttons/etc
   background: #BEB4CD,  // Background color
   light:      #CBC3D5,  // About us title bg
-  xLight:     #EBEBEB,  // List item bg
+  xLight:     #ECE8F1,  // List item bg
   dark:       #857599,  // Borders
+);
+$cottoncandy: (
+  primary:    #13C5C5,  // Standard UI buttons/etc
+  background: #C5E9E9,  // Background color
+  light:      #D2EFEF,  // About us title bg
+  xLight:     #F5FFFF,  // List item bg
+  dark:       #02A9A9,  // Borders
+);
+$blueberry: (
+  primary:    #5263C3,  // Standard UI buttons/etc
+  background: #BABAF7,  // Background color
+  light:      #CFCFFF,  // About us title bg
+  xLight:     #E7E7FF,  // List item bg
+  dark:       #5764AF,  // Borders
 );
 
 // Named Color Variables
@@ -56,7 +70,13 @@ $colors: (
   strawberryxLight: color($strawberry, xLight, base),
   taro:             color($taro, primary, base),
   taroBg:           color($taro, background, base),
-  taroxLight:       color($taro, xLight, base)
+  taroxLight:       color($taro, xLight, base),
+  cottoncandy:       color($cottoncandy, primary, base),
+  cottoncandyBg:     color($cottoncandy, background, base),
+  cottoncandyxLight: color($cottoncandy, xLight, base),
+  blueberry:       color($blueberry, primary, base),
+  blueberryBg:     color($blueberry, background, base),
+  blueberryxLight: color($blueberry, xLight, base)
 );
 
 $menu-width: 75%;
@@ -94,6 +114,8 @@ ion-footer .button-clear-ios {
 @import "./taro";
 @import "./honeydew";
 @import "./strawberry";
+@import "./blueberry";
+@import "./cottoncandy";
 
 
 // Ionicons

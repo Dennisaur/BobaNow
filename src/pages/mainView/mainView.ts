@@ -311,6 +311,9 @@ export class MainViewPage {
 
     // Add search locations to bounds
     for (let location of this.bobaLocations) {
+      if (location.coordinates.latitude == null || location.coordinates.longitude == null) {
+        continue;
+      }
       let bound = new google.maps.LatLng(location.coordinates.latitude, location.coordinates.longitude);
       bounds.extend(bound);
     }
@@ -363,6 +366,10 @@ export class MainViewPage {
     // Iterate through and create a marker for each location
     let count = 1;
     for (let location of this.bobaLocations) {
+      if (location.coordinates.latitude == null || location.coordinates.longitude == null) {
+        count += 1;
+        continue;
+      }
       let position = new google.maps.LatLng(location.coordinates.latitude, location.coordinates.longitude);
 
       // Create marker and add to map

@@ -68,7 +68,7 @@
   <ion-grid>
     <ion-row>
       <ion-col col-3>
-        <div (click)="toggleView()">
+        <div class="footer-button" (click)="toggleView()">
           <button ion-button icon-only clear>
             <div [hidden]="!mapView">
               <ion-icon name="list"></ion-icon>
@@ -78,26 +78,41 @@
             </div>
           </button>
         </div>
+        <div class="button-label" [hidden]="!mapView">
+          List
+        </div>
+        <div class="button-label" [hidden]="mapView">
+          Map
+        </div>
       </ion-col>
       <ion-col col-3>
-        <div (click)="openMenu('options')">
+        <div class="footer-button" (click)="openMenu('options')">
           <button ion-button icon-only clear>
             <ion-icon name="options"></ion-icon>
           </button>
         </div>
+        <div class="button-label" >
+          Filter
+        </div>
       </ion-col>
       <ion-col col-3>
-        <div (click)="openMenu('settings')">
+        <div class="footer-button" (click)="openMenu('settings')">
           <button ion-button icon-only clear>
             <ion-icon name="settings"></ion-icon>
           </button>
         </div>
+        <div class="button-label" >
+          Theme
+        </div>
       </ion-col>
       <ion-col col-3>
-        <div (click)="openInfo()">
+        <div class="footer-button" (click)="openInfo()">
           <button ion-button icon-only large clear color="light">
             <ion-icon name="information"></ion-icon>
           </button>
+        </div>
+        <div class="button-label" >
+          Info
         </div>
       </ion-col>
     </ion-row>
